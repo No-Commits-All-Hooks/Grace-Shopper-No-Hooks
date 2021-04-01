@@ -51,7 +51,6 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         status TEXT DEFAULT 'created',
         "userId" INTEGER REFERENCES users(id),
-        name varchar(255) UNIQUE NOT NULL,
         "dataPlaced" DATE
       );
       `)
@@ -60,7 +59,6 @@ async function createTables() {
         id SERIAL PRIMARY KEY, 
         "productId" INTEGER REFERENCES products(id),
         "orderId" INTEGER REFERENCES orders(id),
-        duration INTEGER,
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL DEFAULT 0
       );
