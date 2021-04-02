@@ -28,10 +28,10 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         name varchar(255) NOT NULL,
         description varchar(255) NOT NULL,
-        price INTEGER NOT NULL,
-        imageURL BOOLEAN DEFAULT false,
+        price NUMERIC NOT NULL,
+        imageURL varchar(255) DEFAULT 'https://coursereport-s3-production.global.ssl.fastly.net/uploads/school/logo/39/original/fsa_logo_vertical-01_full_color_CR-01.png',
         inStock BOOLEAN NOT NULL DEFAULT false,
-        category TEXT NOT NULL
+        category varchar(255) NOT NULL
       );
       `)
       await client.query(`
@@ -40,7 +40,7 @@ async function createTables() {
         firstName varchar(255) NOT NULL,
         lastName varchar(255) NOT NULL,
         email varchar(255) UNIQUE NOT NULL,
-        imageURL BOOLEAN DEFAULT false,
+        imageURL varchar(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
         username varchar(255) UNIQUE NOT NULL,
         password varchar(255) UNIQUE NOT NULL,
         "isAdmin" BOOLEAN NOT NULL DEFAULT false
@@ -59,7 +59,7 @@ async function createTables() {
         id SERIAL PRIMARY KEY, 
         "productId" INTEGER REFERENCES products(id),
         "orderId" INTEGER REFERENCES orders(id),
-        price INTEGER NOT NULL,
+        price NUMERIC NOT NULL,
         quantity INTEGER NOT NULL DEFAULT 0
       );
       `)
@@ -71,17 +71,66 @@ async function createTables() {
   }
 }
   
-  // need to add mock data to test initial users, products etc
+ 
+
+// need to add mock data to test initial users, products etc
 
 
-  async function rebuildDB() {
+
+async function createInitialProducts (){
+    try {  
+    console.log("Starting to create products...");
+
+    const productsToCreate = [
+        {
+            name: "Travel Mug",
+            description: "Fullstack Academy Travel Mug",
+            price: 5.99,
+            imageURL: "https://www.coastalbusiness.com/pub/media/catalog/product/cache/512de54f123dc2b25ce70b0876441768/p/l/plastic_travel_mug_1.png",
+            inStock: true,
+            category: "Drinkware",
+        },
+        {
+            name: "Backpack",
+            description: "Backpack with protective padding and laptop sleeve.",
+            price: 18.99,
+            imageURL: "https://d1vo2ulxpswjig.cloudfront.net/CAT4IMAGES/FRONT_MODEL/600/BG203_black_front.jpg",
+            inStock: true,
+            category: "Bags",
+        },
+        {
+            name: "Mesh Cap/Trucker Hat",
+            description: "Adjustable black/grey hat with plastic snap closure",
+            price: 10.99,
+            imageURL: "https://images-na.ssl-images-amazon.com/images/I/71IVBJ8sFSL._AC_UL1500_.jpg",
+            inStock: true,
+            category: "Hats",
+            
+        }
+        
+    ]
+    
+    // const products = await Promise.all(
+    //     productsToCreate.map((product) => createProduct(product))
+    //   );
+    // console.log("Products Created: ", products);
+    // console.log("Finished creating products.");
+
+} catch (error){
+        throw error;
+    }
+
+}
+
+
+async function rebuildDB() {
     try {
       client.connect();
   
       await dropTables();
       await createTables();
-    //   await createInitialUsers();
-    //   await createInitialProducts();
+      await createInitialProducts();
+
     } catch (error) {
       console.log("Error during rebuildDB");
   
@@ -89,21 +138,8 @@ async function createTables() {
     }
   }
 
-//need to build out testDB
-
-
-// async function testDB(){
-// try{
-
-// } catch (error){
-//     console.log("Error during testDB:", error);
-//     throw error}
-
-// }
-
 
 rebuildDB()
-//uncomment .then after testDB built
-//   .then(testDB)
   .catch(console.error)
-  .finally(() => client.end());
+  .finally(() => client.end()
+  );
