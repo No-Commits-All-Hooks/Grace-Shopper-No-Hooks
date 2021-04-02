@@ -1,4 +1,5 @@
 const client = require('./client');
+const {createProducts} = require ("./")
 
 async function dropTables() {
     try {
@@ -107,14 +108,13 @@ async function createInitialProducts (){
             category: "Hats",
             
         }
-        
     ]
     
-    // const products = await Promise.all(
-    //     productsToCreate.map((product) => createProduct(product))
-    //   );
-    // console.log("Products Created: ", products);
-    // console.log("Finished creating products.");
+    const products = await Promise.all(
+        productsToCreate.map((product) => createProducts(product))
+      );
+    console.log("Products Created: ", products);
+    console.log("Finished creating products.");
 
 } catch (error){
         throw error;
