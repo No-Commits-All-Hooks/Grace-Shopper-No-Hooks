@@ -21,7 +21,7 @@ import SingleProduct from "./products/SingleProduct";
 
 const fetchAllProducts = async () => {
   const data = await callApi({
-    url: "/products",
+    url: "products",
   });
 
   return data;
