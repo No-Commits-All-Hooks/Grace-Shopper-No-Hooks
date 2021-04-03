@@ -1,5 +1,5 @@
 const client = require('./client');
-const {createProducts} = require ("./")
+const {createProducts, getAllProducts, getProductById} = require ("./")
 
 async function dropTables() {
     try {
