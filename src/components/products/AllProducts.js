@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 
 import "./AllProducts.css";
+import SingleProduct from "./SingleProduct";
 
 //search component? 
 
@@ -16,18 +17,23 @@ const AllProducts = ({ allProducts }) => {
       </div>
       <div className="product-list">
         {allProducts ? (
-          allProducts.map(({ id, name, imageURL }) => {
-            <div key={id} className="product">
-              <img src={imageURL} className="product-image" 
-              onClick={()=>{
-                  history.pushState(`/products/${id}`);
-              }}
+          allProducts.map((product) => {
+// use SingleProduct component to show product details
+            return(
+              <SingleProduct
+              key = {product.id}
+              id = {product.id }
+              name= {product.name}
+              description= {product.description}
+              price= {product.price}
+              instock= {product.instock}
+              imgURL= {product.imageurl}
+
               />
-              <h3>{name}</h3>
-            </div>;
+            )
           })
         ) : (
-          <h5>Completely Sold Out</h5>
+          <h5>Completely Sold Out!</h5>
         )}
       </div>
     </main>
