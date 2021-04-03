@@ -10,6 +10,7 @@ import {
 
 import { 
    //PUT COMPONENTS YOU EXPORTED FROM INDEX HERE
+  AllProducts,
    NavBar
  } from './index';
 
@@ -18,13 +19,20 @@ import {
 import '../styles.css';
 
 const App = () => {
-
+const [allProducts, setAllProducts] = useState([]);
    
     return (
         <>
         <NavBar/>
         <div id="app">
-           <h1>HELLO WORLD??? Just a test to get it to show up on screen. </h1>
+           
+            <Switch>
+           
+            <AllProducts
+             />    
+
+
+           </Switch>
         </div>
         </>
     );
