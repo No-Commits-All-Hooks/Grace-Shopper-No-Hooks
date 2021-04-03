@@ -1,5 +1,5 @@
 const client = require('./client');
-const {createProducts, getAllProducts, getProductById} = require ("./")
+const {createProducts, getAllProducts, getProductById} = require (".")
 
 async function dropTables() {
     try {
@@ -52,7 +52,7 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         status TEXT DEFAULT 'created',
         "userId" INTEGER REFERENCES users(id),
-        "dataPlaced" DATE
+        "datePlaced" DATE
       );
       `)
       await client.query(`
