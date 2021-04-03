@@ -8,21 +8,27 @@ import {
     Link
 } from 'react-router-dom';
 
-import { 
-   //PUT COMPONENTS YOU EXPORTED FROM INDEX HERE
- } from './index';
+import { AllProducts } from './index';
 
 
 
 import '../styles.css';
 
 const App = () => {
-
+const [allProducts, setAllProducts] = useState([]);
    
     return (
         <div id="app">
-           <h1>HELLO WORLD??? Just a test to get it to show up on screen. </h1>
 
+            <Switch>
+           
+            <AllProducts
+           
+           
+           />    
+
+
+           </Switch>
         </div>
     );
 };
