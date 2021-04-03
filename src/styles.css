@@ -1,0 +1,16 @@
+/* Font */
+/* Font-weight options: 300, 400, 500 */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300:@400:@500&family=Open+Sans&display=swap');
+
+
+/* Document */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+
+    color: red; 
+}

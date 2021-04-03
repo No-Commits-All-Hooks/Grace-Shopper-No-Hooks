@@ -1,0 +1,4 @@
+//COMPONENTS SWITCHBOARD
+//IF YOU CREATE A COMPONENT MAKE SURE TO EXPORT HEREnpm
+
+export { default as App } from './App';
