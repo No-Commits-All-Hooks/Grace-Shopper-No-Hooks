@@ -4,8 +4,8 @@
   "description": "Capstone FullStack Web Developer Project",
   "main": "index.js",
   "scripts": {
-    "seed:dev": "nodemon ./db/seed.js",
-    "seed": "node ./db/seed.js",
+    "seed:dev": "nodemon ./backend/db/seed.js",
+    "seed": "node ./backend/db/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "react-scripts start",
     "build": "react-scripts build"
