@@ -6,11 +6,13 @@
   "scripts": {
     "seed:dev": "nodemon ./db/seed.js",
     "seed": "node ./db/seed.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest  --runInBand --verbose",
+    "test:watch": "jest --watchAll --runInBand --verbose",
+    "test:watch:db": "jest --watchAll db",
+    "test:watch:api": "jest --watchAll api",
     "start": "react-scripts start",
     "build": "react-scripts build"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/No-Commits-All-Hooks/Grace-Shopper-No-Hooks.git"
