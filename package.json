@@ -10,7 +10,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/No-Commits-All-Hooks/Grace-Shopper-No-Hooks.git"

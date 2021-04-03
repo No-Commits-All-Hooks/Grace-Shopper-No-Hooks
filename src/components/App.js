@@ -8,7 +8,11 @@ import {
     Link
 } from 'react-router-dom';
 
-import { AllProducts } from './index';
+import { 
+   //PUT COMPONENTS YOU EXPORTED FROM INDEX HERE
+  AllProducts,
+   NavBar
+ } from './index';
 
 
 
@@ -18,18 +22,19 @@ const App = () => {
 const [allProducts, setAllProducts] = useState([]);
    
     return (
+        <>
+        <NavBar/>
         <div id="app">
-
+           
             <Switch>
            
             <AllProducts
-           
-           
-           />    
+             />    
 
 
            </Switch>
         </div>
+        </>
     );
 };
 
