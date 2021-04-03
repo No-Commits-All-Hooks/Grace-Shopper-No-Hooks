@@ -1,4 +1,7 @@
-export const BASE_URL = "https://morning-fortress-53362.herokuapp.com/api/";
+// export const BASE_URL = "https://morning-fortress-53362.herokuapp.com/api/";
+
+require('dotenv').config();
+export const BASE_URL =  (process.env.DATABASE_URL || "https://localhost:5432/grace-shopper-dev/api/");
 
 
 export const callApi = async ({ url, method, token, body }) => {
