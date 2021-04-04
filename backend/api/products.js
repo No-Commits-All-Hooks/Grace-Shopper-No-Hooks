@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require('express');
 const productsRouter = express.Router();
 
-const { getAllProducts, getProductById } = require("../db");
+const { getAllProducts, getProductById } = require('../db');
 
-productsRouter.get("/", async (req, res, next) => {
+productsRouter.get('/', async (req, res, next) => {
   try {
     const allProducts = await getAllProducts();
 
@@ -15,14 +15,14 @@ productsRouter.get("/", async (req, res, next) => {
   }
 });
 
-productsRouter.get("/:productId", async (req, res, next) => {
+productsRouter.get('/:productId', async (req, res, next) => {
   try {
     const { productId } = req.params;
     const productById = await getProductById(productId);
 
     if (!productById) {
       next({
-        name: "NotFound",
+        name: 'NotFound',
         message: `No product found by ID ${productId}`,
       });
     }
