@@ -1,7 +1,7 @@
 // export const BASE_URL = 'YOUR WORKING HEROKU URL HERE'
 
 //For now I am leaving it just as this, but you can imagine you could use process.env || heroku URL when you all set that up
-export const API_URL = 'http://localhost:5000/api/';
+export const BASE_URL = 'http://localhost:5000/api/';
 
 export const callApi = async ({ url, method, token, body }) => {
   console.log('callApi: ', { url, method, token, body });
@@ -16,9 +16,9 @@ export const callApi = async ({ url, method, token, body }) => {
     if (token) {
       options.headers['Authorization'] = `Bearer ${token}`;
     }
-    console.log('request url: ', API_URL + url);
+    console.log('request url: ', BASE_URL + url);
     console.log('options: ', options);
-    const response = await fetch(API_URL + url, options);
+    const response = await fetch(BASE_URL + url, options);
     const data = await response.json();
     console.log('data: ', data);
     if (data.error) throw data.error;
