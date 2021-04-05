@@ -1,5 +1,5 @@
 const client = require('./client');
-const { createProducts, createUser } = require('./');
+const { createProducts, createUser, getUserByUsername, getAllUsers } = require('./');
 
 async function dropTables() {
   try {
@@ -151,6 +151,23 @@ async function rebuildDB() {
   }
 }
 
+async function testDB(){
+
+  try{
+
+    const users = await getAllUsers();
+    console.log("getAllUsers Result:", users); 
+
+    // const martin = await getUserByUsername("martini");
+    // console.log("getUserByUsername Result:", martin);
+
+  } catch (error){
+    throw error;
+  }
+}
+
+
 rebuildDB()
+.then(testDB)
   .catch(console.error)
   .finally(() => client.end());
