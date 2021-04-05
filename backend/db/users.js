@@ -24,6 +24,43 @@ async function createUser({ firstName, lastName, email, username, password }) {
   }
 }
 
+
+async function getAllUsers() {
+  try {
+    const { rows: users } = await client.query(`
+            SELECT *
+            FROM users;
+        `);
+
+    delete users.password;
+    return users;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getUserById(id) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+          SELECT *
+          FROM users 
+          WHERE id = $1;
+          `,
+      [id]
+    );
+
+    if (!user) {
+      return;
+    }
+    delete user.password;
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
 async function getUserByUsername(username) {
   try {
     const {
@@ -72,22 +109,10 @@ async function getUser({ username, password }) {
   }
 }
 
-async function getAllUsers() {
-  try {
-    const { rows: users } = await client.query(`
-            SELECT *
-            FROM users;
-        `);
-
-    delete users.password;
-    return users;
-  } catch (error) {
-    throw error;
-  }
-}
 
 module.exports = {
   createUser,
   getUserByUsername,
   getAllUsers,
+  getUserById
 };

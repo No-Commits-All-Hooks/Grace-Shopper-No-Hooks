@@ -10,6 +10,5 @@ router.get('/me', requireUser, async (req, res, next) => {
     }
   })
 
-  
 
   module.exports = usersRouter;

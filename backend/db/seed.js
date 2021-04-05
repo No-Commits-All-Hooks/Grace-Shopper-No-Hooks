@@ -1,5 +1,5 @@
 const client = require('./client');
-const { createProducts, createUser, getUserByUsername, getAllUsers } = require('./');
+const { createProducts, createUser, getUserByUsername, getAllUsers, getUserById } = require('./');
 
 async function dropTables() {
   try {
@@ -160,6 +160,10 @@ async function testDB(){
 
     // const martin = await getUserByUsername("martini");
     // console.log("getUserByUsername Result:", martin);
+
+    const sal = await getUserById(1);
+    console.log("getUserById Result:", sal); 
+
 
   } catch (error){
     throw error;
