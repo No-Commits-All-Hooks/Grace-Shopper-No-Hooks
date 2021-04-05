@@ -17,8 +17,12 @@ server.use(morgan('dev'));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 // Serve Docs
-const path = require('path');
-server.use('/docs', express.static(path.join(__dirname, 'public')));
+
+// commenting this out:
+// const path = require('path');
+// server.use('/docs', express.static(path.join(__dirname, 'public')));
+
+
 // Router: /api
 server.use('/api', require('./backend/api'));
 
@@ -28,12 +32,20 @@ server.use('/api', require('./backend/api'));
 // });
 
 // 404 handler
-server.get('*', (req, res) => {
-  res.status(404).send({
-    error: '404 - Not Found',
-    message: 'No route found for the requested URL',
-  });
+server.use('*', (req, res, next) => {
+  res.status(404);
+  res.send({ error: 'Route not found' });
 });
+
+
+// old stuff:
+// server.get('*', (req, res) => {
+//   res.status(404).send({
+//     error: '404 - Not Found',
+//     message: 'No route found for the requested URL',
+//   });
+// });
+
 // error handling middleware
 server.use((error, req, res, next) => {
   console.error('SERVER ERROR: ', error);
