@@ -1,8 +1,9 @@
 const express = require("express");
 const usersRouter = express.Router();
 const jwt = require("jsonwebtoken");
+const { requireUser } = require('./utils');
 
-router.get('/me', requireUser, async (req, res, next) => {
+usersRouter.get('/me', requireUser, async (req, res, next) => {
     try {
       res.send(req.user);
     } catch (error) {
