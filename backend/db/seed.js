@@ -1,5 +1,5 @@
 const client = require('./client');
-const { createProducts, getAllProducts, getProductById } = require('./');
+const { createProducts, createUser } = require('./');
 
 async function dropTables() {
   try {
@@ -118,6 +118,24 @@ async function createInitialProducts() {
   }
 }
 
+async function createInitialUsers() {
+  console.log("Starting to create users...");
+  try {
+    const usersToCreate = [
+      { firstName: "Mandy", lastName: "Lara", email: "mlara01@gmail.com",username: "mandy.lara", password: "lara2020" },
+      { firstName: "Sal", lastName: "Medina", email: "salthepal@yahoo.com",username: "salthepal", password: "Sal1234" },
+      { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021" },
+    ];
+    const users = await Promise.all(usersToCreate.map(createUser));
+    console.log("Users created:");
+    console.log(users);
+    console.log("Finished creating users!");
+  } catch (error) {
+    console.error("Error creating users!");
+    throw error;
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect();
@@ -125,6 +143,7 @@ async function rebuildDB() {
     await dropTables();
     await createTables();
     await createInitialProducts();
+    await createInitialUsers();
   } catch (error) {
     console.log('Error during rebuildDB');
 
