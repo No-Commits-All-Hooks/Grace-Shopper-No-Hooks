@@ -20,9 +20,9 @@ server.use(express.urlencoded({ extended: true }));
 const path = require('path');
 server.use(express.static(path.join(__dirname, 'build')));
 
-server.use((req, res, next) => {
-	res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// server.use((req, res, next) => {
+// 	res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 // Router: /api
 server.use('/api', require('./backend/api'));
