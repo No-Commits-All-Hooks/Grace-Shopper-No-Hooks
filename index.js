@@ -17,19 +17,20 @@ server.use(morgan('dev'));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 // Serve Docs
+const path = require('path');
+server.use(express.static(path.join(__dirname, 'build')));
 
-// commenting this out:
-// const path = require('path');
-// server.use('/docs', express.static(path.join(__dirname, 'public')));
-
+server.use((req, res, next) => {
+	res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // Router: /api
 server.use('/api', require('./backend/api'));
 
 //These commented out lines on 26 - 28 are causing a redirect which will be very annoying. You all can delete these
-// server.get('/', (req, res) => {
-//   res.redirect('/docs');
-// });
+server.get('/', (req, res) => {
+  res.redirect('/docs');
+});
 
 // 404 handler
 server.use('*', (req, res, next) => {
