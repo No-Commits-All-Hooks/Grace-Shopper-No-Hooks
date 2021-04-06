@@ -6,8 +6,10 @@ import SingleProduct from "./SingleProduct";
 
 //search component? 
 
-const AllProducts = ({ allProducts }) => {
+const AllProducts = ({ products }) => {
     const history = useHistory();
+    const {allProducts}= products;
+
 
 
   return (
@@ -18,7 +20,6 @@ const AllProducts = ({ allProducts }) => {
       <div className="product-list">
         {allProducts ? (
           allProducts.map((product) => {
-// use SingleProduct component to show product details
             return(
               <SingleProduct
               key = {product.id}
@@ -27,7 +28,7 @@ const AllProducts = ({ allProducts }) => {
               description= {product.description}
               price= {product.price}
               instock= {product.instock}
-              imgURL= {product.imageurl}
+              imageurl= {product.imageurl}
 
               />
             )

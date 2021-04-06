@@ -27,18 +27,18 @@ const fetchAllProducts = async () => {
 };
 
 const App = () => {
-  const [allProducts, setAllProducts] = useState([]);
+  const [products, setProducts] = useState([]);
 
   //Make sure to add the dependency array otherwise your useEffect will call itself a million times and your browser will probably crash :)
   useEffect(async () => {
     const products = await fetchAllProducts();
 
     if (products) {
-      setAllProducts(products);
+      setProducts(products);
     }
   }, []);
 
-  //   console.log("all products:", products);
+    console.log("all products:", products);
 
   return (
     <>
@@ -46,10 +46,10 @@ const App = () => {
       <div id="app">
         <Switch>
           <Route path="/products">
-            <AllProducts allProducts={allProducts} />
+            <AllProducts products={products} />
           </Route>
           <Route path="/products/:productId">
-            <SingleProduct allProducts={allProducts} />
+            <SingleProduct products={products} />
           </Route>
         </Switch>
       </div>

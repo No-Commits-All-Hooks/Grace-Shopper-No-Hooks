@@ -1,6 +1,5 @@
-// export const BASE_URL = 'https://morning-fortress-53362.herokuapp.com/api/'
-require('dotenv').config();
 
+require('dotenv').config();
 //For now I am leaving it just as this, but you can imagine you could use process.env || heroku URL when you all set that up
 export const BASE_URL = process.env.DATABASE_URL || 'https://morning-fortress-53362.herokuapp.com/api/';
 
