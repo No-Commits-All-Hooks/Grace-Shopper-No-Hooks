@@ -1,45 +1,43 @@
-// import React from 'react';
-// import { useHistory, useParams } from 'react-router-dom';
+import React from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import "./SingleDetail.css";
 
 
+const SingleDetail = ({products}) => {
+
+const {allProducts} = products;
+
+const history= useHistory()
+const {productId} = useParams();
+const product = allProducts? allProducts.find((product) => Number(productId) === Number(product.id)) : null ;
+
+// console.log("Allproduct:", allProducts);
+// console.log("product:", product);
 
 
-// const Post = ({posts, setPosts, token, userData}) => {
+  if (!product){
+      return <div></div>
+  } 
+  return (
+      <>
+        <section className="return-home-button">
+        <button
+      onClick = {() =>{
+          history.push(`/products`)
+      }}
+      >Return to all products</button> 
+        </section>
+        <div className='single-product-card'>
+            <img src={product.imageurl} className="product-image" alt={product.name}/>
+            <section className="product-details">
+             <h1> {product.name} </h1>
+             <div>Price : ${product.price}</div>
+             <div> Description: { product.description }</div>
+             </section>
+        </div>
+        </>
+    )
+}
 
-// const history= useHistory()
-// const {productsId} = useParams();
-// const post = posts.find((post) => postId === post._id);
-// const userId= userData._id
-
-// console.log('post:', post)
-
-
-//   if (!post){
-//       return <div></div>
-//   } 
-//   const postAuthor = post.author._id;
-
-//   return (
-
-//         <div className='single-post'>
-//              <h5> {post.title} </h5>
-//              <div> Posted by: { post.author.username }</div>
-//              <div> Location: { post.location }</div>
-//              <div> Description: { post.description }</div>
-//              <div>Price : ${post.price}</div>
-//              <div>Delivers: { post.willDeliver ? 'Yes' : 'No' }</div>
-//              {userId === postAuthor && postAuthor? (
-//              <button onClick= {handleDelete}>Delete</button>)
-//              : null
-//              }
-//              {userId !== postAuthor ? (
-//             <button
-//             onClick= {() =>{
-//             history.push(`/posts/${postId}/messages`)
-//             }} > Reply</button>) : null
-//             }
-//         </div>
-//     )
-// }
-
-// export default Post
+export default SingleDetail;

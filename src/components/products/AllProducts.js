@@ -25,7 +25,6 @@ const AllProducts = ({ products }) => {
               key = {product.id}
               id = {product.id }
               name= {product.name}
-              description= {product.description}
               price= {product.price}
               instock= {product.instock}
               imageurl= {product.imageurl}

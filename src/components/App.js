@@ -12,12 +12,12 @@ import {
   //PUT COMPONENTS YOU EXPORTED FROM INDEX HERE
   AllProducts,
   NavBar,
+  SingleDetail
 } from './index';
 
 import '../styles.css';
 
 import { callApi } from '../api';
-import SingleProduct from './products/SingleProduct';
 
 const fetchAllProducts = async () => {
   const data = await callApi({
@@ -38,7 +38,7 @@ const App = () => {
     }
   }, []);
 
-    console.log("all products:", products);
+    // console.log("all products:", products);
 
   return (
     <>
@@ -48,8 +48,8 @@ const App = () => {
           <Route path="/products">
             <AllProducts products={products} />
           </Route>
-          <Route path="/products/:productId">
-            <SingleProduct products={products} />
+          <Route path="/product/:productId">
+            <SingleDetail products={products} />
           </Route>
         </Switch>
       </div>
