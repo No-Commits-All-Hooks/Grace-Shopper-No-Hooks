@@ -1,5 +1,16 @@
 const client = require('./client');
-const { createProducts, createUser, getUserByUsername, getAllUsers, getUserById } = require('./');
+const { createProducts, 
+        createUser, 
+        getUserByUsername, 
+        getAllUsers, 
+        getUserById,
+        getOrderById,
+        getAllOrders,
+        getOrdersByUser,
+        getOrdersByProduct,
+        getCartByUser,
+        createOrder 
+} = require('./');
 
 async function dropTables() {
   try {
@@ -157,6 +168,9 @@ async function testDB(){
 
     const users = await getAllUsers();
     console.log("getAllUsers Result:", users); 
+
+    const orders = await getAllOrders();
+    console.log("getAllOrders Result:", orders);
 
     // const martin = await getUserByUsername("martini");
     // console.log("getUserByUsername Result:", martin);
