@@ -1,5 +1,4 @@
 const express = require("express");
-const express = require("express");
 const ordersRouter = express.Router();
 const { getAllOrders, getCartByUser, createOrder, getOrdersByUser } = require("../db");
 const { requireUser } = require('./utils');
@@ -7,6 +6,7 @@ const { requireUser } = require('./utils');
 -
   //Return a list of orders, include the products with them
 
+  //admin only - create middlewear. need auth. token specific for admins
   ordersRouter.get("/", async (req, res, next) => {
     try {
       const orders = await getAllOrders();

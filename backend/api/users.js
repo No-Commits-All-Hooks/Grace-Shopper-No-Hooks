@@ -1,15 +1,15 @@
 const express = require("express");
 const usersRouter = express.Router();
 const jwt = require("jsonwebtoken");
-const { requireUser } = require('./utils');
+const { requireUser, requireAdmin } = require('./utils');
 const { createUser,
-  getUserByUsername,
-  getAllUsers,
-  getUserById, 
+  getUserByUsername, 
 getUser }  = require('../db');
 
+// Send back the logged-in user's data if a valid token is supplied in the header.
 
 usersRouter.get('/me', requireUser, async (req, res, next) => {
+  const user = await getUser()
     try {
       res.send(req.user);
     } catch (error) {
@@ -42,9 +42,8 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
     console.log(error);
     next(error);
   }
-
-
   });
+
 
 
   usersRouter.post('/register', async (req, res, next) => {
