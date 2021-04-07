@@ -1,5 +1,16 @@
 const client = require('./client');
-const { createProducts, createUser, getUserByUsername, getAllUsers, getUserById } = require('./');
+const { createProducts, 
+        createUser, 
+        getUserByUsername, 
+        getAllUsers, 
+        getUserById,
+        getOrderById,
+        getAllOrders,
+        getOrdersByUser,
+        getOrdersByProduct,
+        getCartByUser,
+        createOrder 
+} = require('./');
 
 async function dropTables() {
   try {
@@ -52,7 +63,7 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         status TEXT DEFAULT 'created',
         "userId" INTEGER REFERENCES users(id),
-        "datePlaced" DATE
+        "datePlaced" DATE NOT NULL DEFAULT CURRENT_DATE
       );
       `);
     await client.query(`
@@ -136,6 +147,29 @@ async function createInitialUsers() {
   }
 }
 
+async function createInitialOrders() {
+try {
+
+  const ordersCreated = [{
+      status: "created",
+      userId: 2,
+    },
+    {
+      status: "created",
+      userId: 1,
+  },{
+    status: "created",
+    userId: 1,
+}];
+const orders = await Promise.all( ordersCreated.map((order) => createOrder(order)))
+console.log("Orders Created: ", orders);
+console.log("Finished creating orders.");
+}catch(error){
+  throw error;
+}
+}
+
+
 async function rebuildDB() {
   try {
     client.connect();
@@ -144,6 +178,7 @@ async function rebuildDB() {
     await createTables();
     await createInitialProducts();
     await createInitialUsers();
+    await createInitialOrders();
   } catch (error) {
     console.log('Error during rebuildDB');
 
@@ -155,15 +190,20 @@ async function testDB(){
 
   try{
 
-    const users = await getAllUsers();
-    console.log("getAllUsers Result:", users); 
+    // const users = await getAllUsers();
+    // console.log("getAllUsers Result:", users); 
 
     // const martin = await getUserByUsername("martini");
     // console.log("getUserByUsername Result:", martin);
 
-    const sal = await getUserById(1);
-    console.log("getUserById Result:", sal); 
+    // const sal = await getUserById(1);
+    // console.log("getUserById Result:", sal); 
 
+    const orders = await getAllOrders();
+    console.log("getAllOrders Result:", orders);
+
+    // const salOrders = await getOrdersByUser(3);
+    // console.log("getOrdersByUser Result:", salOrders);
 
   } catch (error){
     throw error;

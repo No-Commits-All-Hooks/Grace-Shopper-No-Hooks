@@ -1,6 +1,6 @@
 const express = require('express');
 const ordersRouter = express.Router();
-const {  getAllOrders, getProductById } = require('../db');
+const {  getAllOrders } = require('../db');
 -
 
 ordersRouter.get('/', async(req, res,next) =>{
@@ -13,13 +13,16 @@ ordersRouter.get('/', async(req, res,next) =>{
     }
 })
 
-// ordersRouter.get('/cart', async (req, res, next)=> {
+ordersRouter.get('/cart', async (req, res, next)=> {
 
-//     try{
+    try{
 
-//     }catch(error){
-//         next(error);
-//     }
-// })
+    }catch(error){
+        next(error);
+    }
+})
+
+ordersRouter.post('/')
+
 
 module.exports = ordersRouter;
