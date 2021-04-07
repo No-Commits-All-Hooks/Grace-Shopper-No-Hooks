@@ -202,8 +202,6 @@ async function testDB(){
     // const sal = await getUserById(1);
     // console.log("getUserById Result:", sal); 
 
-    const orders = await getAllOrders();
-    console.log("getAllOrders Result:", orders);
 
     // const salOrders = await getOrdersByUser(3);
     // console.log("getOrdersByUser Result:", salOrders);
