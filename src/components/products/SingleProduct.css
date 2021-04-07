@@ -1,7 +1,6 @@
 
 .product-card {
 
-
 }
 
 /*this is for the div*/
@@ -22,17 +21,7 @@
 }
 /*this is for the div*/
 .product-image{
-
-
+    width: 200px;
+    height: 200px;
 }
 
-/*this is for the image itself*/
-.image-size {
-
-
-}
-
-/*is product in stock*/
-.product-stock {
-
-}
