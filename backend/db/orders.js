@@ -30,6 +30,7 @@ async function getAllOrders() {
     }
 }
 
+
 // select and return an array of orders made by user, include their products
 
 async function getOrdersByUser({ id }) {
@@ -67,6 +68,7 @@ async function getCartByUser(user) {
         const {rows: [cart]} = await client.query(`
             SELECT *
             FROM orders
+
             WHERE id=$1, status = 'created';
         `,[user.id])
 
@@ -83,7 +85,6 @@ async function createOrder({ status, userId }) {
             VALUES($1, $2)
             RETURNING *;
         `, [status, userId])
-
         return order;
     } catch(error) {
         throw error;
