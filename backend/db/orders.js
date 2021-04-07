@@ -14,6 +14,9 @@ async function getOrderById(id) {
     }
 }
 
+
+// select and return an array of orders, include their products
+
 async function getAllOrders() {
     try {
         const {rows: orders} = await client.query(`
@@ -28,9 +31,13 @@ async function getAllOrders() {
     }
 }
 
+
+// select and return an array of orders made by user, include their products
+
 async function getOrdersByUser({ id }) {
     try {
         const {rows: orders} = await client.query(`
+
             SELECT *
             FROM orders
             WHERE "userId"=${id};
@@ -62,7 +69,8 @@ async function getCartByUser(user) {
         const {rows: [cart]} = await client.query(`
             SELECT *
             FROM orders
-            WHERE id=${user.id}, status = created;
+            WHERE id=${user.id}, status = 'created';
+
         `, [user])
 
         return cart;
@@ -74,11 +82,10 @@ async function getCartByUser(user) {
 async function createOrder({ status, userId }) {
     try {
         const {rows: [order]} = await client.query(`
-            INSERT INTO orders(status, "userId", "datePlaced")
-            VALUES($1, $2, $3)
+            INSERT INTO orders(status, "userId")
+            VALUES($1, $2)
             RETURNING *;
-        `, [status, userId, datePlaced])
-
+        `, [status, userId])
         return order;
     } catch(error) {
         throw error;
