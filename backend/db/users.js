@@ -1,6 +1,7 @@
 const client = require("./client");
 const bcrypt = require("bcrypt");
 
+//For creating the user for first time
 async function createUser({ firstName, lastName, email, username, password }) {
   const SALT_COUNT = 10;
 
@@ -24,7 +25,7 @@ async function createUser({ firstName, lastName, email, username, password }) {
   }
 }
 
-
+//Getting ALL USERS
 async function getAllUsers() {
   try {
     const { rows: users } = await client.query(`
@@ -39,6 +40,7 @@ async function getAllUsers() {
   }
 }
 
+//Finding User by id
 async function getUserById(id) {
   try {
     const {
@@ -61,6 +63,8 @@ async function getUserById(id) {
     throw error;
   }
 }
+
+//To check if username already is in use?
 async function getUserByUsername(username) {
   try {
     const {
@@ -83,6 +87,7 @@ async function getUserByUsername(username) {
   }
 }
 
+//To log in
 async function getUser({ username, password }) {
   if (!username || !password) {
     return;
@@ -112,6 +117,7 @@ async function getUser({ username, password }) {
 
 module.exports = {
   createUser,
+  getUser, 
   getUserByUsername,
   getAllUsers,
   getUserById

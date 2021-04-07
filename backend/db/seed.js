@@ -193,6 +193,9 @@ async function testDB(){
     // const users = await getAllUsers();
     // console.log("getAllUsers Result:", users); 
 
+    const orders = await getAllOrders();
+    console.log("getAllOrders Result:", orders);
+
     // const martin = await getUserByUsername("martini");
     // console.log("getUserByUsername Result:", martin);
 
