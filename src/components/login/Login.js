@@ -34,6 +34,10 @@ const Login = ({ action, setToken, setUserData }) => {
         body: { username: username, password: password },
         method: "POST",
       });
+
+      console.log("data", data);
+      const token = data.token;
+      console.log("token", token);
     }
     if (action === "register") {
         console.log("inside register if statement", action);
@@ -49,10 +53,12 @@ const Login = ({ action, setToken, setUserData }) => {
         },
         method: "POST",
       });
-    }
-    console.log("data", data);
+
+      console.log("data", data);
     const token = data.token;
     console.log("token", token);
+    }
+    
     if (token) {
       localStorage.setItem("token", token);
       setUsername("");
