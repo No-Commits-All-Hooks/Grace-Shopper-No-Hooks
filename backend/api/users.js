@@ -1,6 +1,8 @@
 const express = require("express");
 const usersRouter = express.Router();
 const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = process.env;
+
 const { requireUser, requireAdmin } = require('./utils');
 const { createUser,
   getUserByUsername, 
@@ -11,7 +13,7 @@ getUser }  = require('../db');
 usersRouter.get('/me', requireUser, async (req, res, next) => {
   const user = await getUser()
     try {
-      res.send(req.user);
+      res.send(user);
     } catch (error) {
       next(error)
     }
