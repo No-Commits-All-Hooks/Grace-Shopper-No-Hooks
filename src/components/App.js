@@ -12,12 +12,14 @@ import {
   //PUT COMPONENTS YOU EXPORTED FROM INDEX HERE
   AllProducts,
   NavBar,
-  SingleDetail
+  SingleDetail,
+  Login
 } from './index';
 
 import '../styles.css';
 
 import { callApi } from '../api';
+import {fetchUserData} from '../api/utils'
 
 const fetchAllProducts = async () => {
   const data = await callApi({
@@ -29,7 +31,31 @@ const fetchAllProducts = async () => {
 const App = () => {
   const [products, setProducts] = useState([]);
 
+  //Need to set token to verify user
+  const [token, setToken] = useState("");
+  //Need to set userData to get user related data
+  const [userData, setUserData] = useState({});
+
+
   //Make sure to add the dependency array otherwise your useEffect will call itself a million times and your browser will probably crash :)
+  useEffect(async () => {
+    //checl to see if there is a token and try to set it on localStorage
+    if(!token){
+      setToken(localStorage.getItem('token'));
+      return;
+    }
+    
+    //if you have a token(when they log in they will get one) then set it to useState
+    const data = await await fetchUserData(token);
+    if (data && data.username) {
+        setUserData(data);
+        console.log('USER DATA', data);
+    };
+}, [token]);
+
+   
+
+
   useEffect(async () => {
     const products = await fetchAllProducts();
 
@@ -37,14 +63,30 @@ const App = () => {
       setProducts(products);
     }
   }, []);
-
     // console.log("all products:", products);
 
   return (
     <>
       <NavBar />
       <div id="app">
-        <Switch>
+    
+<Switch>
+<Route path="/login">
+<Login
+action="login"
+setToken={setToken}
+setUserData={setUserData}
+/>
+</Route>
+
+<Route path="/register">
+<Login action="register"
+    setToken={setToken}
+    setUserData={setUserData}
+/>
+</Route>
+
+        
           <Route path="/products">
             <AllProducts products={products} />
           </Route>
