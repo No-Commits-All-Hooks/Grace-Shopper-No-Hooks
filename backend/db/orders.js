@@ -68,7 +68,6 @@ async function getCartByUser(user) {
         const {rows: [cart]} = await client.query(`
             SELECT *
             FROM orders
-
             WHERE id=$1, status = 'created';
         `,[user.id])
 

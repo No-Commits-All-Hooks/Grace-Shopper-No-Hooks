@@ -3,6 +3,7 @@ const { createProducts,
         createUser, 
         getUserByUsername, 
         getAllUsers, 
+        getUser,
         getUserById,
         getOrderById,
         getAllOrders,
@@ -134,8 +135,8 @@ async function createInitialUsers() {
   try {
     const usersToCreate = [
       { firstName: "Mandy", lastName: "Lara", email: "mlara01@gmail.com",username: "mandy.lara", password: "lara2020" },
-      { firstName: "Sal", lastName: "Medina", email: "salthepal@yahoo.com",username: "salthepal", password: "Sal1234" },
-      { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021" },
+      { firstName: "Sal", lastName: "Medina", email: "salthepal@yahoo.com",username: "salthepal", password: "sal1234" },
+      { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021", isAdmin: true },
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
     console.log("Users created:");
@@ -193,18 +194,20 @@ async function testDB(){
     // const users = await getAllUsers();
     // console.log("getAllUsers Result:", users); 
 
-    const orders = await getAllOrders();
-    console.log("getAllOrders Result:", orders);
+    // const orders = await getAllOrders();
+    // console.log("getAllOrders Result:", orders);
 
-    // const martin = await getUserByUsername("martini");
-    // console.log("getUserByUsername Result:", martin);
+    // const martin = await getUserById(3);
+    // console.log("getUserById Result:", martin);
 
-    // const sal = await getUserById(1);
-    // console.log("getUserById Result:", sal); 
+    const sal = await getUser({
+      username:"salthepal", password:"sal1234"
+    });
+    console.log("getUser Result:", sal); 
 
 
     // const salOrders = await getOrdersByUser(3);
-    // console.log("getOrdersByUser Result:", salOrders);
+    // console.log("getOrdersByUser Result:", salOrderså);
 
   } catch (error){
     throw error;
