@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
 const { requireUser, requireAdmin } = require('./utils');
+
 const { createUser,
   getUserByUsername, 
 getUser }  = require('../db');

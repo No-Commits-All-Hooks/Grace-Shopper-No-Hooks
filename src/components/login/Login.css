@@ -1,0 +1,13 @@
+.loginPage {
+    position: relative;
+    top: 10vh;
+    left: 5vw;
+    bottom: 10vh;
+    background-color: white;
+    box-shadow: 1px 1px 10px black;
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    max-width: 500px;
+    padding: 32px 0 64px 0;
+}
