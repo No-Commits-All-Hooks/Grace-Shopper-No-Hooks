@@ -4,8 +4,7 @@ import { callApi } from "../../api";
 import "./Login.css";
 
 const Login = ({ action, setToken, setUserData }) => {
-  const typeOfForm = action;
-
+ 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -19,17 +18,13 @@ const Login = ({ action, setToken, setUserData }) => {
   const history = useHistory();
   const [respMessage, setRespMessage] = useState("");
 
-  console.log("first line action", action);
-  console.log("typeOfForm", typeOfForm);
   const handleClick = () => {
     history.push("/");
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (action === "login") {
-      console.log("inside login if statement", action);
-      console.log("inside login if statement typr of form", typeOfForm);
-      const data = await callApi({
+       const data = await callApi({
         url: `users/${action}`,
         body: { username: username, password: password },
         method: "POST",
@@ -40,8 +35,7 @@ const Login = ({ action, setToken, setUserData }) => {
       console.log("token", token);
     }
     if (action === "register") {
-        console.log("inside register if statement", action);
-        console.log("inside register if statement typr of form", typeOfForm);  
+       
       const data = await callApi({
         url: `users/${action}`,
         body: {
@@ -56,7 +50,7 @@ const Login = ({ action, setToken, setUserData }) => {
 
       console.log("data", data);
     token = data.token;
-    console.log("token", token);
+
     }
     
     if (token) {
