@@ -3,6 +3,7 @@ const { createProducts,
         createUser, 
         getUserByUsername, 
         getAllUsers, 
+        getUser,
         getUserById,
         getOrderById,
         getAllOrders,
@@ -63,7 +64,7 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         status TEXT DEFAULT 'created',
         "userId" INTEGER REFERENCES users(id),
-        "datePlaced" DATE
+        "datePlaced" DATE NOT NULL DEFAULT CURRENT_DATE
       );
       `);
     await client.query(`
@@ -134,8 +135,8 @@ async function createInitialUsers() {
   try {
     const usersToCreate = [
       { firstName: "Mandy", lastName: "Lara", email: "mlara01@gmail.com",username: "mandy.lara", password: "lara2020" },
-      { firstName: "Sal", lastName: "Medina", email: "salthepal@yahoo.com",username: "salthepal", password: "Sal1234" },
-      { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021" },
+      { firstName: "Sal", lastName: "Medina", email: "salthepal@yahoo.com",username: "salthepal", password: "sal1234" },
+      { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021", isAdmin: true },
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
     console.log("Users created:");
@@ -147,6 +148,29 @@ async function createInitialUsers() {
   }
 }
 
+async function createInitialOrders() {
+try {
+
+  const ordersCreated = [{
+      status: "created",
+      userId: 2,
+    },
+    {
+      status: "created",
+      userId: 1,
+  },{
+    status: "created",
+    userId: 1,
+}];
+const orders = await Promise.all( ordersCreated.map((order) => createOrder(order)))
+console.log("Orders Created: ", orders);
+console.log("Finished creating orders.");
+}catch(error){
+  throw error;
+}
+}
+
+
 async function rebuildDB() {
   try {
     client.connect();
@@ -155,6 +179,7 @@ async function rebuildDB() {
     await createTables();
     await createInitialProducts();
     await createInitialUsers();
+    await createInitialOrders();
   } catch (error) {
     console.log('Error during rebuildDB');
 
@@ -166,18 +191,23 @@ async function testDB(){
 
   try{
 
-    const users = await getAllUsers();
-    console.log("getAllUsers Result:", users); 
+    // const users = await getAllUsers();
+    // console.log("getAllUsers Result:", users); 
 
     const orders = await getAllOrders();
     console.log("getAllOrders Result:", orders);
 
-    // const martin = await getUserByUsername("martini");
-    // console.log("getUserByUsername Result:", martin);
+    // const martin = await getUserById(3);
+    // console.log("getUserById Result:", martin);
 
-    const sal = await getUserById(1);
-    console.log("getUserById Result:", sal); 
+    // const sal = await getUser({
+    //   username:"salthepal", password:"sal1234"
+    // });
+    // console.log("getUser Result:", sal); 
 
+
+    // const salOrders = await getOrdersByUser(3);
+    // console.log("getOrdersByUser Result:", salOrderså);
 
   } catch (error){
     throw error;
