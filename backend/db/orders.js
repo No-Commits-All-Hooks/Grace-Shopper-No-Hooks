@@ -19,12 +19,24 @@ async function getOrderById(id) {
 async function getAllOrders() {
     try {
         const {rows: orders} = await client.query(`
-            SELECT *
-            FROM orders;
+        SELECT orders.*, users.id AS "userId"
+        FROM orders
+        JOIN users ON users.id = orders."userId" ;
         `);
-
-        console.log(orders);
+        //include products
+        const { rows: products } = await client.query(`
+        SELECT *
+        FROM products
+        JOIN order_products ON order_products."productId" = products.id
+        `);
+        for (const order of orders) {
+            const productsToAdd = products.filter(
+              (product) => product.orderId === orders.id
+            );
+            order.products = productsToAdd;
+          }
         return orders;
+        
     } catch(error) {
         throw error;
     }
@@ -68,7 +80,6 @@ async function getCartByUser(user) {
         const {rows: [cart]} = await client.query(`
             SELECT *
             FROM orders
-
             WHERE id=$1, status = 'created';
         `,[user.id])
 

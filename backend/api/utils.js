@@ -1,3 +1,5 @@
+const { getUser } = require("../db");
+
 const requireUser = (req, res, next) => {
     if (!req.user) {
         next({
@@ -11,19 +13,14 @@ const requireUser = (req, res, next) => {
 
 // create middlewear similar to requireAdmin 
 const requireAdmin = (req, res, next) => {
-  if (!req.user) {
+
+  console.log ('req.user', req.user)
+  if (!req.user && !req.user.isAdmin) {
       next({
-          name: 'MissingUserError',
-          message: 'You must be logged in to perform this action'
+          name: 'MissingAdminAuthorization',
+          message: 'You must have special access to perform this action'
       });
   }
-  if (!req.user.isAdmin){
-    next({
-      name: 'MissingAdminError',
-      message: 'You must be an Admin to perform action'
-  });
-  };
-
   next();
 };
 

@@ -8,16 +8,6 @@ const { createUser,
   getUserByUsername, 
 getUser }  = require('../db');
 
-// Send back the logged-in user's data if a valid token is supplied in the header.
-
-usersRouter.get('/me', requireUser, async (req, res, next) => {
-  const user = await getUser()
-    try {
-      res.send(user);
-    } catch (error) {
-      next(error)
-    }
-  })
 
   usersRouter.post('/login', async (req, res, next) => {
     const { username, password } = req.body;
@@ -84,6 +74,18 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
           res.send({ user, message: "you're signed up!", token });
         }
       }
+    } catch (error) {
+      next(error)
+    }
+  })
+
+  // Send back the logged-in user's data if a valid token is supplied in the header.
+
+usersRouter.get('/me', requireUser, async (req, res, next) => {
+  const user = await getUser();
+  console.log('user', user)
+    try {
+      res.send(user);
     } catch (error) {
       next(error)
     }
