@@ -10,7 +10,8 @@ const { createProducts,
         getOrdersByUser,
         getOrdersByProduct,
         getCartByUser,
-        createOrder 
+        createOrder,
+        getAllProducts
 } = require('./');
 
 async function dropTables() {
@@ -194,9 +195,6 @@ async function testDB(){
     // const users = await getAllUsers();
     // console.log("getAllUsers Result:", users); 
 
-    const orders = await getAllOrders();
-    console.log("getAllOrders Result:", orders);
-
     // const martin = await getUserById(3);
     // console.log("getUserById Result:", martin);
 
@@ -206,12 +204,25 @@ async function testDB(){
     // console.log("getUser Result:", sal); 
 
 
-    // const salOrders = await getOrdersByUser(3);
-    // console.log("getOrdersByUser Result:", salOrderså);
+    const getOrder = await getOrderById(1);
+    console.log("getOrderById Result:", getOrder);
 
-  } catch (error){
-    throw error;
+    // const getProducts = await getAllProducts();
+    // console.log("getAllProducts Result:", getProducts);
+
+    // const salOrders = await getOrdersByUser({id : 1});
+    // console.log("getOrdersByUser Result:", salOrders);
+
+    const productsOrders= await getOrdersByProduct({ id:1 }) 
+    console.log("productsOrders Result:", productsOrders);
+
+    // const salCart= await getCartByUser({id :1}) 
+    // console.log("getCartByUser Result:", salCart);
+    
+  } catch(error){
+    throw error
   }
+  
 }
 
 
