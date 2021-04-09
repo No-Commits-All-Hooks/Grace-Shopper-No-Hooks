@@ -11,7 +11,7 @@ const Login = ({ action, setToken, setUserData }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [newEmail, setNewEmail] = useState("");
-
+  let token = {}
   const isLogin = action === "login";
   const title = isLogin ? "Login" : "Register";
   const oppositeTitle = isLogin ? "Register" : "Login";
@@ -36,7 +36,7 @@ const Login = ({ action, setToken, setUserData }) => {
       });
 
       console.log("data", data);
-      const token = data.token;
+      token = data.token;
       console.log("token", token);
     }
     if (action === "register") {
@@ -55,7 +55,7 @@ const Login = ({ action, setToken, setUserData }) => {
       });
 
       console.log("data", data);
-    const token = data.token;
+    token = data.token;
     console.log("token", token);
     }
     
