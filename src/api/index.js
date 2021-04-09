@@ -4,6 +4,8 @@ require('dotenv').config();
 
 export const BASE_URL = process.env.API_URL || 'https://morning-fortress-53362.herokuapp.com/api/';
 
+console.log('process.env.API_URL', process.env.API_URL)
+
 export const callApi = async ({ url, method, token, body }) => {
   console.log('callApi: ', { url, method, token, body });
   try {

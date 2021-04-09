@@ -194,16 +194,16 @@ async function testDB(){
     // const users = await getAllUsers();
     // console.log("getAllUsers Result:", users); 
 
-    // const orders = await getAllOrders();
-    // console.log("getAllOrders Result:", orders);
+    const orders = await getAllOrders();
+    console.log("getAllOrders Result:", orders);
 
     // const martin = await getUserById(3);
     // console.log("getUserById Result:", martin);
 
-    const sal = await getUser({
-      username:"salthepal", password:"sal1234"
-    });
-    console.log("getUser Result:", sal); 
+    // const sal = await getUser({
+    //   username:"salthepal", password:"sal1234"
+    // });
+    // console.log("getUser Result:", sal); 
 
 
     // const salOrders = await getOrdersByUser(3);
