@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = ({setToken}) => {
+const NavBar = ({ userData,setToken}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const openAnchor = Boolean(anchorEl);
@@ -95,11 +95,19 @@ const NavBar = ({setToken}) => {
               open={openAnchor}
               onClose={() => setAnchorEl(null)}
             >
+                {userData.username? (
               <MenuItem 
-              onClick={() => handleMenuChange("/login")}
+              onClick={() => handleMenuChange("/myaccount")}
               >
                 My Account
               </MenuItem>
+                ): (
+                <MenuItem 
+                onClick={() => handleMenuChange("/login")}
+                >
+                  My Account
+                </MenuItem>
+              )}
               <MenuItem 
               onClick={() => handleMenuChange("/register")}
               >

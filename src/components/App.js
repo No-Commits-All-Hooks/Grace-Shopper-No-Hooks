@@ -14,6 +14,7 @@ import {
   NavBar,
   SingleDetail,
   Login,
+  UserAccount,
 } from "./index";
 
 import "../styles.css";
@@ -36,11 +37,16 @@ const App = () => {
   //Need to set userData to get user related data
   const [userData, setUserData] = useState({});
 
-  //Make sure to add the dependency array otherwise your useEffect will call itself a million times and your browser will probably crash :)
   useEffect(async () => {
+    const products = await fetchAllProducts();
+
+    if (products) {
+      setProducts(products);
+    }
+
     //check to see if there is a token and try to set it on localStorage
     if (!token) {
-      setToken(localStorage.getItem('token'));
+      setToken(localStorage.getItem("token"));
       return;
     }
 
@@ -48,26 +54,16 @@ const App = () => {
     const data = await fetchUserData(token);
     if (data && data.username) {
       setUserData(data);
-      
     }
   }, [token]);
 
-  useEffect(async () => {
-    const products = await fetchAllProducts();
-
-    if (products) {
-      setProducts(products);
-    }
-  }, []);
   // console.log("all products:", products);
+  console.log("userData for logged in user:", userData);
 
   return (
     <>
-      <NavBar 
-      setToken = {setToken}
-      
-      />
-      <div id="app">
+      <NavBar userData={userData} setToken={setToken} />
+      <div id="app-body">
         <Switch>
           <Route path="/login">
             <Login
@@ -90,6 +86,9 @@ const App = () => {
           </Route>
           <Route path="/product/:productId">
             <SingleDetail products={products} />
+          </Route>
+          <Route path="/myaccount">
+            <UserAccount userData={userData} />
           </Route>
         </Switch>
       </div>

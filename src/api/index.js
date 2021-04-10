@@ -19,8 +19,8 @@ export const callApi = async ({ url, method, token, body }) => {
     if (token) {
       options.headers['Authorization'] = `Bearer ${token}`;
     }
-    console.log('CALL API request url: ', BASE_URL + url);
-    console.log('CALL API options: ', options);
+    // console.log('CALL API request url: ', BASE_URL + url);
+    // console.log('CALL API options: ', options);
     const response = await fetch(BASE_URL + url, options);
     const data = await response.json();
  
@@ -28,7 +28,7 @@ export const callApi = async ({ url, method, token, body }) => {
     return data;
   } catch (error) {
     console.error('ERROR: ', error);
-    
+    // alert( `Error: ${error}`);
     return error;
   }
 };
