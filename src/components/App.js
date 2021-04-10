@@ -32,11 +32,11 @@ const App = () => {
   const [products, setProducts] = useState([]);
 
   // keep track of whats inside the cart
-  const [cart , SetCart] = useState([]);
+  const [cart , setCart] = useState([]);
   //For admin use to get all orders
-  const [orders, SetOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
   //For individual users to get their orders
-  const [myOrders, SetMyOrders] = useState([]);
+  const [myOrders, setMyOrders] = useState([]);
 
 
   //Need to set token to verify user
@@ -97,7 +97,11 @@ const App = () => {
             <AllProducts products={products} />
           </Route>
           <Route path="/product/:productId">
-            <SingleDetail products={products} />
+            <SingleDetail products={products} 
+            cart= {cart}
+            setCart = {setCart}
+
+            />
           </Route>
         </Switch>
       </div>
