@@ -204,20 +204,23 @@ async function testDB(){
     // console.log("getUser Result:", sal); 
 
 
-    const getOrder = await getOrderById(1);
-    console.log("getOrderById Result:", getOrder);
+    // const getOrder = await getOrderById(1);
+    // console.log("getOrderById Result:", getOrder);
 
     // const getProducts = await getAllProducts();
     // console.log("getAllProducts Result:", getProducts);
 
-    const salOrders = await getOrdersByUser({id : 1});
-    console.log("getOrdersByUser Result:", salOrders);
+    //  const getOrders = await getAllOrders();
+    // console.log("getOrders Result:", getOrders);
 
-    const productsOrders= await getOrdersByProduct({ id:1 }) 
-    console.log("productsOrders Result:", productsOrders);
+    // const salOrders = await getOrdersByUser({id : 1});
+    // console.log("getOrdersByUser Result:", salOrders);
 
-    // const salCart= await getCartByUser({id :1}) 
-    // console.log("getCartByUser Result:", salCart);
+    // const productsOrders= await getOrdersByProduct({ id:1 }) 
+    // console.log("productsOrders Result:", productsOrders);
+
+    // const usersCart= await getCartByUser({id :2}) 
+    // console.log("getCartByUser Result:", usersCart);
     
   } catch(error){
     throw error
