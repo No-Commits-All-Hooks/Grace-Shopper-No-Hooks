@@ -9,7 +9,7 @@ const requireUser = (req, res, next) => {
         });
     }
     else{
-      console.log("user authorized", userReq)
+
       next();
     }
   
