@@ -210,8 +210,8 @@ async function testDB(){
     // const getProducts = await getAllProducts();
     // console.log("getAllProducts Result:", getProducts);
 
-    // const salOrders = await getOrdersByUser({id : 1});
-    // console.log("getOrdersByUser Result:", salOrders);
+    const salOrders = await getOrdersByUser({id : 1});
+    console.log("getOrdersByUser Result:", salOrders);
 
     const productsOrders= await getOrdersByProduct({ id:1 }) 
     console.log("productsOrders Result:", productsOrders);
