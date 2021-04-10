@@ -78,7 +78,7 @@ async function getUserByUsername(username) {
     const [user] = rows; 
     return user;
   } catch (error) {
-    throw error;
+    throw Error(`Error while getting user by username: ${error}`)
   }
 }
 
@@ -93,7 +93,7 @@ async function getUser({ username, password }) {
     console.log("user:", user);
     
     if (!user) {
-      return null;
+      return;
     }
     const hashedPassword = user.password;
     const comparePassword = await bcrypt.compare(password, hashedPassword);
