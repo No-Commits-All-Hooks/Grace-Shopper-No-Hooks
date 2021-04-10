@@ -64,8 +64,40 @@ async function getProductById(id) {
   }
 }
 
+async function attachProductsToOrders(orders) {
+  // no side effects
+  const ordersToReturn = [...orders];
+  const binds = orders.map((_, index) => `$${index + 1}`).join(', ');
+  const orderId = orders.map(order => order.id);
+  if (!orderId?.length) return;
+  
+  try {
+    // get the activities, JOIN with order_products (so we can get a routineId), and only those that have those routine ids on the routine_activities join
+    const { rows: products } = await client.query(`
+      SELECT products.*, order_products."productId", order_products."orderId", order_products.id AS "orderProductsId", order_products.price, order_products.quantity
+      FROM products 
+      JOIN order_products ON order_products."productId" = products.id
+      WHERE order_products."orderId" IN (${ binds });
+    `, orderId);
+
+    // loop over the orders
+    for(const order of ordersToReturn) {
+      // filter the products to only include those that have this routineId
+      const productsToAdd = products.filter(product => product.orderId=== order.id);
+      // attach the products to each single routine
+      order.products = productsToAdd;
+    }
+
+    return ordersToReturn;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 module.exports = {
   createProducts,
   getAllProducts,
   getProductById,
+  attachProductsToOrders
 };

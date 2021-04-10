@@ -1,4 +1,5 @@
 const client = require('./client.js');
+const { attachProductsToOrders } = require('./products.js');
 
 async function getOrderById(id) {
     try {
@@ -23,19 +24,8 @@ async function getAllOrders() {
         FROM orders
         JOIN users ON users.id = orders."userId" ;
         `);
-        //include products
-        const { rows: products } = await client.query(`
-        SELECT *
-        FROM products
-        JOIN order_products ON order_products."productId" = products.id
-        `);
-        for (const order of orders) {
-            const productsToAdd = products.filter(
-              (product) => product.orderId === orders.id
-            );
-            order.products = productsToAdd;
-          }
-        return orders;
+
+        return attachProductsToOrders(orders);
         
     } catch(error) {
         throw error;
@@ -45,7 +35,7 @@ async function getAllOrders() {
 
 // select and return an array of orders made by user, include their products
 
-async function getOrdersByUser({ id }) {
+async function getOrdersByUser( {id  }) {
     try {
         const {rows: orders} = await client.query(`
 
@@ -54,18 +44,8 @@ async function getOrdersByUser({ id }) {
         JOIN users ON users.id = orders."userId" 
         WHERE "userId"=$1;
         `, [id])
-        const { rows: products } = await client.query(`
-        SELECT *
-        FROM products
-        JOIN order_products ON order_products."productId" = products.id
-        `);
-        for (const order of orders) {
-            const productsToAdd = products.filter(
-              (product) => product.orderId === orders.id
-            );
-            order.products = productsToAdd;
-          }
-        return orders;
+
+        return attachProductsToOrders(orders);
     } catch(error) {
         throw error;
     }
@@ -76,24 +56,14 @@ async function getOrdersByUser({ id }) {
 async function getOrdersByProduct({ id }) {
     try {
         const {rows: orders} = await client.query(`
-        SELECT orders.*
+        SELECT orders.*, users.username AS "creatorName"
         FROM orders 
+        JOIN users ON users.id = orders."userId" 
         JOIN order_products ON order_products."orderId" = orders.id
-        WHERE "orderId"= $1 and status= 'created'
-        `,[id])
-        const { rows: products } = await client.query(`
-        SELECT *
-        FROM products
-        JOIN order_products ON order_products."productId" = products.id
-        `);
-
-        for (const order of orders) {
-            const productsToAdd = products.filter(
-              (product) => product.orderId === orders.id
-            );
-            order.products = productsToAdd;
-          }
-        return orders;
+        WHERE order_products."productId" = $1
+        `, [id])
+        
+        return attachProductsToOrders(orders);
     } catch(error) {
         throw error;
     }
@@ -114,13 +84,11 @@ async function getCartByUser({id}) {
         JOIN order_products ON order_products."productId" = products.id
         `);
       
-            const productsToAdd = products.filter(
+            const productsToAdd =  products.filter(
               (product) => product.orderId === orders.id
             );
             orders.products = productsToAdd;
-           
-
-
+        
         return orders;
     } catch(error) {
         throw error;
