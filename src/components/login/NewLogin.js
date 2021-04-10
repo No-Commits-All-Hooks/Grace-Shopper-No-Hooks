@@ -26,23 +26,25 @@ const NewLogin = ({ action, setToken, setUserData }) => {
         body: { username: username, password: password },
         method: 'POST',
     });
-    console.log("login data", data);
-    console.log("data.token", data.token);
-    const token = data.token;
-    console.log("token", token);
-    if (token) {
+    const token = data?.token;
+    
+    if(!token){
+      
+    setRespMessage(data.message);
+    
+    console.log("data message", data.message)
+    }
+    else {
         localStorage.setItem('token', token);
         setUsername('');
         setPassword('');
         setToken(token);
-     
+        setUserData(data);
         history.push('/');
     }
 
     // if you get an error reponse grab the message
-    else {
-      setRespMessage(data.message);
-    }
+    
   };
   return (
     <div className="loginPage">

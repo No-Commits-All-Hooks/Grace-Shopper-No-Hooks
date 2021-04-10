@@ -21,26 +21,29 @@ getUserById }  = require('../db');
       message: 'Please supply both a username and password'
     });
   }
+
   try {
-    const user = await getUser({username, password});
-    if(!user) {
-      next({
-        name: 'IncorrectCredentialsError',
-        message: 'Username or password is incorrect',
-      })
+    const user = await getUser({ username, password });
+    
+    if (user) {
+        const token = jwt.sign(user, JWT_SECRET, { expiresIn: '7d' });
+
+        res.send({
+            message: 'You have successfully logged in!',
+            id: user.id,
+            username: user.username,
+            token: token
+        });
     } else {
-      const token = jwt.sign(user, JWT_SECRET, { expiresIn: '1w' });
-      res.send({ 
-        message: "You're logged in!", 
-        id: user.id, 
-        username: user.username, 
-        token: token });
-    }
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-  });
+        next({
+            name: 'InvalidCredentialsError',
+            message: 'The username or password you entered is incorrect.'
+        });
+    };
+} catch({ name, message }) {
+    next({ name, message })
+};
+});
 
 
 
@@ -50,16 +53,10 @@ getUserById }  = require('../db');
       const queriedUser = await getUserByUsername(username);
       if (queriedUser) {
         res.status(401);
-        next({
-          name: 'UserExistsError',
-          message: 'A user by that username already exists'
-        });
+        throw Error(`A user by that username already exists.`);
       } else if (password.length < 8) {
         res.status(401);
-        next({
-          name: 'PasswordLengthError',
-          message: 'Password Too Short. At least 8 characters long.'
-        });
+        throw Error(`Password must be at least 8 characters long.`)
       } else {
         const user = await createUser({
           firstName,
@@ -108,3 +105,26 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
   })
   
   module.exports = usersRouter;
+
+
+///login OLD try
+  // try {
+  //   const user = await getUser({username, password});
+  //   if(!user) {
+  //     next({
+  //       name: 'IncorrectCredentialsError',
+  //       message: 'Username or password is incorrect',
+  //     })
+  //   } else {
+  //     const token = jwt.sign(user, JWT_SECRET, { expiresIn: '1w' });
+  //     res.send({ 
+  //       message: "You're logged in!", 
+  //       id: user.id, 
+  //       username: user.username, 
+  //       token: token });
+  //   }
+  // } catch (error) {
+  //   console.log(error);
+  //   next(error);
+  // }
+  // });

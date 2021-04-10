@@ -48,7 +48,7 @@ const App = () => {
     const data = await fetchUserData(token);
     if (data && data.username) {
       setUserData(data);
-      console.log("APP USER DATA", data);
+      
     }
   }, [token]);
 

@@ -11,3 +11,61 @@
     max-width: 500px;
     padding: 32px 0 64px 0;
 }
+
+
+.loginPage h1 {
+    font-size: 2.4rem;
+    margin: 24px 24px 24px 24px;
+}
+
+.loginfieldset {
+    display: flex;
+    flex-direction: column;
+    margin: 0 24px 24px 24px;
+
+}
+
+.loginfieldset label {
+    font-size: 1.2rem;
+    margin: 0 5px 5px 5px;
+
+}
+
+.loginfieldset input {
+    height: 40px;
+    font-size: 1.4rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    padding: 8px;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    box-shadow: inset 0 0 5px gray;
+}
+
+
+.login-actions {
+    display: flex;
+    padding: 10px 24px 24px 24px;
+}
+
+@media screen and (max-width: 768px) {
+    .loginPage {
+        width: 90vw;
+        max-width: none;
+        position: relative;
+        top: 5vw;
+        left: 5vw;
+        padding: 24px;
+    }
+    
+    .logo img, .main-login button {
+        margin-top: 12px;
+        width: 65vw;
+    }
+}
+#errorMessage{
+    padding: 10px 24px 24px 24px;
+    font-size: 1.5rem;
+    color: red;
+}

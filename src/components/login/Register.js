@@ -36,7 +36,6 @@ const [password, setPassword] = useState("");
             method: "POST",
           });
     
-          console.log("Register data", data);
           const token = data.token;
     
         
@@ -93,14 +92,14 @@ const [password, setPassword] = useState("");
           ></input>
         </div>
         <div className="loginfieldset">
-                <label htmlFor="name">Username:</label>
+                <label htmlFor="name">Username:*</label>
                 <input
                     type="text"
                     placeholder="username"
                     required
                     onChange={(event) => setUsername(event.target.value)}
                 ></input></div>
-                <div className="loginfieldset"><label>Password:</label>
+                <div className="loginfieldset"><label>Password:*</label>
                 <input
                     type="password"
                     placeholder="password"

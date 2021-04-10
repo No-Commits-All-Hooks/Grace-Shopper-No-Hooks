@@ -23,7 +23,7 @@ export const callApi = async ({ url, method, token, body }) => {
     console.log('CALL API options: ', options);
     const response = await fetch(BASE_URL + url, options);
     const data = await response.json();
-    console.log('Call API data: ', data);
+ 
     if (data.error) throw data.error;
     return data;
   } catch (error) {

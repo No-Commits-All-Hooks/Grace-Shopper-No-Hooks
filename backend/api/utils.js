@@ -1,8 +1,7 @@
 const { getUser } = require("../db");
 
 const requireUser = (req, res, next) => {
-  const userReq = req.user;
-  console.log ("requiredUser requser has something?", userReq)
+  
     if (!req.user) {
         next({
             name: 'MissingUserError',
