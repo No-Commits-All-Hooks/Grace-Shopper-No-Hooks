@@ -28,8 +28,12 @@ getUser }  = require('../db');
         message: 'Username or password is incorrect',
       })
     } else {
-      const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '1w' });
-      res.send({ user, message: "you're logged in!", token });
+      const token = jwt.sign(user, JWT_SECRET, { expiresIn: '1w' });
+      res.send({ 
+        message: "You're logged in!", 
+        id: user.id, 
+        username: user.username, 
+        token: token });
     }
   } catch (error) {
     console.log(error);
@@ -71,8 +75,15 @@ getUser }  = require('../db');
 // should we check for previously used email? Not needed. Users Table only accepts unique emails.  
 
         } else {
-          const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '1w' });
-          res.send({ user, message: "you're signed up!", token });
+          const token = jwt.sign({
+            id: user.id, 
+            username: user.username}, 
+            JWT_SECRET, 
+            { expiresIn: '1w' });
+          res.send({ 
+            message: "You've succesfully registered!", 
+            user:user,
+            token: token });
         }
       }
     } catch (error) {
@@ -83,10 +94,13 @@ getUser }  = require('../db');
   // Send back the logged-in user's data if a valid token is supplied in the header.
 
 usersRouter.get('/me', requireUser, async (req, res, next) => {
-  const user = await getUser();
-  console.log('user', user)
-    try {
-      res.send(user);
+  const auth = req.header('Authorization');    
+  const prefix = 'Bearer ';
+  const token = auth.slice(prefix.length);
+  const { id } = jwt.verify(token, JWT_SECRET);
+
+  try{
+       res.send(req.user);
     } catch (error) {
       next(error)
     }

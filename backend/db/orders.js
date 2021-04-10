@@ -45,7 +45,7 @@ async function getAllOrders() {
 
 // select and return an array of orders made by user, include their products
 
-async function getOrdersByUser({ id }) {
+async function getOrdersByUser( {id  }) {
     try {
         const {rows: orders} = await client.query(`
 

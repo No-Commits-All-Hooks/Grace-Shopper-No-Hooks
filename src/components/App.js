@@ -40,7 +40,7 @@ const App = () => {
   useEffect(async () => {
     //check to see if there is a token and try to set it on localStorage
     if (!token) {
-      setToken(localStorage.getItem("token"));
+      setToken(localStorage.getItem('token'));
       return;
     }
 
@@ -48,7 +48,7 @@ const App = () => {
     const data = await fetchUserData(token);
     if (data && data.username) {
       setUserData(data);
-      console.log("USER DATA", data);
+      console.log("APP USER DATA", data);
     }
   }, [token]);
 
@@ -63,7 +63,10 @@ const App = () => {
 
   return (
     <>
-      <NavBar />
+      <NavBar 
+      setToken = {setToken}
+      
+      />
       <div id="app">
         <Switch>
           <Route path="/login">
