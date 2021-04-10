@@ -6,7 +6,7 @@ import SingleProduct from "./SingleProduct";
 
 //search component? 
 
-const AllProducts = ({ products }) => {
+const AllProducts = ({ products, orders }) => {
     const history = useHistory();
     const {allProducts}= products;
 

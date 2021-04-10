@@ -28,8 +28,15 @@ const fetchAllProducts = async () => {
   return data;
 };
 
+const fetchAllOrders = async () => {
+  const data = await callApi({
+    url: "orders/cart",
+  })
+}
+
 const App = () => {
   const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   //Need to set token to verify user
   const [token, setToken] = useState("");
@@ -61,6 +68,14 @@ const App = () => {
   }, []);
   // console.log("all products:", products);
 
+  useEffect(async () => {
+    const orders = await fetchAllOrders();
+
+    if (orders) {
+      setOrders(orders);
+    }
+  }, []);
+
   return (
     <>
       <NavBar />
@@ -83,7 +98,7 @@ const App = () => {
           </Route>
 
           <Route path="/products">
-            <AllProducts products={products} />
+            <AllProducts products={products} orders={orders} />
           </Route>
           <Route path="/product/:productId">
             <SingleDetail products={products} />
