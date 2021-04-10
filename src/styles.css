@@ -14,3 +14,17 @@ h1 {
 
     color: red; 
 }
+
+
+  
+  body {
+    margin: 20px;
+    color: #555;
+    font-size: 20px;
+    width: auto;
+  }
+  
+
+#app-body{
+    padding-top: 70px; 
+} 
