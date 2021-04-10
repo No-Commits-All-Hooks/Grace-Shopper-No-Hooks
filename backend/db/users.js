@@ -93,7 +93,7 @@ async function getUser({ username, password }) {
     console.log("user:", user);
     
     if (!user) {
-      return null;
+      return;
     }
     const hashedPassword = user.password;
     const comparePassword = await bcrypt.compare(password, hashedPassword);
