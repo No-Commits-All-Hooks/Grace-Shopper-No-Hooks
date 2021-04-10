@@ -5,6 +5,7 @@ import { callApi } from "./index";
 // Fetch user data
 export const fetchUserData = async (token) => {
     try {
+        console.log("Token is: ", token);
         const data = await callApi({
             url: 'users/me',
             token: token

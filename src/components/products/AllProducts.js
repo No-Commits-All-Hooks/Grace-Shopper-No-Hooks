@@ -6,11 +6,9 @@ import SingleProduct from "./SingleProduct";
 
 //search component? 
 
-const AllProducts = ({ products, orders }) => {
+const AllProducts = ({ products }) => {
     const history = useHistory();
     const {allProducts}= products;
-
-
 
   return (
     <main id="all-products-container">
@@ -28,7 +26,6 @@ const AllProducts = ({ products, orders }) => {
               price= {product.price}
               instock= {product.instock}
               imageurl= {product.imageurl}
-
               />
             )
           })
