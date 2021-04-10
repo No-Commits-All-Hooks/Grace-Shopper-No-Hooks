@@ -26,7 +26,7 @@ const NewLogin = ({ action, setToken, setUserData }) => {
         body: { username: username, password: password },
         method: 'POST',
     });
-    console.log("data", data);
+    console.log("login data", data);
     console.log("data.token", data.token);
     const token = data.token;
     console.log("token", token);
@@ -35,7 +35,7 @@ const NewLogin = ({ action, setToken, setUserData }) => {
         setUsername('');
         setPassword('');
         setToken(token);
-        setUserData(data);
+     
         history.push('/');
     }
 

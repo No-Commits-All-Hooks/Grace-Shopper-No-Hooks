@@ -48,10 +48,10 @@ const App = () => {
     const data = await fetchUserData(token);
     if (data && data.username) {
       setUserData(data);
-      console.log("USER DATA", data);
+      console.log("APP USER DATA", data);
     }
   }, [token]);
-  console.log("USER DATA", userData);
+
   useEffect(async () => {
     const products = await fetchAllProducts();
 

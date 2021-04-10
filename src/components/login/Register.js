@@ -36,7 +36,7 @@ const [password, setPassword] = useState("");
             method: "POST",
           });
     
-          console.log("data", data);
+          console.log("Register data", data);
           const token = data.token;
     
         
@@ -49,7 +49,7 @@ const [password, setPassword] = useState("");
           setLastName("");
           setNewEmail("");
           setToken(token);
-          setUserData(data);
+      
           history.push("/");
         }
         else{ 
