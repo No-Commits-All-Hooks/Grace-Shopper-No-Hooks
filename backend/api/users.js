@@ -83,7 +83,8 @@ getUser }  = require('../db');
   // Send back the logged-in user's data if a valid token is supplied in the header.
 
 usersRouter.get('/me', requireUser, async (req, res, next) => {
-  const user = await getUser();
+  const {username, password } = req.body;
+  const user = await getUser(username, password);
   console.log('user', user)
     try {
       res.send(user);
