@@ -31,6 +31,14 @@ const fetchAllProducts = async () => {
 const App = () => {
   const [products, setProducts] = useState([]);
 
+  // keep track of whats inside the cart
+  const [cart , SetCart] = useState([]);
+  //For admin use to get all orders
+  const [orders, SetOrders] = useState([]);
+  //For individual users to get their orders
+  const [myOrders, SetMyOrders] = useState([]);
+
+
   //Need to set token to verify user
   const [token, setToken] = useState("");
   //Need to set userData to get user related data
