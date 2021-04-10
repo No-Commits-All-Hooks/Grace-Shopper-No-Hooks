@@ -78,7 +78,7 @@ async function getUserByUsername(username) {
     const [user] = rows; 
     return user;
   } catch (error) {
-    throw error;
+    throw Error(`Error while getting user by username: ${error}`)
   }
 }
 
