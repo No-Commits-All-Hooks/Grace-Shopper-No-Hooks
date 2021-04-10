@@ -8,9 +8,13 @@ const requireUser = (req, res, next) => {
             name: 'MissingUserError',
             message: 'You must be logged in to perform this action'
         });
-    };
+    }
+    else{
+      console.log("user authorized", userReq)
+      next();
+    }
   
-    next();
+    
   };
 
 // create middlewear similar to requireAdmin 

@@ -7,7 +7,8 @@ const { requireUser, requireAdmin } = require('./utils');
 
 const { createUser,
   getUserByUsername, 
-getUser }  = require('../db');
+getUser, 
+getUserById }  = require('../db');
 
 
   usersRouter.post('/login', async (req, res, next) => {
@@ -94,10 +95,10 @@ getUser }  = require('../db');
   // Send back the logged-in user's data if a valid token is supplied in the header.
 
 usersRouter.get('/me', requireUser, async (req, res, next) => {
-  const auth = req.header('Authorization');    
-  const prefix = 'Bearer ';
-  const token = auth.slice(prefix.length);
-  const { id } = jwt.verify(token, JWT_SECRET);
+  // const auth = req.header('Authorization');    
+  // const prefix = 'Bearer ';
+  // const token = auth.slice(prefix.length);
+  // const { id } = jwt.verify(token, JWT_SECRET);
 
   try{
        res.send(req.user);
