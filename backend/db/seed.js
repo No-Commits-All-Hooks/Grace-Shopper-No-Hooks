@@ -11,7 +11,10 @@ const { createProducts,
         getOrdersByProduct,
         getCartByUser,
         createOrder,
-        getAllProducts
+        getAllProducts,
+        updateOrder,
+        completeOrder,
+        cancelOrder
 } = require('./');
 
 async function dropTables() {
@@ -203,7 +206,6 @@ async function testDB(){
     // });
     // console.log("getUser Result:", sal); 
 
-
     // const getOrder = await getOrderById(1);
     // console.log("getOrderById Result:", getOrder);
 
@@ -221,6 +223,13 @@ async function testDB(){
 
     // const usersCart= await getCartByUser({id :2}) 
     // console.log("getCartByUser Result:", usersCart);
+
+    //     const updatedOrder= await updateOrder({id :1, status: "in-progress", userId: 3}) 
+    // console.log("updatedOrder Result:", updatedOrder);
+
+            const cancelledOrder= await cancelOrder(1) 
+    console.log("cancelOrder Result:", cancelledOrder);
+
     
   } catch(error){
     throw error
