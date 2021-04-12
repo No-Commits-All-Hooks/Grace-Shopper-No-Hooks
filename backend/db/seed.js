@@ -12,6 +12,10 @@ const { createProducts,
         getCartByUser,
         createOrder,
         getAllProducts,
+        getOrderProductById,
+        addProductToOrder,
+        updateOrderProduct,
+        destroyOrderProduct,
         updateOrder,
         completeOrder,
         cancelOrder
@@ -174,6 +178,38 @@ console.log("Finished creating orders.");
 }
 }
 
+async function createInitialOrderProducts() {
+  try {
+    console.log("Starting to add order products.");
+    const orderProductsCreated = [
+      {
+        productId: 1,
+        orderId: 1,
+        price: 17.97,
+        quantity: 3
+      },
+      {
+        productId: 2,
+        orderId: 2,
+        price: 18.99,
+        quantity: 1
+      },
+      {
+        productId: 3,
+        orderId: 3,
+        price: 21.98,
+        quantity: 2
+      }
+    ];
+
+    const orderProducts = await Promise.all(orderProductsCreated.map((orderProduct) => addProductToOrder(orderProduct)));
+    console.log("Order Products Added: ", orderProducts);
+    console.log("Finished adding order products.");
+  } catch(error) {
+    throw error;
+  }
+}
+
 
 async function rebuildDB() {
   try {
@@ -184,6 +220,7 @@ async function rebuildDB() {
     await createInitialProducts();
     await createInitialUsers();
     await createInitialOrders();
+    await createInitialOrderProducts();
   } catch (error) {
     console.log('Error during rebuildDB');
 
@@ -224,11 +261,11 @@ async function testDB(){
     // const usersCart= await getCartByUser({id :2}) 
     // console.log("getCartByUser Result:", usersCart);
 
+
     //     const updatedOrder= await updateOrder({id :1, status: "in-progress", userId: 3}) 
     // console.log("updatedOrder Result:", updatedOrder);
 
-            const cancelledOrder= await cancelOrder(1) 
-    console.log("cancelOrder Result:", cancelledOrder);
+            
 
     
   } catch(error){
