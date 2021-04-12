@@ -17,3 +17,20 @@ export const fetchUserData = async (token) => {
     };
 };
 
+//this will add products to an order
+export const addToOrder = async (orderId, body, token) => {
+    try {
+        const data = await callApi({
+          url: `orders/${orderId}/products`,
+          method: 'POST',
+          body: body,
+          token: token
+        });
+  
+        return data;
+    } catch(error) {
+        console.error(error);
+    };
+  };
+
+  

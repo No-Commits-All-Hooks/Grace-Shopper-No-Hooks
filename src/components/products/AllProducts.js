@@ -8,7 +8,7 @@ import SingleProduct from "./SingleProduct";
 
 
 
-const AllProducts = ({ products, cart, setCart }) => {
+const AllProducts = ({ products, userCart, setUserCart, guestCart, setGuestCart }) => {
     const history = useHistory();
     const {allProducts}= products;
 
@@ -30,8 +30,12 @@ const AllProducts = ({ products, cart, setCart }) => {
               price= {product.price}
               instock= {product.instock}
               imageurl= {product.imageurl}
-              cart = {cart}
-              setCart= {setCart}
+              setUserCart= {setUserCart}
+              userCart = {userCart}
+              setGuestCart = {setGuestCart}
+              guestCart = {guestCart}
+              product = {product}
+              
              />
             
             

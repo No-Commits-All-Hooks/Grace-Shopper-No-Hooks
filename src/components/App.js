@@ -29,25 +29,28 @@ const fetchAllProducts = async () => {
   return data;
 };
 
-
-
 const App = () => {
   const [products, setProducts] = useState([]);
 
-  // keep track of whats inside the cart
-  const [cart , setCart] = useState([]);
+  // keep track of whats inside the cart of a logged in user
+  const [userCart , setUserCart] = useState([]);
+
+  // keep track of whats inside the cart of GUEST user
+  const [guestCart , setGuestCart] = useState([]);
+
+
   //For admin use to get all orders
   const [orders, setOrders] = useState([]);
   //For individual users to get their orders
   const [myOrders, setMyOrders] = useState([]);
-
+ //
 
   //Need to set token to verify user
   const [token, setToken] = useState("");
   //Need to set userData to get user related data
   const [userData, setUserData] = useState({});
 
-  
+
 
   useEffect(async () => {
     const products = await fetchAllProducts();
@@ -69,10 +72,10 @@ const App = () => {
     }
   }, [token]);
 
-  useEffect(async () => {
+  // useEffect(async (userCart, guestCart) => {
 
 
-  }, [cart])
+  // }, [userCart, guestCart])
 
   // console.log("all products:", products);
   console.log("userData for logged in user:", userData);
@@ -101,14 +104,18 @@ const App = () => {
           <Route path="/products">
             <AllProducts 
             products={products}
-            cart = {cart}
-            setCart = {setCart} 
+            userCart= {userCart}
+            setUserCart = {setUserCart}
+            guestCart = {guestCart}
+            setGuestCart = {setGuestCart}
             />
           </Route>
           <Route path="/product/:productId">
             <SingleDetail products={products} 
-            cart= {cart}
-            setCart = {setCart}
+            userCart= {userCart}
+            setUserCart = {setUserCart}
+            guestCart = {guestCart}
+            setGuestCart = {setGuestCart}
 
             />
           </Route>
