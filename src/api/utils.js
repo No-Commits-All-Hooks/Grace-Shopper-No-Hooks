@@ -1,5 +1,6 @@
 
-//If you create a function that can be sused accross components, please put in here. 
+//If you create a function that can be used accross components, please put in here. 
+import { SettingsApplicationsRounded } from "@material-ui/icons";
 import { callApi } from "./index";
 
 // Fetch user data
@@ -15,3 +16,4 @@ export const fetchUserData = async (token) => {
         console.error(error);
     };
 };
+

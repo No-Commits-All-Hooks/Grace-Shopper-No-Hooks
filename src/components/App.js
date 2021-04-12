@@ -29,6 +29,8 @@ const fetchAllProducts = async () => {
   return data;
 };
 
+
+
 const App = () => {
   const [products, setProducts] = useState([]);
 
@@ -44,6 +46,8 @@ const App = () => {
   const [token, setToken] = useState("");
   //Need to set userData to get user related data
   const [userData, setUserData] = useState({});
+
+  
 
   useEffect(async () => {
     const products = await fetchAllProducts();
@@ -64,6 +68,11 @@ const App = () => {
       setUserData(data);
     }
   }, [token]);
+
+  useEffect(async () => {
+
+
+  }, [cart])
 
   // console.log("all products:", products);
   console.log("userData for logged in user:", userData);
@@ -90,7 +99,11 @@ const App = () => {
           </Route>
 
           <Route path="/products">
-            <AllProducts products={products} />
+            <AllProducts 
+            products={products}
+            cart = {cart}
+            setCart = {setCart} 
+            />
           </Route>
           <Route path="/product/:productId">
             <SingleDetail products={products} 

@@ -12,15 +12,11 @@ const history= useHistory()
 const {productId} = useParams();
 const product = allProducts? allProducts.find((product) => Number(productId) === Number(product.id)) : null ;
 
+console.log("usetstate of cart", cart); 
 // console.log("Allproduct:", allProducts);
 // console.log("product:", product);
 
-const addToCartClick = (id) =>{
 
-  
-
-
-}
 
   if (!product){
       return <div></div>
@@ -40,7 +36,7 @@ const addToCartClick = (id) =>{
              <h1> {product.name} </h1>
              <div>Price : ${product.price}</div>
              <div> Description: { product.description }</div>
-             <button onClick={addToCartClick(product.id)}></button>
+            
              </section>
         </div>
         </>

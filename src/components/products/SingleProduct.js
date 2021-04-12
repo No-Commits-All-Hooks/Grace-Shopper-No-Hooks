@@ -3,10 +3,18 @@ import { useHistory, useParams } from "react-router";
 import { Link } from 'react-router-dom';
 import "./SingleProduct.css";
 
-const SingleProduct = ({ id, name, price, imageurl, instock }) => {
+const SingleProduct = ({ id, name, price, imageurl, instock, cart, setCart}) => {
+
+  const addToCart = (el) => {
+     
+    cart.push(el)
+    setCart(cart);  
+  };
+  console.log("anyhting in cart", cart)   
+
 
   const history = useHistory();
-
+  
   if (!instock){
     return null 
   }
@@ -19,8 +27,7 @@ const SingleProduct = ({ id, name, price, imageurl, instock }) => {
       <h2>{name}</h2>
     </div>
     <div className="product-price">${price}</div>
-    <div className="product-image">
-    </div>
+    <div><button onClick={() => addToCart(id)}>Add To Cart</button></div>
     </div>
   );
 };

@@ -4,8 +4,11 @@ import { callApi } from "../../api";
 
 const SingleOrder = ({cart, SetCart, orderId})=> {
 
-
-
+    //This function will be called when adding items to cart
+    const addToCart = (el) => {
+          SetCart([...cart], el);  
+    };
+       
 }
 
 
