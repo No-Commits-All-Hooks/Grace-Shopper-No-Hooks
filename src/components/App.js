@@ -65,6 +65,19 @@ const App = () => {
       return;
     }
 
+    // if (guestCart){
+
+    //   setGuestCart(localStorage.setItem('guestCart', guestCart));
+    //  }
+    
+    //  if (userCart){
+    
+    //   setUserCart(localStorage.setItem('userCart', userCart));
+    //  }
+
+
+
+
     //if you have a token(when they log in they will get one) then set it to useState
     const data = await fetchUserData(token);
     if (data && data.username) {
@@ -72,10 +85,7 @@ const App = () => {
     }
   }, [token]);
 
-  // useEffect(async (userCart, guestCart) => {
 
-
-  // }, [userCart, guestCart])
 
   // console.log("all products:", products);
   console.log("userData for logged in user:", userData);
@@ -108,6 +118,7 @@ const App = () => {
             setUserCart = {setUserCart}
             guestCart = {guestCart}
             setGuestCart = {setGuestCart}
+            userData = {userData}
             />
           </Route>
           <Route path="/product/:productId">
@@ -116,6 +127,7 @@ const App = () => {
             setUserCart = {setUserCart}
             guestCart = {guestCart}
             setGuestCart = {setGuestCart}
+            userData = {userData}
 
             />
           </Route>

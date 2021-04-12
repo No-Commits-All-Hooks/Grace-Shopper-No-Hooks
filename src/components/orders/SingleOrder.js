@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { callApi } from "../../api";
 
-const SingleOrder = ({cart, SetCart, orderId, userData})=> {
+const SingleOrder = ({userCart, SetUserCart, guestCart, setGuestCart, orderId, userData})=> {
 
-    //This function will be called when adding items to cart
-    const addToCart = (el) => {
-          SetCart([...cart], el);  
-    };
+
+//This function will be called when adding items to cart
+  
 
 //if person is logged in get their order
 

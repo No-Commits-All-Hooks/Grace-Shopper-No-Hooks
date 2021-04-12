@@ -8,7 +8,7 @@ import SingleProduct from "./SingleProduct";
 
 
 
-const AllProducts = ({ products, userCart, setUserCart, guestCart, setGuestCart }) => {
+const AllProducts = ({ products, userCart, setUserCart, guestCart, setGuestCart, userData }) => {
     const history = useHistory();
     const {allProducts}= products;
 
@@ -35,8 +35,8 @@ const AllProducts = ({ products, userCart, setUserCart, guestCart, setGuestCart 
               setGuestCart = {setGuestCart}
               guestCart = {guestCart}
               product = {product}
-              
-             />
+              userData = {userData}
+              />
             
             
             )
