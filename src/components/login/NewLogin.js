@@ -16,7 +16,7 @@ const NewLogin = ({ action, setToken, setUserData }) => {
   
   
   const handleClick = () => {
-    history.push("/");
+    history.push("/myaccount");
     };
 
   const handleSubmit = async (event) => {
@@ -40,7 +40,7 @@ const NewLogin = ({ action, setToken, setUserData }) => {
         setPassword('');
         setToken(token);
         setUserData(data);
-        history.push('/');
+        history.push('/myaccount');
     }
 
     // if you get an error reponse grab the message

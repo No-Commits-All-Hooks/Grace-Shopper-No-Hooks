@@ -14,6 +14,7 @@ import {
   NavBar,
   SingleDetail,
   Login,
+  UserAccount,
 } from "./index";
 
 import "../styles.css";
@@ -31,26 +32,18 @@ const fetchAllProducts = async () => {
 const App = () => {
   const [products, setProducts] = useState([]);
 
+  // keep track of whats inside the cart
+  const [cart , setCart] = useState([]);
+  //For admin use to get all orders
+  const [orders, setOrders] = useState([]);
+  //For individual users to get their orders
+  const [myOrders, setMyOrders] = useState([]);
+
+
   //Need to set token to verify user
   const [token, setToken] = useState("");
   //Need to set userData to get user related data
   const [userData, setUserData] = useState({});
-
-  //Make sure to add the dependency array otherwise your useEffect will call itself a million times and your browser will probably crash :)
-  useEffect(async () => {
-    //check to see if there is a token and try to set it on localStorage
-    if (!token) {
-      setToken(localStorage.getItem('token'));
-      return;
-    }
-
-    //if you have a token(when they log in they will get one) then set it to useState
-    const data = await fetchUserData(token);
-    if (data && data.username) {
-      setUserData(data);
-      
-    }
-  }, [token]);
 
   useEffect(async () => {
     const products = await fetchAllProducts();
@@ -58,16 +51,27 @@ const App = () => {
     if (products) {
       setProducts(products);
     }
-  }, []);
+
+    //check to see if there is a token and try to set it on localStorage
+    if (!token) {
+      setToken(localStorage.getItem("token"));
+      return;
+    }
+
+    //if you have a token(when they log in they will get one) then set it to useState
+    const data = await fetchUserData(token);
+    if (data && data.username) {
+      setUserData(data);
+    }
+  }, [token]);
+
   // console.log("all products:", products);
+  console.log("userData for logged in user:", userData);
 
   return (
     <>
-      <NavBar 
-      setToken = {setToken}
-      
-      />
-      <div id="app">
+      <NavBar userData={userData} setToken={setToken} />
+      <div id="app-body">
         <Switch>
           <Route path="/login">
             <Login
@@ -89,7 +93,14 @@ const App = () => {
             <AllProducts products={products} />
           </Route>
           <Route path="/product/:productId">
-            <SingleDetail products={products} />
+            <SingleDetail products={products} 
+            cart= {cart}
+            setCart = {setCart}
+
+            />
+          </Route>
+          <Route path="/myaccount">
+            <UserAccount userData={userData} />
           </Route>
         </Switch>
       </div>

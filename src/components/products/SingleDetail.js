@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import "./SingleDetail.css";
 
 
-const SingleDetail = ({products}) => {
+const SingleDetail = ({products, cart, setCart}) => {
 
 const {allProducts} = products;
 
@@ -15,6 +15,12 @@ const product = allProducts? allProducts.find((product) => Number(productId) ===
 // console.log("Allproduct:", allProducts);
 // console.log("product:", product);
 
+const addToCartClick = (id) =>{
+
+  
+
+
+}
 
   if (!product){
       return <div></div>
@@ -34,6 +40,7 @@ const product = allProducts? allProducts.find((product) => Number(productId) ===
              <h1> {product.name} </h1>
              <div>Price : ${product.price}</div>
              <div> Description: { product.description }</div>
+             <button onClick={addToCartClick(product.id)}></button>
              </section>
         </div>
         </>
