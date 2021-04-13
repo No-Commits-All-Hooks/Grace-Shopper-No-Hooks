@@ -132,7 +132,7 @@ async function updateOrder({ id, status, userId }) {
 
   try {
     if (!order) {
-      throw Error("No order with this id.");
+      throw Error("No order with this id");
     }
     const {
       rows: [updatedOrder],
@@ -157,7 +157,7 @@ async function completeOrder({ id }) {
   const order = getOrderById(id);
   try {
     if (!order) {
-      throw Error("No order with this id.");
+      throw Error("No order with this id");
     }
 
     const {
@@ -184,7 +184,7 @@ async function cancelOrder(id) {
 
   try {
     if (!order) {
-      throw Error("No order with this id.");
+      throw Error("No order with this id");
     }
     const {
       rows: [cancelledOrder],
