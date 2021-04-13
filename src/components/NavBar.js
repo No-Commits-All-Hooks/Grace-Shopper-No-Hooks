@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = ({ userData,setToken}) => {
+const NavBar = ({ userData,setToken, setUserData}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const openAnchor = Boolean(anchorEl);
@@ -33,7 +33,7 @@ const NavBar = ({ userData,setToken}) => {
   const logOutHere = () => {
     // event.preventDefault();
     localStorage.clear();
-    // setUserData({});
+    setUserData({});
     setToken("");
     history.push("/");
   

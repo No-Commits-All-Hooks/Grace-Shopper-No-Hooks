@@ -18,7 +18,8 @@ const { createProducts,
         destroyOrderProduct,
         updateOrder,
         completeOrder,
-        cancelOrder
+        cancelOrder,
+        getOrderProductsByOrder
 } = require('./');
 
 async function dropTables() {
@@ -199,6 +200,18 @@ async function createInitialOrderProducts() {
         orderId: 3,
         price: 21.98,
         quantity: 2
+      },
+      {
+        productId: 3,
+        orderId: 1,
+        price: 10.99,
+        quantity: 1
+      },
+      {
+        productId: 3,
+        orderId: 1,
+        price: 10.99,
+        quantity: 1
       }
     ];
 
@@ -232,41 +245,25 @@ async function testDB(){
 
   try{
 
-    // const users = await getAllUsers();
-    // console.log("getAllUsers Result:", users); 
-
-    // const martin = await getUserById(3);
-    // console.log("getUserById Result:", martin);
-
-    // const sal = await getUser({
-    //   username:"salthepal", password:"sal1234"
-    // });
-    // console.log("getUser Result:", sal); 
-
-    // const getOrder = await getOrderById(1);
-    // console.log("getOrderById Result:", getOrder);
-
-    // const getProducts = await getAllProducts();
-    // console.log("getAllProducts Result:", getProducts);
-
-    //  const getOrders = await getAllOrders();
-    // console.log("getOrders Result:", getOrders);
-
-    // const salOrders = await getOrdersByUser({id : 1});
-    // console.log("getOrdersByUser Result:", salOrders);
-
-    // const productsOrders= await getOrdersByProduct({ id:1 }) 
-    // console.log("productsOrders Result:", productsOrders);
-
-    // const usersCart= await getCartByUser({id :2}) 
-    // console.log("getCartByUser Result:", usersCart);
 
 
     //     const updatedOrder= await updateOrder({id :1, status: "in-progress", userId: 3}) 
     // console.log("updatedOrder Result:", updatedOrder);
 
-            
+    // const updatedOrderProduct= await updateOrderProduct({id :5, price: 10.99, quantity: 2}) 
+    // console.log("updatedOrderProduct Result:", updatedOrderProduct);
 
+    const addedOP= await addProductToOrder({orderId: 1, productId: 3, price: 10.99, quantity : 1}) 
+    console.log("addProductToOrder Result:", addedOP);
+
+    // const addedOPTWO= await addProductToOrder({orderId: 2, productId: 2, price: 18.99, quantity : 1}) 
+    // console.log("addProductToOrder Result:", addedOPTWO);
+    
+    const orderProduct= await getOrderProductsByOrder({orderId: 1}) 
+    console.log("getOrderProductsByOrder Result:", orderProduct);
+
+    const orderProductId= await getOrderProductById(5) 
+    console.log("getOrderProductById Result:", orderProductId);
     
   } catch(error){
     throw error

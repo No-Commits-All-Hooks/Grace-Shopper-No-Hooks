@@ -29,6 +29,7 @@ const fetchAllProducts = async () => {
   return data;
 };
 
+
 const App = () => {
   const [products, setProducts] = useState([]);
 
@@ -92,7 +93,7 @@ const App = () => {
 
   return (
     <>
-      <NavBar userData={userData} setToken={setToken} />
+      <NavBar userData={userData} setToken={setToken} setUserData= {setUserData}/>
       <div id="app-body">
         <Switch>
           <Route path="/login">
