@@ -31,6 +31,7 @@ const NavBar = ({ userData,setToken}) => {
   const history = useHistory();
 
   const logOutHere = () => {
+    // event.preventDefault();
     localStorage.clear();
     // setUserData({});
     setToken("");

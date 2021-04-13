@@ -32,18 +32,25 @@ const fetchAllProducts = async () => {
 const App = () => {
   const [products, setProducts] = useState([]);
 
-  // keep track of whats inside the cart
-  const [cart , setCart] = useState([]);
+  // keep track of whats inside the cart of a logged in user
+  const [userCart , setUserCart] = useState([]);
+
+  // keep track of whats inside the cart of GUEST user
+  const [guestCart , setGuestCart] = useState([]);
+
+
   //For admin use to get all orders
   const [orders, setOrders] = useState([]);
   //For individual users to get their orders
   const [myOrders, setMyOrders] = useState([]);
-
+ //
 
   //Need to set token to verify user
   const [token, setToken] = useState("");
   //Need to set userData to get user related data
   const [userData, setUserData] = useState({});
+
+
 
   useEffect(async () => {
     const products = await fetchAllProducts();
@@ -58,12 +65,27 @@ const App = () => {
       return;
     }
 
+    // if (guestCart){
+
+    //   setGuestCart(localStorage.setItem('guestCart', guestCart));
+    //  }
+    
+    //  if (userCart){
+    
+    //   setUserCart(localStorage.setItem('userCart', userCart));
+    //  }
+
+
+
+
     //if you have a token(when they log in they will get one) then set it to useState
     const data = await fetchUserData(token);
     if (data && data.username) {
       setUserData(data);
     }
   }, [token]);
+
+
 
   // console.log("all products:", products);
   console.log("userData for logged in user:", userData);
@@ -90,12 +112,22 @@ const App = () => {
           </Route>
 
           <Route path="/products">
-            <AllProducts products={products} />
+            <AllProducts 
+            products={products}
+            userCart= {userCart}
+            setUserCart = {setUserCart}
+            guestCart = {guestCart}
+            setGuestCart = {setGuestCart}
+            userData = {userData}
+            />
           </Route>
           <Route path="/product/:productId">
             <SingleDetail products={products} 
-            cart= {cart}
-            setCart = {setCart}
+            userCart= {userCart}
+            setUserCart = {setUserCart}
+            guestCart = {guestCart}
+            setGuestCart = {setGuestCart}
+            userData = {userData}
 
             />
           </Route>

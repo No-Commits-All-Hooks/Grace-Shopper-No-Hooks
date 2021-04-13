@@ -6,10 +6,11 @@ import SingleProduct from "./SingleProduct";
 
 //search component? 
 
-const AllProducts = ({ products }) => {
+
+
+const AllProducts = ({ products, userCart, setUserCart, guestCart, setGuestCart, userData }) => {
     const history = useHistory();
     const {allProducts}= products;
-
 
 
   return (
@@ -21,6 +22,7 @@ const AllProducts = ({ products }) => {
         {allProducts ? (
           allProducts.map((product) => {
             return(
+              
               <SingleProduct
               key = {product.id}
               id = {product.id }
@@ -28,8 +30,15 @@ const AllProducts = ({ products }) => {
               price= {product.price}
               instock= {product.instock}
               imageurl= {product.imageurl}
-
+              setUserCart= {setUserCart}
+              userCart = {userCart}
+              setGuestCart = {setGuestCart}
+              guestCart = {guestCart}
+              product = {product}
+              userData = {userData}
               />
+            
+            
             )
           })
         ) : (
