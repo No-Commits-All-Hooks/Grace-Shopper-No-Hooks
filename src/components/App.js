@@ -15,12 +15,13 @@ import {
   SingleDetail,
   Login,
   UserAccount,
+  Homepage
 } from "./index";
 
 import "../styles.css";
 
 import { callApi } from "../api";
-import { fetchUserData } from "../api/utils";
+import { fetchUserData, fetchCart, fetchUserOrders } from "../api/utils";
 
 const fetchAllProducts = async () => {
   const data = await callApi({
@@ -77,12 +78,13 @@ const App = () => {
     //  }
 
 
-
-
     //if you have a token(when they log in they will get one) then set it to useState
     const data = await fetchUserData(token);
     if (data && data.username) {
+      const userId = data.id
+      const myOrders = await fetchUserOrders(userId, token);
       setUserData(data);
+      setMyOrders(myOrders)
     }
   }, [token]);
 
@@ -96,6 +98,9 @@ const App = () => {
       <NavBar userData={userData} setToken={setToken} setUserData= {setUserData}/>
       <div id="app-body">
         <Switch>
+          <Route exact path="/">
+            <Homepage/>
+          </Route>
           <Route path="/login">
             <Login
               action="login"

@@ -33,4 +33,26 @@ export const addToOrder = async (orderId, body, token) => {
     };
   };
 
-  
+
+  export const fetchCart = async (token) => {
+    try {
+        const data = await callApi({
+          url: `orders/carts`,
+         token
+        });
+        return data;
+    } catch(error) {
+        console.error(error);
+    };
+  };
+
+export const fetchUserOrders = async (userId, token) => {
+    try {const userOrders = await callApi({
+      url: `users/${userId}/orders`,
+      token,
+    });
+    return userOrders;
+} catch (error){
+    console.error(error);
+}
+  };
