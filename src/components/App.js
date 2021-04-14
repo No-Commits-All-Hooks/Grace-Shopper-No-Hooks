@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import StripeCheckout from 'react-stripe-checkout'
 import {
   BrowserRouter as Router,
   Route,
@@ -21,6 +22,7 @@ import "../styles.css";
 
 import { callApi } from "../api";
 import { fetchUserData } from "../api/utils";
+import axios from "axios";
 
 const fetchAllProducts = async () => {
   const data = await callApi({
@@ -29,6 +31,23 @@ const fetchAllProducts = async () => {
   return data;
 };
 
+const STRIPE_KEY = 'pk_test_51IftLtA9MPKzljzeSceH92fVneV3gu5NgdPP9ZEspdbi0qhxtRIypP37KO2e2ozpXwoswdPKRpfaTKYqk2vidPhR00u0MPhNrs';
+const PAYMENT_URL = 'http://localhost:3000/api/pay';
+const CURRENCY = 'USD';
+
+const onToken = (amount) => async (token) => {
+  console.log('Token is: ', token);
+  try {
+    const response = await axios.post(PAYMENT_URL, {
+      source: token.id,
+      currency: CURRENCY,
+      amount,
+    });
+    console.log('Success!', response);
+  } catch(error) {
+    console.error(error);
+  }
+}
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -129,7 +148,16 @@ const App = () => {
             guestCart = {guestCart}
             setGuestCart = {setGuestCart}
             userData = {userData}
-
+            />
+          </Route>
+          <Route exact path="/orders/cart">
+            <StripeCheckout
+              token={onToken(1000000)}
+              stripeKey={STRIPE_KEY}
+              name="Fullstack Academy Shop"
+              amount={1000000}
+              currency={CURRENCY}
+              shippingAddress
             />
           </Route>
           <Route path="/myaccount">
