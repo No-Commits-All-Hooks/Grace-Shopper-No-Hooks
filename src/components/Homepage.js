@@ -3,7 +3,7 @@ import Carousel from "react-material-ui-carousel";
 import { Paper, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   img: {
     height: 600,
   },
@@ -22,7 +22,7 @@ export default function Hompage(props) {
     },
     {
         name: "Random Name #2",
-        imgSrc: "/computer.png",
+        imgSrc: "",
     },
   ];
 
