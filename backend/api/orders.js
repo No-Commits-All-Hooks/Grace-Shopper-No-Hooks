@@ -1,5 +1,6 @@
 const express = require("express");
 const ordersRouter = express.Router();
+
 const {
   getAllOrders,
   getCartByUser,
@@ -8,6 +9,7 @@ const {
   updateOrder,
   cancelOrder,
   getOrderById,
+  addProductToOrder,
 } = require("../db");
 const { requireUser, requireAdmin } = require("./utils");
 
@@ -98,6 +100,12 @@ ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
         message: `No order exists with id ${orderId}`,
       });
     } else {
+      if (req.user.id !== findOrder.userId) {
+        next({
+          name: "Unauthorized",
+          message: "You cannot edit this order!",
+        });
+      }
       const { status, userId } = req.body;
       const updatedOrder = await updateOrder({ id: orderId, status, userId });
 
@@ -105,8 +113,8 @@ ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
         res.send(updatedOrder);
       } else {
         next({
-          name: "FailedToUpdate",
-          message: "There was an error updating your order",
+          name: "Unauthorized",
+          message: "You cannot edit this order!",
         });
       }
     }
@@ -141,4 +149,32 @@ ordersRouter.delete("/:orderId", requireUser, async (req, res, next) => {
     next({ name, message });
   }
 });
+
+
+// Add a single product to an order (using order_products). Prevent duplication on ("orderId", "productId") pair. If product already exists on order, increment quantity and update price.
+
+ordersRouter.post("/:orderId/products",requireUser,async (req, res, next) => {
+  const { orderId } = req.params;
+  const { productId, price, quantity } = req.body;
+  try {
+    const addedOrderProduct = await addProductToOrder({
+      orderId,
+      productId,
+      price,
+      quantity,
+    });
+    if (addedOrderProduct) {
+      res.send(addedOrderProduct);
+    } else {
+      next({
+        name: "FailedToAdd",
+        message: "There was an error adding product to order",
+      });
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+}
+);
+
 module.exports = ordersRouter;

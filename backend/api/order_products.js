@@ -3,39 +3,12 @@ const orderProductsRouter = express.Router();
 
 const {
   getOrderProductById,
-  addProductToOrder,
   updateOrderProduct,
   destroyOrderProduct,
   getOrderById,
 } = require("../db");
 
 const { requireUser } = require("./utils");
-
-// Add a single product to an order (using order_products). Prevent duplication on ("orderId", "productId") pair. If product already exists on order, increment quantity and update price.
-
-orderProductsRouter.post("/:orderId/products",requireUser,async (req, res, next) => {
-    const { orderId } = req.params;
-    const { productId, price, quantity } = req.body;
-    try {
-      const addedOrderProduct = await addProductToOrder({
-        orderId,
-        productId,
-        price,
-        quantity,
-      });
-      if (addedOrderProduct) {
-        res.send(addedOrderProduct);
-      } else {
-        next({
-          name: "FailedToAdd",
-          message: "There was an error adding product to order",
-        });
-      }
-    } catch ({ name, message }) {
-      next({ name, message });
-    }
-  }
-);
 
 //  Update the quantity or price on the order product
 
