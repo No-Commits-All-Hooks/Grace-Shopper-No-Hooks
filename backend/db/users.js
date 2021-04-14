@@ -66,9 +66,7 @@ async function getUserById(id) {
 //To check if username already is in use?
 async function getUserByUsername(username) {
   try {
-    const {
-      rows: [user],
-    } = await client.query(
+    const { rows } = await client.query(
       `
           SELECT *
           FROM users 
@@ -76,13 +74,11 @@ async function getUserByUsername(username) {
           `,
       [username]
     );
-
-    if (!user) {
-      return;
-    }
+    if (!rows || !rows.length) return null; 
+    const [user] = rows; 
     return user;
   } catch (error) {
-    throw error;
+    throw Error(`Error while getting user by username: ${error}`)
   }
 }
 
@@ -97,7 +93,7 @@ async function getUser({ username, password }) {
     console.log("user:", user);
     
     if (!user) {
-      return null;
+      return;
     }
     const hashedPassword = user.password;
     const comparePassword = await bcrypt.compare(password, hashedPassword);

@@ -10,7 +10,16 @@ const { createProducts,
         getOrdersByUser,
         getOrdersByProduct,
         getCartByUser,
-        createOrder 
+        createOrder,
+        getAllProducts,
+        getOrderProductById,
+        addProductToOrder,
+        updateOrderProduct,
+        destroyOrderProduct,
+        updateOrder,
+        completeOrder,
+        cancelOrder,
+        getOrderProductsByOrder
 } = require('./');
 
 async function dropTables() {
@@ -170,6 +179,50 @@ console.log("Finished creating orders.");
 }
 }
 
+async function createInitialOrderProducts() {
+  try {
+    console.log("Starting to add order products.");
+    const orderProductsCreated = [
+      {
+        productId: 1,
+        orderId: 1,
+        price: 17.97,
+        quantity: 3
+      },
+      {
+        productId: 2,
+        orderId: 2,
+        price: 18.99,
+        quantity: 1
+      },
+      {
+        productId: 3,
+        orderId: 3,
+        price: 21.98,
+        quantity: 2
+      },
+      {
+        productId: 3,
+        orderId: 1,
+        price: 10.99,
+        quantity: 1
+      },
+      {
+        productId: 3,
+        orderId: 1,
+        price: 10.99,
+        quantity: 1
+      }
+    ];
+
+    const orderProducts = await Promise.all(orderProductsCreated.map((orderProduct) => addProductToOrder(orderProduct)));
+    console.log("Order Products Added: ", orderProducts);
+    console.log("Finished adding order products.");
+  } catch(error) {
+    throw error;
+  }
+}
+
 
 async function rebuildDB() {
   try {
@@ -180,6 +233,7 @@ async function rebuildDB() {
     await createInitialProducts();
     await createInitialUsers();
     await createInitialOrders();
+    await createInitialOrderProducts();
   } catch (error) {
     console.log('Error during rebuildDB');
 
@@ -191,27 +245,30 @@ async function testDB(){
 
   try{
 
-    // const users = await getAllUsers();
-    // console.log("getAllUsers Result:", users); 
-
-    const orders = await getAllOrders();
-    console.log("getAllOrders Result:", orders);
-
-    // const martin = await getUserById(3);
-    // console.log("getUserById Result:", martin);
-
-    // const sal = await getUser({
-    //   username:"salthepal", password:"sal1234"
-    // });
-    // console.log("getUser Result:", sal); 
 
 
-    // const salOrders = await getOrdersByUser(3);
-    // console.log("getOrdersByUser Result:", salOrderså);
+    //     const updatedOrder= await updateOrder({id :1, status: "in-progress", userId: 3}) 
+    // console.log("updatedOrder Result:", updatedOrder);
 
-  } catch (error){
-    throw error;
+    // const updatedOrderProduct= await updateOrderProduct({id :5, price: 10.99, quantity: 2}) 
+    // console.log("updatedOrderProduct Result:", updatedOrderProduct);
+
+    const addedOP= await addProductToOrder({orderId: 1, productId: 3, price: 10.99, quantity : 1}) 
+    console.log("addProductToOrder Result:", addedOP);
+
+    // const addedOPTWO= await addProductToOrder({orderId: 2, productId: 2, price: 18.99, quantity : 1}) 
+    // console.log("addProductToOrder Result:", addedOPTWO);
+    
+    const orderProduct= await getOrderProductsByOrder({orderId: 1}) 
+    console.log("getOrderProductsByOrder Result:", orderProduct);
+
+    const orderProductId= await getOrderProductById(5) 
+    console.log("getOrderProductById Result:", orderProductId);
+    
+  } catch(error){
+    throw error
   }
+  
 }
 
 

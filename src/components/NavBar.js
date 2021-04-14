@@ -24,11 +24,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = () => {
+const NavBar = ({ userData,setToken, setUserData}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const openAnchor = Boolean(anchorEl);
   const history = useHistory();
+
+  const logOutHere = () => {
+    // event.preventDefault();
+    localStorage.clear();
+    setUserData({});
+    setToken("");
+    history.push("/");
+  
+  };   
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -87,11 +96,19 @@ const NavBar = () => {
               open={openAnchor}
               onClose={() => setAnchorEl(null)}
             >
+                {userData.username? (
               <MenuItem 
-              onClick={() => handleMenuChange("/login")}
+              onClick={() => handleMenuChange("/myaccount")}
               >
                 My Account
               </MenuItem>
+                ): (
+                <MenuItem 
+                onClick={() => handleMenuChange("/login")}
+                >
+                  My Account
+                </MenuItem>
+              )}
               <MenuItem 
               onClick={() => handleMenuChange("/register")}
               >
@@ -101,6 +118,9 @@ const NavBar = () => {
               onClick={() => handleMenuChange("/orders/cart")}
               >
                 Shopping Cart
+              </MenuItem>
+              <MenuItem onClick={() => logOutHere()}>
+              Log Out
               </MenuItem>
             </Menu>
           </div>

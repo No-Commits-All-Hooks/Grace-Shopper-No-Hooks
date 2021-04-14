@@ -5,10 +5,10 @@ const { getAllProducts, getProductById } = require('../db');
 
 productsRouter.get('/', async (req, res, next) => {
   try {
-    const allProducts = await getAllProducts();
+    const products = await getAllProducts();
 
     res.send({
-      allProducts,
+      products,
     });
   } catch (error) {
     next(error);
