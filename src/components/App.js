@@ -33,7 +33,7 @@ const fetchAllProducts = async () => {
 };
 
 const STRIPE_KEY = 'pk_test_51IftLtA9MPKzljzeSceH92fVneV3gu5NgdPP9ZEspdbi0qhxtRIypP37KO2e2ozpXwoswdPKRpfaTKYqk2vidPhR00u0MPhNrs';
-const PAYMENT_URL = 'http://localhost:3000/api/pay';
+const PAYMENT_URL = 'http://localhost:5000/api/pay';
 const CURRENCY = 'USD';
 
 const onToken = (amount) => async (token) => {
