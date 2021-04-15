@@ -2,9 +2,12 @@ import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import "./SingleDetail.css";
+import { Paper, Button, makeStyles } from "@material-ui/core";
+import { addProductOrder } from '../../api/utils';
 
 
-const SingleDetail = ({allProducts, cart, setCart}) => {
+
+const SingleDetail = ({allProducts, cart, setCart, token, userData}) => {
 
 const {products} = allProducts;
 
@@ -12,11 +15,13 @@ const history= useHistory()
 const {productId} = useParams();
 const product = products? products.find((product) => Number(productId) === Number(product.id)) : null ;
 
-console.log("usetstate of cart", cart); 
-// console.log("Allproduct:", allProducts);
-// console.log("product:", product);
+console.log('TOKEN SINGLE DETAIL', token)
 
+// const addToCart= (event) =>{
 
+//   if 
+//   addProductOrder
+// }
 
   if (!product){
       return <div></div>
@@ -36,7 +41,12 @@ console.log("usetstate of cart", cart);
              <h1> {product.name} </h1>
              <div>Price : ${product.price}</div>
              <div> Description: { product.description }</div>
-            
+            <Button 
+                variant="contained"
+                color="gray"
+                size="small"
+
+            onClick={()=> addToCart(product)}>Add To Cart</Button>
              </section>
         </div>
         </>

@@ -12,6 +12,8 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
     const history = useHistory();
     const {products}= allProducts;
 
+
+
   return (
     <main className="all-products-container">
       <div>

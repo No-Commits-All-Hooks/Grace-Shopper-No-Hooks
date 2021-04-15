@@ -29,6 +29,7 @@ import {
   addToOrder,
   fetchCart,
   fetchUserOrders,
+  createOrder
 } from "../api/utils";
 import axios from "axios";
 
@@ -79,11 +80,13 @@ const App = () => {
     if (data && data.username) {
       const userId = data.id;
       const myOrders = await fetchUserOrders(userId, token);
-      const userCart = await fetchCart();
       setUserData(data);
-      fetchCart(userCart);
       setMyOrders(myOrders);
     }
+
+    const userCart = await fetchCart(token);
+    setUserCart(userCart);
+
   }, [token]);
 
   // console.log("all products:", allProducts);
@@ -138,9 +141,10 @@ const App = () => {
               guestCart={guestCart}
               setGuestCart={setGuestCart}
               userData={userData}
+              token ={token}
             />
           </Route>
-          <Route exact path="/cart">
+          <Route path="/cart">
             <Cart userCart={userCart} setUserCart={setUserCart} />
           </Route>
           <Route path="/myaccount">

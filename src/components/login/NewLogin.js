@@ -16,7 +16,7 @@ const NewLogin = ({ action, setToken, setUserData }) => {
   
   
   const handleClick = () => {
-    history.push("/myaccount");
+    history.push("/");
     };
 
   const handleSubmit = async (event) => {
@@ -33,6 +33,8 @@ const NewLogin = ({ action, setToken, setUserData }) => {
     setRespMessage(data.message);
     
     console.log("data message", data.message)
+    history.push("/myaccount");
+
     }
     else {
         localStorage.setItem('token', token);
