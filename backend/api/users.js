@@ -3,7 +3,7 @@ const usersRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
-const { requireUser, requireAdmin } = require('./utils');
+const { requireUser } = require('./utils');
 
 const { createUser,
   getUserByUsername, 
@@ -70,8 +70,6 @@ getUserById }  = require('../db');
             name: 'UserCreationError',
             message: 'There was a problem registering you. Please try again.',
           });
-// should we check for previously used email? Not needed. Users Table only accepts unique emails.  
-
         } else {
           const token = jwt.sign({
             id: user.id, 

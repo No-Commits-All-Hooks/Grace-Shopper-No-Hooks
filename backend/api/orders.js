@@ -29,12 +29,10 @@ const { requireUser, requireAdmin } = require("./utils");
 //Return the current user's order with status='created' (synonymous to a 'cart'). Use database adapter getCartByUser
 
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
-  const { id: userId } = req.user;
-
-  console.logz("REQ.USER:", req.user);
+  const { id } = req.user;
 
   try {
-    const cart = await getCartByUser(userId);
+    const cart = await getCartByUser(id);
     res.send(cart);
   } catch ({ name, message }) {
     next({ name, message });

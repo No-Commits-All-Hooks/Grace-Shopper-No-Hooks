@@ -17,6 +17,13 @@ export const fetchUserData = async (token) => {
     };
 };
 
+export const fetchAllProducts = async () => {
+    const data = await callApi({
+      url: "products",
+    });
+    return data;
+  };
+
 //this will add products to an order
 export const addToOrder = async (orderId, body, token) => {
     try {
@@ -26,20 +33,23 @@ export const addToOrder = async (orderId, body, token) => {
           body: body,
           token: token
         });
-  
+        console.log('addToOrder',data)
+
         return data;
+
     } catch(error) {
         console.error(error);
     };
   };
 
 
-  export const fetchCart = async (token) => {
+  export const fetchCart = async () => {
     try {
         const data = await callApi({
-          url: `orders/carts`,
-         token
+          url: `orders/carts`,         
         });
+        console.log('FETCHCART DATA',data)
+
         return data;
     } catch(error) {
         console.error(error);
@@ -56,3 +66,6 @@ export const fetchUserOrders = async (userId, token) => {
     console.error(error);
 }
   };
+
+
+ 

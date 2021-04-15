@@ -247,8 +247,8 @@ async function testDB(){
 
 
 
-    //     const updatedOrder= await updateOrder({id :1, status: "in-progress", userId: 3}) 
-    // console.log("updatedOrder Result:", updatedOrder);
+        const getCart= await getCartByUser({id :2}) 
+    console.log("getCartByUser Result:", getCart);
 
     // const updatedOrderProduct= await updateOrderProduct({id :5, price: 10.99, quantity: 2}) 
     // console.log("updatedOrderProduct Result:", updatedOrderProduct);

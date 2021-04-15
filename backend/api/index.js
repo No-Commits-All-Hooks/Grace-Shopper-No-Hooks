@@ -5,7 +5,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
-const { getUserById } = require('../db');
+const { getUserById, getCartByUser } = require('../db');
 
 
 // set `req.user` if possible
