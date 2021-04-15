@@ -48,23 +48,23 @@ async function createTables() {
     await client.query(`
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
-        name varchar(255) NOT NULL,
-        description varchar(255) NOT NULL,
-        price NUMERIC NOT NULL,
-        imageURL varchar(255) DEFAULT 'https://coursereport-s3-production.global.ssl.fastly.net/uploads/school/logo/39/original/fsa_logo_vertical-01_full_color_CR-01.png',
+        name VARCHAR(255) NOT NULL,
+        description VARCHAR(255) NOT NULL,
+        price FLOAT NOT NULL,
+        imageURL VARCHAR(255) DEFAULT 'https://coursereport-s3-production.global.ssl.fastly.net/uploads/school/logo/39/original/fsa_logo_vertical-01_full_color_CR-01.png',
         inStock BOOLEAN NOT NULL DEFAULT false,
-        category varchar(255) NOT NULL
+        category VARCHAR(255) NOT NULL
       );
       `);
     await client.query(`
       CREATE TABLE users (
         id SERIAL PRIMARY KEY,
-        firstName varchar(255) NOT NULL,
-        lastName varchar(255) NOT NULL,
-        email varchar(255) UNIQUE NOT NULL,
-        imageURL varchar(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
-        username varchar(255) UNIQUE NOT NULL,
-        password varchar(255) UNIQUE NOT NULL,
+        firstName VARCHAR(255) NOT NULL,
+        lastName VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        imageURL VARCHAR(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) UNIQUE NOT NULL,
         "isAdmin" BOOLEAN NOT NULL DEFAULT false
       );
       `);

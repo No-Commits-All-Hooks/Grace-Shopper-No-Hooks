@@ -13,28 +13,28 @@ const {
 } = require("../db");
 const { requireUser, requireAdmin } = require("./utils");
 
--(
+
   //Return a list of orders, include the products with them
   //admin only - create middlewear. need auth. token specific for admins
-  ordersRouter.get("/", requireAdmin, async (req, res, next) => {
+ordersRouter.get("/", requireAdmin, async (req, res, next) => {
     try {
       const orders = await getAllOrders();
       res.send(orders);
     } catch ({ name, message }) {
         next({ name, message });
       }
-  })
-);
+  }
+)
 
 //Return the current user's order with status='created' (synonymous to a 'cart'). Use database adapter getCartByUser
 
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
-  const { id } = req.user;
+  const user = req.user;
 
   try {
-    const cart = await getCartByUser(id);
-    res.send(cart);
-  } catch ({ name, message }) {
+    const cart = await getCartByUser(user);
+    res.send(cart); 
+  } catch ({ name, message }) { 
     next({ name, message });
   }
   
@@ -159,7 +159,7 @@ ordersRouter.post("/:orderId/products",requireUser,async (req, res, next) => {
       orderId,
       productId,
       price,
-      quantity,
+      quantity, 
     });
     if (addedOrderProduct) {
       res.send(addedOrderProduct);
