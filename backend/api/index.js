@@ -8,6 +8,20 @@ const { JWT_SECRET } = process.env;
 const { getUserById, getCartByUser } = require('../db');
 
 
+// GET /api/health
+apiRouter.get('/health', async (req, res, next) => {
+  try {
+    const uptime = process.uptime();
+    const {rows: [dbConnection]} = await client.query('SELECT NOW();');
+    const currentTime = new Date();
+    const lastRestart = new Intl.DateTimeFormat('en', {timeStyle: 'long', dateStyle: 'long', timeZone: "America/Los_Angeles"}).format(currentTime - (uptime * 1000));
+    res.send({message: 'healthy', uptime, dbConnection, currentTime, lastRestart});
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 // set `req.user` if possible
 apiRouter.use(async (req, res, next) => {
   const prefix = 'Bearer ';
@@ -25,6 +39,8 @@ apiRouter.use(async (req, res, next) => {
         req.user = await getUserById(id);
         next();
       }
+   
+
     } catch ({ name, message }) {
       next({ name, message });
     }

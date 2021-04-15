@@ -1,6 +1,6 @@
 
 //If you create a function that can be used accross components, please put in here. 
-import { SettingsApplicationsRounded } from "@material-ui/icons";
+
 import { callApi } from "./index";
 
 // Fetch user data
@@ -46,7 +46,7 @@ export const addToOrder = async (orderId, body, token) => {
   export const fetchCart = async () => {
     try {
         const data = await callApi({
-          url: `orders/carts`,         
+          url: `/orders/carts`,         
         });
         console.log('FETCHCART DATA',data)
 

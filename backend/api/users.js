@@ -8,7 +8,10 @@ const { requireUser } = require('./utils');
 const { createUser,
   getUserByUsername, 
 getUser, 
-getUserById }  = require('../db');
+getUserById, 
+getOrderById,
+getCartByUser,
+getOrdersByUser}  = require('../db');
 
 
   usersRouter.post('/login', async (req, res, next) => {
@@ -23,23 +26,16 @@ getUserById }  = require('../db');
   }
 
   try {
-    const user = await getUser({ username, password });
-    
-    if (user) {
-        const token = jwt.sign(user, JWT_SECRET, { expiresIn: '7d' });
-
-        res.send({
-            message: 'You have successfully logged in!',
-            id: user.id,
-            username: user.username,
-            token: token
-        });
+    const user = await getUser({username, password});
+    if(!user) {
+      next({
+        name: 'IncorrectCredentialsError',
+        message: 'Username or password is incorrect',
+      })
     } else {
-        next({
-            name: 'InvalidCredentialsError',
-            message: 'The username or password you entered is incorrect.'
-        });
-    };
+      const token = jwt.sign({id: user.id, username: user.username}, JWT_SECRET, { expiresIn: '1w' });
+      res.send({ user, message: "you're logged in!", token });
+    }
 } catch({ name, message }) {
     next({ name, message })
 };
@@ -90,21 +86,58 @@ getUserById }  = require('../db');
   // Send back the logged-in user's data if a valid token is supplied in the header.
 
 usersRouter.get('/me', requireUser, async (req, res, next) => {
-  // const auth = req.header('Authorization');    
-  // const prefix = 'Bearer ';
-  // const token = auth.slice(prefix.length);
-  // const { id } = jwt.verify(token, JWT_SECRET);
-
+    const {id }= req.user.id
+    const user = await getUserById(id);
   try{
-       res.send(req.user);
+    const {id }= req.user.id
+    const user = await getUserById(id);
+    const cart= await getCartByUser(user)
+    const orders= await getOrdersByUser(user)
+
+    if(cart|| orders){
+      user.cart= cart;
+      user.orders = orders
+    }else {
+      user.cart= [],
+      user.orders = orders
+    }
+       res.send(user);
     } catch (error) {
       next(error)
     }
   })
   
+  usersRouter.get(":userId/orders",requireUser,async (req, res, next) => {
+    const { userId } = req.params;
+
+    try {
+      const user = await getUserById(userId);
+      if(!user) {
+        next({
+          name: 'NoUser',
+          message: `Error looking up user`
+        });
+      }
+      const orders = await getOrdersByUser(user);
+      if (!usersOrders) {
+        next ({
+        name: "FailedOrders",
+        message: "No orders available for this user",
+      });
+      }
+      res.send(orders);
+    } catch ({ name, message }) {
+        next({ name, message });
+      }
+  }
+);
+
+
   module.exports = usersRouter;
 
 
+
+  
 ///login OLD try
   // try {
   //   const user = await getUser({username, password});
