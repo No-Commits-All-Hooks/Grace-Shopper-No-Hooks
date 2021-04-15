@@ -8,19 +8,18 @@ import SingleProduct from "./SingleProduct";
 
 
 
-const AllProducts = ({ products, userCart, setUserCart, guestCart, setGuestCart, userData }) => {
+const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCart, userData }) => {
     const history = useHistory();
-    const {allProducts}= products;
-
+    const {products}= allProducts;
 
   return (
-    <main id="all-products-container">
+    <main className="all-products-container">
       <div>
         <h1>Still need to add some stuff in here for All Products</h1>
       </div>
       <div className="product-list">
-        {allProducts ? (
-          allProducts.map((product) => {
+        {products ? (
+          products.map((product) => {
             return(
               
               <SingleProduct

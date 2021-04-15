@@ -115,7 +115,7 @@ const NavBar = ({ userData,setToken, setUserData}) => {
                 Sign Up
               </MenuItem>
               <MenuItem 
-              onClick={() => handleMenuChange("/orders/cart")}
+              onClick={() => handleMenuChange("/cart")}
               >
                 Shopping Cart
               </MenuItem>

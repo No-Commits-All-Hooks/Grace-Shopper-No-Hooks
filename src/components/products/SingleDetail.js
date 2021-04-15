@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import "./SingleDetail.css";
 
 
-const SingleDetail = ({products, cart, setCart}) => {
+const SingleDetail = ({allProducts, cart, setCart}) => {
 
-const {allProducts} = products;
+const {products} = allProducts;
 
 const history= useHistory()
 const {productId} = useParams();
-const product = allProducts? allProducts.find((product) => Number(productId) === Number(product.id)) : null ;
+const product = products? products.find((product) => Number(productId) === Number(product.id)) : null ;
 
 console.log("usetstate of cart", cart); 
 // console.log("Allproduct:", allProducts);

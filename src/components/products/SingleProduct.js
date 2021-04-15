@@ -1,13 +1,14 @@
+import { Call } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { Link } from 'react-router-dom';
+import { callApi } from "../../api";
 
 import "./SingleProduct.css";
 
 const SingleProduct = ({ product, id, name, price, imageurl, instock, setUserCart, userCart, setGuestCart, guestCart, userData}) => {
 
   const addToCart = (el) => {
-
     if (!userData.username){ 
     guestCart.push(el);
     setGuestCart(guestCart);
@@ -15,16 +16,26 @@ const SingleProduct = ({ product, id, name, price, imageurl, instock, setUserCar
     }
     // if logged in add items to logged in users cart
   else {
-    
-    userCart.push(el);
-    setUserCart(userCart);
+    // userCart.push(el);
+    setUserCart([...userCart, el]);
     console.log("userCart after being set", userCart);
     }  
   };
-  // console.log("anything in guestCart", guestCart)  
-  // console.log("anything in userCart", userCart)
+
+
   
-  
+  // const onClick= async ({orderId, productId, price, quantity}) =>{
+
+  //     const data = await callApi({
+  //       url: `orders/:orderId/products`,
+  //       method: 'POST',
+  //       body: {orderId, productId, price,quantity},
+  //       token: token
+  //   })
+  //   setUserCart([...userCart, data]);
+  //   console.log("userCart after being set", userCart);
+
+  // }
 
   const history = useHistory();
   
@@ -40,10 +51,11 @@ const SingleProduct = ({ product, id, name, price, imageurl, instock, setUserCar
       <h2>{name}</h2>
     </div>
     <div className="product-price">${price}</div>
-    <div><button onClick={() => addToCart(product)}>Add To Cart</button></div>
+    <div><button onClick={()=> addToCart(product)}>Add To Cart</button></div>
 
     </div>
   );
 };
 
 export default SingleProduct;
+ 
