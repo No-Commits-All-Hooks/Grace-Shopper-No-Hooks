@@ -93,16 +93,24 @@ usersRouter.post("/register", async (req, res, next) => {
 // Send back the logged-in user's data if a valid token is supplied in the header.
 
 usersRouter.get("/me", requireUser, async (req, res, next) => {
+
+  const { id } = req.user;
+  console.log('user backend Id', id)
   try {
-    const { id } = req.user;
     const user = await getUserById(id);
     const cart = await getCartByUser(user);
     const orders = await getOrdersByUser(user);
 
-    if (cart || orders) {
+    if (!cart){
+      user.cart = [];
+    } else {
       user.cart = cart;
+    }
+      if(!orders) {
+        user.orders = [];
+    } else {
       user.orders = orders;
-    } 
+    }
     res.send(user);
   } catch (error) {
     next(error);

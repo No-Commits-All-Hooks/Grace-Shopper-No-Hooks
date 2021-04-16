@@ -12,6 +12,7 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
     const history = useHistory();
     const {products}= allProducts;
 
+  console.log('USERCART single product', userCart)
 
 
   return (

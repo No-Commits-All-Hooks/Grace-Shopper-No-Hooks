@@ -17,11 +17,6 @@ const product = products? products.find((product) => Number(productId) === Numbe
 
 console.log('TOKEN SINGLE DETAIL', token)
 
-// const addToCart= (event) =>{
-
-//   if 
-//   addProductOrder
-// }
 
   if (!product){
       return <div></div>

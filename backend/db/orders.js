@@ -78,7 +78,15 @@ async function getOrdersByProduct({ id }) {
 }
 
 async function getCartByUser({ id }) {
+
+
   try {
+    const usersOrders = await getOrdersByUser({id});
+
+    if (!usersOrders){
+      return 
+    }
+    
     const {
       rows: [orders],
     } = await client.query(
@@ -86,23 +94,23 @@ async function getCartByUser({ id }) {
         SELECT orders.*, username AS "creatorName"
         FROM orders
         JOIN users ON users.id = orders."userId" 
-        WHERE "userId"= $1;
+        WHERE "userId"= $1 AND status = 'created';
         `,
       [id]
     );
-
     const { rows: products } = await client.query(`
         SELECT *
         FROM products
         JOIN order_products ON order_products."productId" = products.id;
         `);
 
-    const productsToAdd = products.filter(
+    const productsToAdd = products? products.filter(
       (product) => product.orderId === orders.id
-    );
+    ): null ;
     orders.products = productsToAdd;
 
     return orders;
+
   } catch (error) {
     throw error;
   }

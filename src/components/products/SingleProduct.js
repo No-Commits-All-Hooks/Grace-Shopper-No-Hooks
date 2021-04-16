@@ -32,7 +32,7 @@ let [newProducts, setNewProducts]= useState([])
     }  
   };
 
-    console.log('userData single product', userData)
+    console.log('USERCART single product', userCart)
 
 
   

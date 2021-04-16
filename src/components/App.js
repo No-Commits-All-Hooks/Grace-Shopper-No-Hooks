@@ -141,7 +141,6 @@ const App = () => {
               guestCart={guestCart}
               setGuestCart={setGuestCart}
               userData={userData}
-              token ={token}
             />
           </Route>
           <Route path="/cart">

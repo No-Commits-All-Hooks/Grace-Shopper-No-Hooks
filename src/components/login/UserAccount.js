@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 const UserAccount = ({ userData }) => {
   console.log("USER ACCOUNT DATA", userData);
   const history = useHistory();
-  const username= userData.user.username
+  // const username= userData.user.username
 
   // if (!userData.id) {
   //   return (
@@ -18,7 +18,7 @@ const UserAccount = ({ userData }) => {
   // }
   return (
     <>
-      <div className="dashboard">{<h1>Hello, {username}!</h1>}</div>
+      <div className="dashboard">{<h1>Hello, !</h1>}</div>
       <Button
         variant="outlined"
         color="primary"
