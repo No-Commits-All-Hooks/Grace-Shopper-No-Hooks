@@ -1,3 +1,4 @@
+const { CompareSharp } = require("@material-ui/icons");
 const express = require("express");
 const ordersRouter = express.Router();
 
@@ -10,6 +11,7 @@ const {
   cancelOrder,
   getOrderById,
   addProductToOrder,
+  getUserById,
 } = require("../db");
 const { requireUser, requireAdmin } = require("./utils");
 
@@ -32,12 +34,9 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
   const {id} = req.user;
 
   try {
-    const cart = await getCartByUser(id);
+    let cart = await getCartByUser(id);
     if (!cart){
-      next({
-        name: "EmptyCart",
-        message: "No cart available for this user",
-      });    
+     return cart = []  
     }
     res.send(cart); 
   } catch ({ name, message }) { 
@@ -48,20 +47,18 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
 
 //Create a new order. Should initially be status = created.
 ordersRouter.post("/", requireUser, async (req, res, next) => {
-  const { id: userId } = req.user;
-  const { status } = req.body;
+  const id  = req.user.id;
+  let { status } = req.body;
 
-  if (!userId || !status) {
-    throw Error(`Missing information`);
-  }
 
   try {
-    const order = await createOrder({ status, userId });
+  
+    const order = await createOrder( status, id );
 
     if (!order) {
       next({
         name: "failedToCreate",
-        message: "Error placing new order",
+        message: "Error creating new order",
       });
     } else {
       res.send(order);

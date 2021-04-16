@@ -104,6 +104,7 @@ const App = () => {
         userData={userData}
         setToken={setToken}
         setUserData={setUserData}
+        setUserCart={setUserCart}
       />
       <div id="app-body">
         <Switch>
@@ -143,7 +144,10 @@ const App = () => {
               setUserCart={setUserCart}
               guestCart={guestCart}
               setGuestCart={setGuestCart}
+              token ={token}
               userData={userData}
+              setUserData ={setUserData}
+              myOrders= {myOrders}
             />
           </Route>
           <Route path="/cart">

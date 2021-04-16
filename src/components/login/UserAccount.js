@@ -41,7 +41,7 @@ const UserAccount = ({ userData }) => {
         variant="outlined"
         color="primary"
         onClick={() => {
-          history.push("/orders/cart");
+          history.push("/cart");
         }}
       >
         View My Cart

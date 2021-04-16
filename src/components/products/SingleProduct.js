@@ -6,10 +6,9 @@ import { callApi } from "../../api";
 
 import "./SingleProduct.css";
 
-const SingleProduct = ({ product, id, name, price, imageurl, instock, setUserCart, userCart, setGuestCart, guestCart, userData}) => {
+const SingleProduct = ({ product, id, name, price, imageurl, instock, setUserCart, userCart, setGuestCart, guestCart, userData, setUseData}) => {
 let [newProducts, setNewProducts]= useState([])
 
-// console.log('products single product', products)
 //   console.log('USERCART single product', userCart)
 
   const addToCart = (el) => {
@@ -20,36 +19,28 @@ let [newProducts, setNewProducts]= useState([])
     }
     // if logged in add items to logged in users cart
   else {
-    let { products } = userCart;
-     newProducts= products.push(el);
-     console.log('newProducts single product', newProducts)
 
+    // if (!userCart.products <0 ){
+    //   newProducts = await createOrder
+
+    // }
+    let { products } = userCart;
+      newProducts= products.push(el);
+
+     console.log('products single product', products)
+
+    //  console.log('newProducts single product', newProducts)
+    const orderId= userCart.id
+    console.log('orderId single product', orderId)
 
     setNewProducts([...products, newProducts]);
+    
     // setUserCart([...userCart])
 
-    console.log("userCart after being set", userCart);
     }  
   };
 
-    console.log('USERCART single product', userCart)
 
-
-  
-  // const onClick= async ({orderId, productId, price, quantity}) =>{
-
-  //     const data = await callApi({
-  //       url: `orders/:orderId/products`,
-  //       method: 'POST',
-  //       body: {orderId, productId, price,quantity},
-  //       token: token
-  //   })
-  //   setUserCart([...userCart, data]);
-  //   console.log("userCart after being set", userCart);
-
-  // }
-
-  const history = useHistory();
   
   if (!instock){
     return null 

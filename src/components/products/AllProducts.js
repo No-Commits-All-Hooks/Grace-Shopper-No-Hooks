@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 
 import "./AllProducts.css";
 import SingleProduct from "./SingleProduct";
+import { Paper, Button, makeStyles } from "@material-ui/core";
 
 //search component? 
 
@@ -24,7 +25,7 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
         {products ? (
           products.map((product) => {
             return(
-              
+              <Paper>
               <SingleProduct
               key = {product.id}
               id = {product.id }
@@ -39,7 +40,7 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
               product = {product}
               userData = {userData}
               />
-            
+            </Paper>
             
             )
           })

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = ({ userData,setToken, setUserData}) => {
+const NavBar = ({ userData,setToken, setUserData, setUserCart}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const openAnchor = Boolean(anchorEl);
@@ -35,6 +35,7 @@ const NavBar = ({ userData,setToken, setUserData}) => {
     localStorage.clear();
     setUserData({});
     setToken("");
+    setUserCart({})
     history.push("/");
   
   };   
