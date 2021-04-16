@@ -76,6 +76,8 @@ export const fetchUserOrders = async (userId, token) => {
       url: `users/${userId}/orders`,
       token,
     });
+
+    console.log('USERORDERS IN FETCH', userOrders)
     return userOrders;
 } catch (error){
     console.error(error);

@@ -32,7 +32,7 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
   const {id} = req.user;
 
   try {
-    const cart = await getCartByUser({id});
+    const cart = await getCartByUser(id);
     if (!cart){
       next({
         name: "EmptyCart",

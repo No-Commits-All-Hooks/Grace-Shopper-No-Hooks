@@ -77,15 +77,18 @@ const App = () => {
 
     //if you have a token(when they log in they will get one) then set it to useState
     const data = await fetchUserData(token);
+
+    // console.log('DATA IN APP', data)
     if (data && data.username) {
       const userId = data.id;
       const myOrders = await fetchUserOrders(userId, token);
       setUserData(data);
       setMyOrders(myOrders);
     }
-
+    
     const userCart = await fetchCart(token);
     setUserCart(userCart);
+
 
   }, [token]);
 

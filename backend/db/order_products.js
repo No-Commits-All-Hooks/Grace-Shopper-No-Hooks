@@ -101,7 +101,7 @@ async function destroyOrderProduct(id) {
   }
 }
 
-async function getOrderProductsByOrder({orderId}) {
+async function getOrderProductsByOrder(orderId) {
   if (!orderId) {
     throw Error(`No order with id of ${orderId}`);
   };

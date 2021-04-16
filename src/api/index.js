@@ -7,8 +7,6 @@ export const BASE_URL = 'http://localhost:5000/api/';
 
 // process.env.API_URL || 'https://morning-fortress-53362.herokuapp.com/api/';
 
-
-
 export const callApi = async ({ url, method, token, body }) => {
   console.log('callApi: ', { url, method, token, body });
   try {

@@ -98,8 +98,8 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
   console.log('user backend Id', id)
   try {
     const user = await getUserById(id);
-    const cart = await getCartByUser(user);
-    const orders = await getOrdersByUser(user);
+    const cart = await getCartByUser(id);
+    const orders = await getOrdersByUser(id);
 
     if (!cart){
       user.cart = [];
@@ -117,50 +117,27 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
   }
 });
 
-usersRouter.get(":userId/orders", requireUser, async (req, res, next) => {
+usersRouter.get("/:userId/orders", async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    const user = await getUserById(userId);
-    if (!user) {
-      next({
-        name: "NoUser",
-        message: `Error looking up user`,
-      });
+    const user = await getUserById(userId)
+    console.log('user backend', user )
+    if (user){
+      const orders = await getOrdersByUser(userId);
+      if (!orders) {
+        next({
+          name: "FailedOrders",
+          message: "No orders available for this user",
+        });
+      }
+      res.send(orders);
     }
-    const orders = await getOrdersByUser(user);
-    if (!usersOrders) {
-      next({
-        name: "FailedOrders",
-        message: "No orders available for this user",
-      });
-    }
-    res.send(orders);
+
+
   } catch ({ name, message }) {
     next({ name, message });
   }
 });
 
 module.exports = usersRouter;
-
-///login OLD try
-// try {
-//   const user = await getUser({username, password});
-//   if(!user) {
-//     next({
-//       name: 'IncorrectCredentialsError',
-//       message: 'Username or password is incorrect',
-//     })
-//   } else {
-//     const token = jwt.sign(user, JWT_SECRET, { expiresIn: '1w' });
-//     res.send({
-//       message: "You're logged in!",
-//       id: user.id,
-//       username: user.username,
-//       token: token });
-//   }
-// } catch (error) {
-//   console.log(error);
-//   next(error);
-// }
-// });
