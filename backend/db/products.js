@@ -72,7 +72,7 @@ async function attachProductsToOrders(orders) {
   if (!orderId?.length) return;
   
   try {
-    // get the activities, JOIN with order_products (so we can get a routineId), and only those that have those routine ids on the routine_activities join
+    // get the products, JOIN with order_products (so we can get a routineId), and only those that have those routine ids on the routine_activities join
     const { rows: products } = await client.query(`
       SELECT products.*, order_products."productId", order_products."orderId", order_products.id AS "orderProductsId", order_products.price, order_products.quantity
       FROM products 
@@ -95,9 +95,110 @@ async function attachProductsToOrders(orders) {
 }
 
 
+// DESTROY PRODUCT
+// const destroyProduct = async (id) => {
+//   //check to see if you have a product id
+//   if (!id) {
+//     return;
+// };
+
+// //find out if the product is in the order_products
+//   try {
+//     const { rows: products } = await client.query(`
+//     SELECT orders.id, orders.status , order_products."orderId", order_products."productId"
+// FROM orders
+// INNER JOIN order_products ON orders.id=order_products."orderId"
+// WHERE order_products."productId"=$1 and orders.status!='completed'
+//     `, [id] );
+// console.log("any products with comppleted orders", products);
+//     if (products){
+//       // you can't delete the product its part of a completed order
+//       return; 
+//    } else {
+//     await client.query(`
+//     DELETE FROM products
+//     WHERE "id"=$1;
+// `, [id]);
+
+//    }
+
+
+
+// //hard delete a product
+  
+// // make sure to delete all the order_products whose products is the one being deleted
+// //make sure the orders for the order_products being deleted do not have a status = completed
+// //this gets me all rows with a product that I want ot delete
+
+
+
+
+//   } catch (error) {
+//       throw Error(`Error while destroying routine: ${error}`);
+//   };
+// };
+
+//For admin to update product (everything except product id)
+const updateProduct = async ({id: productId, name,  description, price, imageurl, instock, category}) => {
+
+  //start with an empty opject and build it based on variables admin passes in to update
+  const updateFields = {};
+
+  if (name) {
+      updateFields.name = name;
+  };
+
+  if (description) {
+      updateFields.description = description;
+  };
+  
+  if (price) {
+      updateFields.price = price;
+  };
+
+  if (imageurl) {
+    updateFields.imageurl = imageurl;
+};
+
+if (instock) {
+  updateFields.instock = instock;
+};
+
+if (category) {
+  updateFields.category = category;
+};
+
+
+//build a string based on what was passed in
+  const setString = Object.keys(updateFields).map(
+      (key, index) => `"${key}"=$${index + 1}`
+  ).join(', ');
+//if there is nothing return it. nothing to do here
+  if (setString.length === 0) {
+      return;
+  };
+ //this line Object.values(updateFields) grabs the values of the object you built earlier
+  try {
+      const {rows: [product]} = await client.query(`
+          UPDATE products
+          SET ${setString}
+          WHERE id=${productId}
+          RETURNING *;
+      `, Object.values(updateFields));
+
+      return product;
+  } catch (error) {
+      throw Error(`Error while updating product: ${error}`);
+  };
+};
+
+
+
+
 module.exports = {
   createProducts,
   getAllProducts,
   getProductById,
-  attachProductsToOrders
+  attachProductsToOrders, 
+  updateProduct
 };
