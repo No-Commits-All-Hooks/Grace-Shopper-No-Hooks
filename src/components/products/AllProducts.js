@@ -3,26 +3,29 @@ import { useHistory } from "react-router";
 
 import "./AllProducts.css";
 import SingleProduct from "./SingleProduct";
+import { Paper, Button, makeStyles } from "@material-ui/core";
 
 //search component? 
 
 
 
-const AllProducts = ({ products, userCart, setUserCart, guestCart, setGuestCart, userData }) => {
+const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCart, userData }) => {
     const history = useHistory();
-    const {allProducts}= products;
+    const {products}= allProducts;
+
+  console.log('USERCART single product', userCart)
 
 
   return (
-    <main id="all-products-container">
+    <main className="all-products-container">
       <div>
         <h1>Still need to add some stuff in here for All Products</h1>
       </div>
       <div className="product-list">
-        {allProducts ? (
-          allProducts.map((product) => {
+        {products ? (
+          products.map((product) => {
             return(
-              
+              <Paper>
               <SingleProduct
               key = {product.id}
               id = {product.id }
@@ -37,7 +40,7 @@ const AllProducts = ({ products, userCart, setUserCart, guestCart, setGuestCart,
               product = {product}
               userData = {userData}
               />
-            
+            </Paper>
             
             )
           })

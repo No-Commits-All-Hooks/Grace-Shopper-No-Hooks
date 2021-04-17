@@ -5,6 +5,7 @@ const { createProducts,
         getAllUsers, 
         getUser,
         getUserById,
+        updateUser,
         getOrderById,
         getAllOrders,
         getOrdersByUser,
@@ -12,9 +13,11 @@ const { createProducts,
         getCartByUser,
         createOrder,
         getAllProducts,
+        updateProduct,
         getOrderProductById,
         addProductToOrder,
         updateOrderProduct,
+        getProductById,
         destroyOrderProduct,
         updateOrder,
         completeOrder,
@@ -54,23 +57,23 @@ async function createTables() {
     await client.query(`
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
-        name varchar(255) NOT NULL,
-        description varchar(255) NOT NULL,
-        price NUMERIC NOT NULL,
-        imageURL varchar(255) DEFAULT 'https://coursereport-s3-production.global.ssl.fastly.net/uploads/school/logo/39/original/fsa_logo_vertical-01_full_color_CR-01.png',
+        name VARCHAR(255) NOT NULL,
+        description VARCHAR(255) NOT NULL,
+        price FLOAT NOT NULL,
+        imageURL VARCHAR(255) DEFAULT 'https://coursereport-s3-production.global.ssl.fastly.net/uploads/school/logo/39/original/fsa_logo_vertical-01_full_color_CR-01.png',
         inStock BOOLEAN NOT NULL DEFAULT false,
-        category varchar(255) NOT NULL
+        category VARCHAR(255) NOT NULL
       );
       `);
     await client.query(`
       CREATE TABLE users (
         id SERIAL PRIMARY KEY,
-        firstName varchar(255) NOT NULL,
-        lastName varchar(255) NOT NULL,
-        email varchar(255) UNIQUE NOT NULL,
-        imageURL varchar(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
-        username varchar(255) UNIQUE NOT NULL,
-        password varchar(255) UNIQUE NOT NULL,
+        firstName VARCHAR(255) NOT NULL,
+        lastName VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        imageURL VARCHAR(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) UNIQUE NOT NULL,
         "isAdmin" BOOLEAN NOT NULL DEFAULT false
       );
       `);
@@ -145,6 +148,41 @@ async function createInitialProducts() {
         inStock: true,
         category: 'Hats',
       },
+
+      {
+        name: 'Blue Armada Sling Backpack',
+        description: 'Sling back backpack with FullStack Academy logo',
+        price: 10.99,
+        imageURL: 'https://postimg.cc/TKDzmQ3G',
+        inStock: true,
+        category: 'Accesories',
+      },
+      {
+        name: 'Black Hoodie',
+        description: 'Black hoodie with FullStack Academys logo. Worn by many of your instructors.',
+        price: 34.99,
+        imageURL: 'https://postimg.cc/0bmvGtbZ',
+        inStock: true,
+        category: 'Clothing',
+      },
+      {
+        name: 'Salary booster - AKA: "Money Shovel',
+        description: 'Make sure to add to your cart. Upon graduation you are most likely to need this shovel to carry your programmers money to the bank. (NOTICE: Salary NOT guaranteed upon graduation, but discussed quite a bit during course).',
+        price: 100.00,
+        imageURL: 'https://postimg.cc/14BwmH9C',
+        inStock: true,
+        category: 'Accesories',
+      },
+      {
+        name: 'Salary Mover - AKA: "Take it to the Bank',
+        description: 'Make sure to add to your cart if you got Salary Booster. Upon graduation you are most likely to need this take your new money. (NOTICE: Salary NOT guaranteed upon graduation, but discussed quite a bit during course).',
+        price: 400.00,
+        imageURL: 'https://postimg.cc/xcF01Drx',
+        inStock: true,
+        category: 'Accesories',
+      },
+
+
     ];
 
     const products = await Promise.all(
@@ -163,7 +201,9 @@ async function createInitialUsers() {
     const usersToCreate = [
       { firstName: "Mandy", lastName: "Lara", email: "mlara01@gmail.com",username: "mandy.lara", password: "lara2020" },
       { firstName: "Sal", lastName: "Medina", email: "salthepal@yahoo.com",username: "salthepal", password: "sal1234" },
-      { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021", isAdmin: true },
+      { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021", isAdmin:true },
+      { firstName: "Cody", lastName: "Banks", email: "cody@gmail.com",username: "cody", password: "cody2021"},
+      { firstName: "Heidi", lastName: "Klum", email: "heidi@gmail.com",username: "heidi", password: "cody2021"},
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
     console.log("Users created:");
@@ -184,9 +224,13 @@ try {
     },
     {
       status: "created",
+      userId: 3,
+  },
+    {
+      status: "created",
       userId: 1,
   },{
-    status: "created",
+    status: "completed",
     userId: 1,
 }];
 const orders = await Promise.all( ordersCreated.map((order) => createOrder(order)))
@@ -230,6 +274,12 @@ async function createInitialOrderProducts() {
         orderId: 1,
         price: 10.99,
         quantity: 1
+      },
+      {
+        productId: 6,
+        orderId: 4,
+        price: 200,
+        quantity: 2
       }
     ];
 
@@ -300,8 +350,8 @@ async function testDB(){
 
 
 
-    //     const updatedOrder= await updateOrder({id :1, status: "in-progress", userId: 3}) 
-    // console.log("updatedOrder Result:", updatedOrder);
+        const getCart= await getCartByUser(2) 
+    console.log("getCartByUser Result:", getCart);
 
     // const updatedOrderProduct= await updateOrderProduct({id :5, price: 10.99, quantity: 2}) 
     // console.log("updatedOrderProduct Result:", updatedOrderProduct);
@@ -312,11 +362,19 @@ async function testDB(){
     // const addedOPTWO= await addProductToOrder({orderId: 2, productId: 2, price: 18.99, quantity : 1}) 
     // console.log("addProductToOrder Result:", addedOPTWO);
     
-    const orderProduct= await getOrderProductsByOrder({orderId: 1}) 
+    const orderProduct= await getOrderProductsByOrder(1) 
     console.log("getOrderProductsByOrder Result:", orderProduct);
 
     const orderProductId= await getOrderProductById(5) 
     console.log("getOrderProductById Result:", orderProductId);
+    // This worked
+    // console.log("get an oldProduct")
+    // const oldProduct = await getProductById(6)
+    // console.log("get oldProduct Result:", oldProduct)
+    // console.log("start to update an oldProduct")
+    // const updatedProduct = await updateProduct({id:6, name:"New Salary Manager", price:5000, instock:'false'})
+    // console.log("Update an oldProduct Result:", updatedProduct)
+    
     
   } catch(error){
     throw error

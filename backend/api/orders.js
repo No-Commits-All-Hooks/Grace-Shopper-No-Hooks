@@ -1,5 +1,7 @@
+const { CompareSharp } = require("@material-ui/icons");
 const express = require("express");
 const ordersRouter = express.Router();
+
 const {
   getAllOrders,
   getCartByUser,
@@ -8,33 +10,36 @@ const {
   updateOrder,
   cancelOrder,
   getOrderById,
+  addProductToOrder,
+  getUserById,
 } = require("../db");
 const { requireUser, requireAdmin } = require("./utils");
 
--(
+
   //Return a list of orders, include the products with them
   //admin only - create middlewear. need auth. token specific for admins
-  ordersRouter.get("/", requireAdmin, async (req, res, next) => {
+ordersRouter.get("/", requireAdmin, async (req, res, next) => {
     try {
       const orders = await getAllOrders();
       res.send(orders);
     } catch ({ name, message }) {
         next({ name, message });
       }
-  })
-);
+  }
+)
 
 //Return the current user's order with status='created' (synonymous to a 'cart'). Use database adapter getCartByUser
 
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
-  const { id: userId } = req.user;
-
-  console.logz("REQ.USER:", req.user);
+  const {id} = req.user;
 
   try {
-    const cart = await getCartByUser(userId);
-    res.send(cart);
-  } catch ({ name, message }) {
+    let cart = await getCartByUser(id);
+    if (!cart){
+     return cart = []  
+    }
+    res.send(cart); 
+  } catch ({ name, message }) { 
     next({ name, message });
   }
   
@@ -42,20 +47,18 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
 
 //Create a new order. Should initially be status = created.
 ordersRouter.post("/", requireUser, async (req, res, next) => {
-  const { id: userId } = req.user;
-  const { status } = req.body;
+  const id  = req.user.id;
+  let { status } = req.body;
 
-  if (!userId || !status) {
-    throw Error(`Missing information`);
-  }
 
   try {
-    const order = await createOrder({ status, userId });
+  
+    const order = await createOrder( status, id );
 
     if (!order) {
       next({
         name: "failedToCreate",
-        message: "Error placing new order",
+        message: "Error creating new order",
       });
     } else {
       res.send(order);
@@ -98,6 +101,12 @@ ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
         message: `No order exists with id ${orderId}`,
       });
     } else {
+      if (req.user.id !== findOrder.userId) {
+        next({
+          name: "Unauthorized",
+          message: "You cannot edit this order!",
+        });
+      }
       const { status, userId } = req.body;
       const updatedOrder = await updateOrder({ id: orderId, status, userId });
 
@@ -105,8 +114,8 @@ ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
         res.send(updatedOrder);
       } else {
         next({
-          name: "FailedToUpdate",
-          message: "There was an error updating your order",
+          name: "Unauthorized",
+          message: "You cannot edit this order!",
         });
       }
     }
@@ -141,4 +150,32 @@ ordersRouter.delete("/:orderId", requireUser, async (req, res, next) => {
     next({ name, message });
   }
 });
+
+
+// Add a single product to an order (using order_products). Prevent duplication on ("orderId", "productId") pair. If product already exists on order, increment quantity and update price.
+
+ordersRouter.post("/:orderId/products",requireUser,async (req, res, next) => {
+  const { orderId } = req.params;
+  const { productId, price, quantity } = req.body;
+  try {
+    const addedOrderProduct = await addProductToOrder({
+      orderId,
+      productId,
+      price,
+      quantity, 
+    });
+    if (addedOrderProduct) {
+      res.send(addedOrderProduct);
+    } else {
+      next({
+        name: "FailedToAdd",
+        message: "There was an error adding product to order",
+      });
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+}
+);
+
 module.exports = ordersRouter;

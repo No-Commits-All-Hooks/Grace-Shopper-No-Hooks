@@ -37,7 +37,7 @@ async function getAllOrders() {
 
 // select and return an array of orders made by user, include their products
 
-async function getOrdersByUser({ id }) {
+async function getOrdersByUser( id ) {
   try {
     const { rows: orders } = await client.query(
       `
@@ -58,7 +58,7 @@ async function getOrdersByUser({ id }) {
 
 // select and return an array of orders which have a specific productId in their order_products join, include their products
 
-async function getOrdersByProduct({ id }) {
+async function getOrdersByProduct( id ) {
   try {
     const { rows: orders } = await client.query(
       `
@@ -77,8 +77,16 @@ async function getOrdersByProduct({ id }) {
   }
 }
 
-async function getCartByUser({ id }) {
+async function getCartByUser( id ) {
+
+
   try {
+    const usersOrders = await getOrdersByUser(id);
+
+    if (!usersOrders){
+      return 
+    }
+
     const {
       rows: [orders],
     } = await client.query(
@@ -86,29 +94,29 @@ async function getCartByUser({ id }) {
         SELECT orders.*, username AS "creatorName"
         FROM orders
         JOIN users ON users.id = orders."userId" 
-        WHERE "userId"= $1;
+        WHERE "userId"= $1 AND status = 'created';
         `,
       [id]
     );
-
     const { rows: products } = await client.query(`
         SELECT *
         FROM products
         JOIN order_products ON order_products."productId" = products.id;
         `);
 
-    const productsToAdd = products.filter(
+    const productsToAdd = products? products.filter(
       (product) => product.orderId === orders.id
-    );
+    ): null ;
     orders.products = productsToAdd;
 
     return orders;
+
   } catch (error) {
     throw error;
   }
 }
 
-async function createOrder({ status, userId }) {
+async function createOrder(status, userId ) {
   try {
     const {
       rows: [order],
@@ -153,7 +161,7 @@ async function updateOrder({ id, status, userId }) {
 }
 
 //Find the order with id equal to the passed in id. Only update the status to completed. Return the updated order
-async function completeOrder({ id }) {
+async function completeOrder( id ) {
   const order = getOrderById(id);
   try {
     if (!order) {

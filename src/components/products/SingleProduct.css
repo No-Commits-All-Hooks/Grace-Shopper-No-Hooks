@@ -1,6 +1,10 @@
 
-.product-card {
-
+.product-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 10px;
+    padding: 15px;
 }
 
 /*this is for the div*/

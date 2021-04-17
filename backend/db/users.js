@@ -110,10 +110,71 @@ async function getUser({ username, password }) {
 }
 
 
+const updateUser = async ({id: userId ,firstname, lastname, imageurl, username, password, isAdmin}) => {
+  //need this for creating password
+  const SALT_COUNT = 10;
+  //start with an empty opject and build it based on variables admin passes in to update
+  const updateFields = {};
+
+  if (firstname) {
+      updateFields.firstname = firstname;
+  };
+
+  if (lastname) {
+      updateFields.lastname = lastname;
+  };
+
+  if (imageurl) {
+    updateFields.imageurl = imageurl;
+};
+
+if (username) {
+  updateFields.username = username;
+};
+//can the password be changed. Yes, just make sure to hash it with bcrypt
+if (password) {
+
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+
+  updateFields.password = hashedPassword;
+};
+if (isAdmin) {
+  updateFields.isAdmin = isAdmin;
+};
+
+
+//builds a string based on what was passed in. this will be used in your SQL
+  const setString = Object.keys(updateFields).map(
+      (key, index) => `"${key}"=$${index + 1}`
+  ).join(', ');
+//if there is nothing return it. nothing to do here
+  if (setString.length === 0) {
+      return;
+  };
+ //this line Object.values(updateFields) grabs the values of the object you built earlier
+  try {
+      const {rows: [user]} = await client.query(`
+          UPDATE users
+          SET ${setString}
+          WHERE id=${userId}
+          RETURNING *;
+      `, Object.values(updateFields));
+
+      return user;
+  } catch (error) {
+      throw Error(`Error while updating product: ${error}`);
+  };
+};
+
+
+
+
+
 module.exports = {
   createUser,
   getUser, 
   getUserByUsername,
   getAllUsers,
-  getUserById
+  getUserById,
+  updateUser
 };
