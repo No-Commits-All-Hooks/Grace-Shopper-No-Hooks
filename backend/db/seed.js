@@ -5,6 +5,7 @@ const { createProducts,
         getAllUsers, 
         getUser,
         getUserById,
+        updateUser,
         getOrderById,
         getAllOrders,
         getOrdersByUser,
@@ -12,14 +13,22 @@ const { createProducts,
         getCartByUser,
         createOrder,
         getAllProducts,
+        updateProduct,
         getOrderProductById,
         addProductToOrder,
         updateOrderProduct,
+        getProductById,
         destroyOrderProduct,
         updateOrder,
         completeOrder,
         cancelOrder,
-        getOrderProductsByOrder
+        getOrderProductsByOrder,
+        getReviewById,
+        getReviewsByUser,
+        getReviewsByProductId,
+        deleteReview,
+        updateReview,
+        createReview
 } = require('./');
 
 async function dropTables() {
@@ -86,6 +95,18 @@ async function createTables() {
       );
       `);
 
+    await client.query(`
+      CREATE TABLE reviews (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        content VARCHAR(255) NOT NULL,
+        stars INTEGER NOT NULL,
+        CHECK (stars >= 0 AND stars <= 5),
+        "userId" INTEGER REFERENCES users(id),
+        "productId" INTEGER REFERENCES products(id)
+      );
+    `);
+
     console.log('Finished building tables!');
   } catch (error) {
     console.error('Error building tables!');
@@ -127,6 +148,41 @@ async function createInitialProducts() {
         inStock: true,
         category: 'Hats',
       },
+
+      {
+        name: 'Blue Armada Sling Backpack',
+        description: 'Sling back backpack with FullStack Academy logo',
+        price: 10.99,
+        imageURL: 'https://postimg.cc/TKDzmQ3G',
+        inStock: true,
+        category: 'Accesories',
+      },
+      {
+        name: 'Black Hoodie',
+        description: 'Black hoodie with FullStack Academys logo. Worn by many of your instructors.',
+        price: 34.99,
+        imageURL: 'https://postimg.cc/0bmvGtbZ',
+        inStock: true,
+        category: 'Clothing',
+      },
+      {
+        name: 'Salary booster - AKA: "Money Shovel',
+        description: 'Make sure to add to your cart. Upon graduation you are most likely to need this shovel to carry your programmers money to the bank. (NOTICE: Salary NOT guaranteed upon graduation, but discussed quite a bit during course).',
+        price: 100.00,
+        imageURL: 'https://postimg.cc/14BwmH9C',
+        inStock: true,
+        category: 'Accesories',
+      },
+      {
+        name: 'Salary Mover - AKA: "Take it to the Bank',
+        description: 'Make sure to add to your cart if you got Salary Booster. Upon graduation you are most likely to need this take your new money. (NOTICE: Salary NOT guaranteed upon graduation, but discussed quite a bit during course).',
+        price: 400.00,
+        imageURL: 'https://postimg.cc/xcF01Drx',
+        inStock: true,
+        category: 'Accesories',
+      },
+
+
     ];
 
     const products = await Promise.all(
@@ -145,7 +201,9 @@ async function createInitialUsers() {
     const usersToCreate = [
       { firstName: "Mandy", lastName: "Lara", email: "mlara01@gmail.com",username: "mandy.lara", password: "lara2020" },
       { firstName: "Sal", lastName: "Medina", email: "salthepal@yahoo.com",username: "salthepal", password: "sal1234" },
-      { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021", isAdmin: true },
+      { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021", isAdmin:true },
+      { firstName: "Cody", lastName: "Banks", email: "cody@gmail.com",username: "cody", password: "cody2021"},
+      { firstName: "Heidi", lastName: "Klum", email: "heidi@gmail.com",username: "heidi", password: "cody2021"},
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
     console.log("Users created:");
@@ -166,9 +224,13 @@ try {
     },
     {
       status: "created",
+      userId: 3,
+  },
+    {
+      status: "created",
       userId: 1,
   },{
-    status: "created",
+    status: "completed",
     userId: 1,
 }];
 const orders = await Promise.all( ordersCreated.map((order) => createOrder(order.status, order.userId)))
@@ -212,6 +274,12 @@ async function createInitialOrderProducts() {
         orderId: 1,
         price: 10.99,
         quantity: 1
+      },
+      {
+        productId: 6,
+        orderId: 4,
+        price: 200,
+        quantity: 2
       }
     ];
 
@@ -223,6 +291,40 @@ async function createInitialOrderProducts() {
   }
 }
 
+async function createInitialReviews() {
+  try {
+    console.log("Starting to add reviews.");
+    const reviewsToCreate = [
+      {
+        title: "I Got Mugged!",
+        content: "My mug was cracked upon arrival. I want a refund immediately!",
+        stars: 0,
+        userId: 2,
+        productId: 1
+      },
+      {
+        title: "I'll be back!",
+        content: "Great backpack, lightweight but sturdy. Perfect for all my school supplies.",
+        stars: 5,
+        userId: 1,
+        productId: 2
+      },
+      {
+        title: "Not sure we mesh",
+        content: "Hat looks great, but it is a little too small for my head. Otherwise, can't complain.",
+        stars: 3,
+        userId: 3,
+        productId: 3
+      }
+    ];
+
+    const reviews = await Promise.all(reviewsToCreate.map((review) => createReview(review)));
+    console.log("Reviews Added: ", reviews);
+    console.log("Finished adding reviews.");
+  } catch(error) {
+    throw error;
+  }
+}
 
 async function rebuildDB() {
   try {
@@ -234,6 +336,7 @@ async function rebuildDB() {
     await createInitialUsers();
     await createInitialOrders();
     await createInitialOrderProducts();
+    await createInitialReviews();
   } catch (error) {
     console.log('Error during rebuildDB');
 
@@ -265,6 +368,14 @@ async function testDB(){
 
     // const orderProductId= await getOrderProductById(5) 
     // console.log("getOrderProductById Result:", orderProductId);
+    // This worked
+    // console.log("get an oldProduct")
+    // const oldProduct = await getProductById(6)
+    // console.log("get oldProduct Result:", oldProduct)
+    // console.log("start to update an oldProduct")
+    // const updatedProduct = await updateProduct({id:6, name:"New Salary Manager", price:5000, instock:'false'})
+    // console.log("Update an oldProduct Result:", updatedProduct)
+    
     
   } catch(error){
     throw error

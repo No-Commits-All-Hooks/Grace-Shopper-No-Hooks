@@ -3,7 +3,7 @@ const usersRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
-const { requireUser } = require("./utils");
+const { requireUser, requireAdmin } = require("./utils");
 
 const {
   createUser,
@@ -11,8 +11,10 @@ const {
   getUser,
   getUserById,
   getOrderById,
+  getAllUsers,
   getCartByUser,
   getOrdersByUser,
+  updateUser
 } = require("../db");
 
 usersRouter.post("/login", async (req, res, next) => {
@@ -116,6 +118,20 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
     next(error);
   }
 });
+
+//this is for Admins to see all users, make sure they are an admin!!
+usersRouter.get("/", requireAdmin, async (req, res, next) => {
+  
+  try{
+    const users = await getAllUsers();
+    res.send(users);
+
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+  
+};
+
 
 usersRouter.get("/:userId/orders", requireUser, async (req, res, next) => {
   const { userId } = req.params;
