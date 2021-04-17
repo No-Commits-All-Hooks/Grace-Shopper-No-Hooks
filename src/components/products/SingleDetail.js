@@ -110,9 +110,18 @@ const SingleDetail = ({
             Add To Cart
           </Button>
         </section>
-      </div>
-    </>
-  );
+
+        <div className='single-product-card'>
+            <img src={product.imageurl} className="product-image" alt={product.name}/>
+            <section className="product-details">
+             <h1> {product.name} </h1>
+             <div>Price : ${product.price}</div>
+             <div> Description: { product.description }</div>
+             <button onClick ={() => history.push(`/products/${productId}/review/create`)}>Add A Review</button>
+             </section>
+        </div>
+        </>
+    );
 };
 
 export default SingleDetail;

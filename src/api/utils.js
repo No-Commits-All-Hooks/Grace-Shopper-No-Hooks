@@ -17,6 +17,73 @@ export const fetchUserData = async (token) => {
 };
 
 
+export const fetchReviews = async (productId, token) => {
+    try {
+        const data = await callApi({
+            url: `/products/${productId}`,
+            token: token
+        });
+
+        return data;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const createReview = async (title, content, stars, productId, token) => {
+    try {
+        const data = await callApi({
+            url: `/products/${productId}/review/create`,
+            method: 'POST',
+            body: {
+                title,
+                content,
+                stars
+            },
+            token: token
+        });
+
+        return data;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const updateReview = async (reviewId, title, content, stars, token) => {
+    try {
+        const data = await callApi({
+            url: `/products/review/${reviewId}/edit`,
+            method: 'PATCH',
+            body: {
+                id: reviewId,
+                title,
+                content,
+                stars
+            },
+            token: token
+        });
+
+        return data;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+export const deleteReview = async (reviewId, token) => {
+    try {
+        const data = await callApi({
+            url: `/products/review/${reviewId}/delete`,
+            method: 'DELETE',
+            token: token
+        });
+
+        return data;
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+
 
 export const fetchAllProducts = async () => {
     const data = await callApi({
@@ -37,7 +104,7 @@ export const fetchAllProducts = async () => {
     } catch(error) {
         console.error(error);
     };
-  };
+
 
   export const createOrder = async (token) =>{
       try{
@@ -48,10 +115,10 @@ export const fetchAllProducts = async () => {
           })
           return data
       } catch(error){
-        console.error(error); d
+        console.error(error);
 
       }
-  }
+  };
 
 export const fetchUserOrders = async (userId, token) => {
     try {
