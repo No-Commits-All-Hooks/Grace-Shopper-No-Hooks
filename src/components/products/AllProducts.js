@@ -19,7 +19,7 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
   return (
     <main className="all-products-container">
       <div>
-        <h1>Still need to add some stuff in here for All Products</h1>
+
       </div>
       <div className="product-list">
         {products ? (
