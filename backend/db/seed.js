@@ -314,13 +314,6 @@ async function testDB(){
     // const updatedProduct = await updateProduct({id:6, name:"New Salary Manager", price:5000, instock:'false'})
     // console.log("Update an oldProduct Result:", updatedProduct)
     
-    console.log("get userby id (4)")
-    const currentUser = await getUserById(5)
-    console.log("get user Result:", currentUser)
-    console.log("start to update an user")
-    const updatedUser = await updateUser({id:5, firstname:"Esther", lastname:"Sullivan", password:'newpassword'})
-    console.log("Update user Result:", updatedUser)
-
     
   } catch(error){
     throw error
