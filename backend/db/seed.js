@@ -156,7 +156,7 @@ async function createInitialProducts() {
       },
       {
         name: 'Salary Mover - AKA: "Take it to the Bank',
-        description: 'Make sure to add to your cart if you got Salary Booster. Upon graduation you are most likely to need this take your new money. But try to get direct deposit to make your life easier (NOTICE: Salary NOT guaranteed upon graduation, but discussed quite a bit during course).',
+        description: 'Make sure to add to your cart if you got Salary Booster. Upon graduation you are most likely to need this take your new money. (NOTICE: Salary NOT guaranteed upon graduation, but discussed quite a bit during course).',
         price: 400.00,
         imageURL: 'https://postimg.cc/xcF01Drx',
         inStock: true,
