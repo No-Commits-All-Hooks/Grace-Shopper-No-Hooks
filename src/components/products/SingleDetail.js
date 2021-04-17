@@ -28,7 +28,7 @@ const SingleDetail = ({
     : null;
   // console.log('PRODUCTS', product)
   // console.log('TOKEN SINGLE DETAIL', token)
-  console.log("userData SINGLE DETAIL", userData);
+  console.log("USER CART SINGLE DETAIL", userCart);
 
   const { price } = product ? product : <h1>LOADING</h1>;
 
@@ -36,10 +36,28 @@ const SingleDetail = ({
   const findOrder= myOrders? myOrders.find((order) => order.status = 'created') : null
 
   const addProduct = async () => {
-    if (token){
+
+    if (!token){
+      const newProductAdded= {
+        name: product.name,
+        imageurl: product.imageurl,
+        description: product.description,
+        productId: product.id,
+        orderProductId: productId,
+        price: product.price,
+        quantity: quantity,
+      }
+      guestCart.push(newProductAdded);
+      setGuestCart(guestCart)
+      console.log("GuestCart after being set", guestCart)  
+      localStorage.setItem('guestCart', JSON.stringify(guestCart));
+              console.log('guest cart local', guestCart)
+
+    }
+    else if (token){
       const userId = userData.id 
 
-        if (userCart &&userCart.products ) {
+        if (userCart) {
           const body = {
             productId: productId,
             price: price,
@@ -50,7 +68,7 @@ const SingleDetail = ({
           // setUserCart([...userProducts, newOrderProduct])
           setUserCart([...userCart.products, newOrderProduct]);
           setMyOrderProducts([...findOrder.products, newOrderProduct]);
-          console.log("findOrder updated", findOrder);
+          console.log("updated order ", findOrder);
 
 
         } else {
@@ -72,8 +90,11 @@ const SingleDetail = ({
 
             // newUserCart.push(newOrderProduct);
             // setUserCart(newUserCart);
-            // console.log("Created Order SINGLE DETAIL", newUserCart);
+            console.log("Created Order SINGLE DETAIL", newUserCart);
         }
+
+        localStorage.setItem('userCart', JSON.stringify(userCart));
+
     }
     };
 

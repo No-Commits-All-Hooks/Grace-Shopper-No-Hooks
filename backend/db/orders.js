@@ -116,7 +116,7 @@ async function getCartByUser( id ) {
   }
 }
 
-async function createOrder(status, userId ) {
+async function createOrder(status, userId) {
   try {
     const {
       rows: [order],

@@ -52,6 +52,25 @@ const App = () => {
   //Need to set userData to get user related data
   const [userData, setUserData] = useState({});
 
+  useEffect(async () =>{
+    const guestCart = localStorage.getItem('guestCart')
+    const userCart = localStorage.getItem('userCart')
+
+    if (guestCart){
+      console.log('guest cart local', guestCart)
+      localStorage.setItem('guestCart', JSON.stringify(guestCart));
+      return JSON.parse(guestCart)
+      
+    }
+    if (userCart){
+      console.log('user Cart cart local', userCart)
+
+      localStorage.setItem('userCart', JSON.stringify(userCart));
+      return JSON.parse(userCart)
+    }
+  }, [])
+
+
   useEffect(async () => {
     const allProducts = await fetchAllProducts();
 
@@ -151,7 +170,14 @@ const App = () => {
             />
           </Route>
           <Route path="/cart">
-            <Cart userCart={userCart} setUserCart={setUserCart} />
+            <Cart 
+            myOrders= {myOrders}
+            userCart={userCart} 
+            setUserCart={setUserCart}
+            guestCart= {guestCart}
+            setGuestCart= {setGuestCart}
+            token = {token}
+             />
           </Route>
           <Route path="/myaccount">
             <UserAccount userData={userData} />
