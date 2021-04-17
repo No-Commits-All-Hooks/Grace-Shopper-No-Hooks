@@ -29,9 +29,11 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
+const isAuthorized = (userId, user) => user.isAdmin || user.userId === userId;
+
 
   module.exports = {
     requireUser,
-    requireAdmin
-    
+    requireAdmin,
+    isAuthorized
   }
