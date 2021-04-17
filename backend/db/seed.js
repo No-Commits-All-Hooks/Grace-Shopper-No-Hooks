@@ -5,6 +5,7 @@ const { createProducts,
         getAllUsers, 
         getUser,
         getUserById,
+        updateUser,
         getOrderById,
         getAllOrders,
         getOrdersByUser,
@@ -175,6 +176,8 @@ async function createInitialUsers() {
       { firstName: "Mandy", lastName: "Lara", email: "mlara01@gmail.com",username: "mandy.lara", password: "lara2020" },
       { firstName: "Sal", lastName: "Medina", email: "salthepal@yahoo.com",username: "salthepal", password: "sal1234" },
       { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021", isAdmin:true },
+      { firstName: "Cody", lastName: "Banks", email: "cody@gmail.com",username: "cody", password: "cody2021"},
+      { firstName: "Heidi", lastName: "Klum", email: "heidi@gmail.com",username: "heidi", password: "cody2021"},
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
     console.log("Users created:");
@@ -310,6 +313,7 @@ async function testDB(){
     // console.log("start to update an oldProduct")
     // const updatedProduct = await updateProduct({id:6, name:"New Salary Manager", price:5000, instock:'false'})
     // console.log("Update an oldProduct Result:", updatedProduct)
+    
     
   } catch(error){
     throw error
