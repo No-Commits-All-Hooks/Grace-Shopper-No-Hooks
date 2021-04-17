@@ -104,7 +104,11 @@ export const fetchAllProducts = async () => {
     } catch(error) {
         console.error(error);
     };
+
   }
+
+  };
+
 
   export const createOrder = async (token) =>{
       try{
@@ -163,4 +167,3 @@ export const deleteOrderProduct = async (orderProductId, token ) =>{
   }
 }
 
- 

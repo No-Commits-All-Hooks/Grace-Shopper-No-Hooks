@@ -112,25 +112,7 @@ const SingleDetail = ({
           Return to all products
         </button>
       </section>
-      <div className="single-product-card">
-        <img
-          src={product.imageurl}
-          className="product-image"
-          alt={product.name}
-        />
-        <section className="product-details">
-          <h1> {product.name} </h1>
-          <div>Price : ${product.price}</div>
-          <div> Description: {product.description}</div>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="small"
-            onClick={addProduct}
-          >
-            Add To Cart
-          </Button>
-        </section>
+     
 
         <div className='single-product-card'>
             <img src={product.imageurl} className="product-image" alt={product.name}/>
@@ -138,11 +120,24 @@ const SingleDetail = ({
              <h1> {product.name} </h1>
              <div>Price : ${product.price}</div>
              <div> Description: { product.description }</div>
+             <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={addProduct}
+          >
+            Add To Cart
+          </Button>
              <button onClick ={() => history.push(`/products/${productId}/review/create`)}>Add A Review</button>
+         
              </section>
         </div>
+
         </div>
         </>
+
+      </>  
+
     );
 };
 

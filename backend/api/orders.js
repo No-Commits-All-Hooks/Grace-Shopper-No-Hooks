@@ -160,6 +160,7 @@ ordersRouter.post("/:orderId/products",requireUser,async (req, res, next) => {
   productId = parseInt(productId) 
 
   try {
+
     const addedOrderProduct = await addProductToOrder({
       orderId,
       productId,

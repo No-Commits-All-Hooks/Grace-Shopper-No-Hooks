@@ -146,7 +146,7 @@ const App = () => {
             />
           </Route>
 
-          <Route path="/products">
+          <Route exact path="/products">
             <AllProducts
               allProducts={allProducts}
               userCart={userCart}
@@ -156,7 +156,7 @@ const App = () => {
               userData={userData}
             />
           </Route>
-          <Route path="/product/:productId">
+          <Route exact path="/products/:productId">
             <SingleDetail
               allProducts={allProducts}
               userCart={userCart}
