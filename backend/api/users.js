@@ -13,6 +13,7 @@ const {
   getOrderById,
   getCartByUser,
   getOrdersByUser,
+  updateUser
 } = require("../db");
 
 usersRouter.post("/login", async (req, res, next) => {
