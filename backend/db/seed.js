@@ -19,7 +19,13 @@ const { createProducts,
         updateOrder,
         completeOrder,
         cancelOrder,
-        getOrderProductsByOrder
+        getOrderProductsByOrder,
+        getReviewById,
+        getReviewsByUser,
+        getReviewsByProductId,
+        deleteReview,
+        updateReview,
+        createReview
 } = require('./');
 
 async function dropTables() {
@@ -85,6 +91,18 @@ async function createTables() {
         quantity INTEGER NOT NULL DEFAULT 0
       );
       `);
+
+    await client.query(`
+      CREATE TABLE reviews (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        content VARCHAR(255) NOT NULL,
+        stars INTEGER NOT NULL,
+        CHECK (stars >= 0 AND stars <= 5),
+        "userId" INTEGER REFERENCES users(id),
+        "productId" INTEGER REFERENCES products(id)
+      );
+    `);
 
     console.log('Finished building tables!');
   } catch (error) {
@@ -223,6 +241,40 @@ async function createInitialOrderProducts() {
   }
 }
 
+async function createInitialReviews() {
+  try {
+    console.log("Starting to add reviews.");
+    const reviewsToCreate = [
+      {
+        title: "I Got Mugged!",
+        content: "My mug was cracked upon arrival. I want a refund immediately!",
+        stars: 0,
+        userId: 2,
+        productId: 1
+      },
+      {
+        title: "I'll be back!",
+        content: "Great backpack, lightweight but sturdy. Perfect for all my school supplies.",
+        stars: 5,
+        userId: 1,
+        productId: 2
+      },
+      {
+        title: "Not sure we mesh",
+        content: "Hat looks great, but it is a little too small for my head. Otherwise, can't complain.",
+        stars: 3,
+        userId: 3,
+        productId: 3
+      }
+    ];
+
+    const reviews = await Promise.all(reviewsToCreate.map((review) => createReview(review)));
+    console.log("Reviews Added: ", reviews);
+    console.log("Finished adding reviews.");
+  } catch(error) {
+    throw error;
+  }
+}
 
 async function rebuildDB() {
   try {
@@ -234,6 +286,7 @@ async function rebuildDB() {
     await createInitialUsers();
     await createInitialOrders();
     await createInitialOrderProducts();
+    await createInitialReviews();
   } catch (error) {
     console.log('Error during rebuildDB');
 
