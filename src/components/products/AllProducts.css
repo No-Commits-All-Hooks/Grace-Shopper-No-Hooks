@@ -1,7 +1,7 @@
 
 .all-products-container{
     display:flex;
-    flex-direction: column;
+    flex-flow: column ;
     width: 100%;
     margin: auto;
 }
