@@ -36,7 +36,7 @@ console.log("usetstate of cart", cart);
              <h1> {product.name} </h1>
              <div>Price : ${product.price}</div>
              <div> Description: { product.description }</div>
-            
+             <button onClick ={() => history.push(`/products/${productId}/review/create`)}>Add A Review</button>
              </section>
         </div>
         </>

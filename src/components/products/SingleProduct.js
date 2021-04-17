@@ -34,7 +34,7 @@ const SingleProduct = ({ product, id, name, price, imageurl, instock, setUserCar
   return (
     <div className="product-card">
     <div className="product-image">
-    <Link to={`/product/${id}`}><img src={imageurl} className="product-image" alt={name}/></Link>
+    <Link to={`/products/${id}`}><img src={imageurl} className="product-image" alt={name}/></Link>
     </div>
     <div className="product-header-container">
       <h2>{name}</h2>

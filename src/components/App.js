@@ -75,8 +75,8 @@ const App = () => {
   useEffect(async () => {
     const products = await fetchAllProducts();
 
-    if (products) {
-      setProducts(products);
+    if (products && Array.isArray(products.products)) {
+      setProducts({allProducts: products.products});
     }
 
     //check to see if there is a token and try to set it on localStorage
@@ -131,7 +131,7 @@ const App = () => {
             />
           </Route>
 
-          <Route path="/products">
+          <Route exact path="/products">
             <AllProducts 
             products={products}
             userCart= {userCart}
@@ -141,7 +141,7 @@ const App = () => {
             userData = {userData}
             />
           </Route>
-          <Route path="/product/:productId">
+          <Route exact path="/products/:productId">
             <SingleDetail products={products} 
             userCart= {userCart}
             setUserCart = {setUserCart}
