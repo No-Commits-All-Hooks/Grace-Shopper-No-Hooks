@@ -1,4 +1,3 @@
-const { CompareSharp } = require("@material-ui/icons");
 const express = require("express");
 const ordersRouter = express.Router();
 
@@ -47,13 +46,14 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
 
 //Create a new order. Should initially be status = created.
 ordersRouter.post("/", requireUser, async (req, res, next) => {
-  const id  = req.user.id;
+  const{ id}  = req.user;
   let { status } = req.body;
 
-
+console.log('user id api', id)
   try {
-  
-    const order = await createOrder( status, id );
+  status = 'created'
+
+    const order = await createOrder( status, id);
 
     if (!order) {
       next({
@@ -156,16 +156,21 @@ ordersRouter.delete("/:orderId", requireUser, async (req, res, next) => {
 
 ordersRouter.post("/:orderId/products",requireUser,async (req, res, next) => {
   const { orderId } = req.params;
-  const { productId, price, quantity } = req.body;
-    try {
+  let { productId, price, quantity } = req.body;
+  productId = parseInt(productId) 
+
+  try {
+
     const addedOrderProduct = await addProductToOrder({
       orderId,
       productId,
       price,
-      quantity, 
-    });
+      quantity, }
+    );
     if (addedOrderProduct) {
       res.send(addedOrderProduct);
+
+      console.log('addedOrderProduct', addedOrderProduct)
     } else {
       next({
         name: "FailedToAdd",
