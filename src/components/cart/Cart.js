@@ -34,12 +34,10 @@ const onToken = (amount) => async (token) => {
 
 const Cart = ({ userCart, setUserCart, guestCart, setGuestCart }) => {
   const classes = useStyles();
-  // const history= useHistory()
-  // const {postId} = useParams();
-  // const post = posts.find((post) => postId === post._id);
-  // const userId= userData._id
+ 
 
   console.log("userCart:", userCart);
+  const {products}= userCart;
 
   // const handleDelete = async ()=>{
   //     const {success} = await callApi ({
@@ -57,13 +55,15 @@ const Cart = ({ userCart, setUserCart, guestCart, setGuestCart }) => {
 
   return (
     <div className="cart-container">
-      {userCart.length > 0 ? (
-        userCart.map(({ id, imageurl, name, price }) => {
+        <StripeCheckout token={onToken(1000000)} stripeKey={STRIPE_KEY} name="Fullstack Academy Shop" amount={1000000} currency={CURRENCY} shippingAddress />
+      {products? (
+        products.map(({ id, imageurl, name, price, quantity }) => {
           return (
             <div className="each-product-cart" key={id}>
               <img src={imageurl} width="150px" height="150px" />
               <h3>{name}</h3>
               <h4>{price}</h4>
+              <h4>{quantity}</h4>
               <Button
                 size="small"
                 variant="contained"
@@ -75,7 +75,7 @@ const Cart = ({ userCart, setUserCart, guestCart, setGuestCart }) => {
               </Button>
             </div>
           );
-        }, <StripeCheckout token={onToken(1000000)} stripeKey={STRIPE_KEY} name="Fullstack Academy Shop" amount={1000000} currency={CURRENCY} shippingAddress />)
+        })
       ) : (
         <h2>Shopping Cart is Empty</h2>
       )}

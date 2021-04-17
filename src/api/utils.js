@@ -10,36 +10,19 @@ export const fetchUserData = async (token) => {
             url: 'users/me',
             token: token
         });
-        console.log('FETCHUSERDATA', data)
         return data;
     } catch(error) {
         console.error(error);
     };
 };
 
+
+
 export const fetchAllProducts = async () => {
     const data = await callApi({
       url: "products",
     });
     return data;
-  };
-
-//this will add products to an order
-export const addToOrder = async (orderId, body, token) => {
-    try {
-        const data = await callApi({
-          url: `orders/${orderId}/products`,
-          method: 'POST',
-          body: body,
-          token: token
-        });
-        console.log('addToOrder',data)
-
-        return data;
-
-    } catch(error) {
-        console.error(error);
-    };
   };
 
 
@@ -57,22 +40,22 @@ export const addToOrder = async (orderId, body, token) => {
   };
 
   export const createOrder = async (token) =>{
-      const tokenCheck = token? token : null
       try{
           const data = await callApi({
-              url: '/orders',
-              method: 'POST',
-              token: tokenCheck
+              url: 'orders',
+              method: "POST",
+              token:token,
           })
           return data
       } catch(error){
-        console.error(error);
+        console.error(error); d
 
       }
   }
 
 export const fetchUserOrders = async (userId, token) => {
-    try {const userOrders = await callApi({
+    try {
+        const userOrders = await callApi({
       url: `users/${userId}/orders`,
       token,
     });
@@ -98,5 +81,7 @@ export const fetchUserOrders = async (userId, token) => {
       console.error(error);
     };
   };
+
+
 
  

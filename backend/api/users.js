@@ -117,19 +117,16 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
   }
 });
 
-usersRouter.get("/:userId/orders", async (req, res, next) => {
+usersRouter.get("/:userId/orders", requireUser, async (req, res, next) => {
   const { userId } = req.params;
 
   try {
     const user = await getUserById(userId)
     console.log('user backend', user )
     if (user){
-      const orders = await getOrdersByUser(userId);
+      let orders = await getOrdersByUser(userId);
       if (!orders) {
-        next({
-          name: "FailedOrders",
-          message: "No orders available for this user",
-        });
+        orders = []
       }
       res.send(orders);
     }
