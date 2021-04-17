@@ -157,7 +157,7 @@ ordersRouter.delete("/:orderId", requireUser, async (req, res, next) => {
 ordersRouter.post("/:orderId/products",requireUser,async (req, res, next) => {
   const { orderId } = req.params;
   const { productId, price, quantity } = req.body;
-  try {
+    try {
     const addedOrderProduct = await addProductToOrder({
       orderId,
       productId,

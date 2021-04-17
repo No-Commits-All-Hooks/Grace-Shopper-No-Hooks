@@ -36,6 +36,7 @@ async function dropTables() {
     console.log('Starting to drop tables...');
 
     await client.query(`
+            DROP TABLE IF EXISTS reviews;
             DROP TABLE IF EXISTS order_products;
             DROP TABLE IF EXISTS orders;
               DROP TABLE IF EXISTS users;
@@ -99,7 +100,7 @@ async function createTables() {
       CREATE TABLE reviews (
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
-        content VARCHAR(255) NOT NULL,
+        content VARCHAR(500) NOT NULL,
         stars INTEGER NOT NULL,
         CHECK (stars >= 0 AND stars <= 5),
         "userId" INTEGER REFERENCES users(id),
@@ -233,7 +234,7 @@ try {
     status: "completed",
     userId: 1,
 }];
-const orders = await Promise.all( ordersCreated.map((order) => createOrder(order)))
+const orders = await Promise.all( ordersCreated.map((order) => createOrder(order.status, order.getUserById)))
 console.log("Orders Created: ", orders);
 console.log("Finished creating orders.");
 }catch(error){

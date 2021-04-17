@@ -104,7 +104,7 @@ export const fetchAllProducts = async () => {
     } catch(error) {
         console.error(error);
     };
-
+  };
 
   export const createOrder = async (token) =>{
       try{
@@ -151,4 +151,3 @@ export const fetchUserOrders = async (userId, token) => {
 
 
 
- 

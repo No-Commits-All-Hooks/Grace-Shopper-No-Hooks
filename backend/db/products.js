@@ -96,47 +96,47 @@ async function attachProductsToOrders(orders) {
 
 
 // DESTROY PRODUCT
-// const destroyProduct = async (id) => {
-//   //check to see if you have a product id
-//   if (!id) {
-//     return;
-// };
+const destroyProduct = async (id) => {
+  //check to see if you have a product id
+  if (!id) {
+    return;
+};
 
-// //find out if the product is in the order_products
-//   try {
-//     const { rows: products } = await client.query(`
-//     SELECT orders.id, orders.status , order_products."orderId", order_products."productId"
-// FROM orders
-// INNER JOIN order_products ON orders.id=order_products."orderId"
-// WHERE order_products."productId"=$1 and orders.status!='completed'
-//     `, [id] );
-// console.log("any products with comppleted orders", products);
-//     if (products){
-//       // you can't delete the product its part of a completed order
-//       return; 
-//    } else {
-//     await client.query(`
-//     DELETE FROM products
-//     WHERE "id"=$1;
-// `, [id]);
+//find out if the product is in the order_products
+  try {
+    const { rows: products } = await client.query(`
+    SELECT orders.id, orders.status , order_products."orderId", order_products."productId"
+FROM orders
+INNER JOIN order_products ON orders.id=order_products."orderId"
+WHERE order_products."productId"=$1 and orders.status!='completed'
+    `, [id] );
+console.log("any products with comppleted orders", products);
+    if (products){
+      // you can't delete the product its part of a completed order
+      return; 
+   } else {
+    await client.query(`
+    DELETE FROM products
+    WHERE "id"=$1;
+`, [id]);
 
-//    }
+   }
 
 
 
-// //hard delete a product
+//hard delete a product
   
-// // make sure to delete all the order_products whose products is the one being deleted
-// //make sure the orders for the order_products being deleted do not have a status = completed
-// //this gets me all rows with a product that I want ot delete
+// make sure to delete all the order_products whose products is the one being deleted
+//make sure the orders for the order_products being deleted do not have a status = completed
+//this gets me all rows with a product that I want ot delete
 
 
 
 
-//   } catch (error) {
-//       throw Error(`Error while destroying routine: ${error}`);
-//   };
-// };
+  } catch (error) {
+      throw Error(`Error while destroying routine: ${error}`);
+  };
+};
 
 //For admin to update product (everything except product id)
 const updateProduct = async ({id: productId, name,  description, price, imageurl, instock, category}) => {
