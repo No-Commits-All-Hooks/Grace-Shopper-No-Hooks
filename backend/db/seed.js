@@ -171,7 +171,7 @@ try {
     status: "created",
     userId: 1,
 }];
-const orders = await Promise.all( ordersCreated.map((order) => createOrder(order)))
+const orders = await Promise.all( ordersCreated.map((order) => createOrder(order.status, order.userId)))
 console.log("Orders Created: ", orders);
 console.log("Finished creating orders.");
 }catch(error){
@@ -247,23 +247,24 @@ async function testDB(){
 
 
 
-        const getCart= await getCartByUser({id :2}) 
+        const getCart= await getCartByUser(2) 
     console.log("getCartByUser Result:", getCart);
 
     // const updatedOrderProduct= await updateOrderProduct({id :5, price: 10.99, quantity: 2}) 
     // console.log("updatedOrderProduct Result:", updatedOrderProduct);
 
-    const addedOP= await addProductToOrder({orderId: 1, productId: 3, price: 10.99, quantity : 1}) 
-    console.log("addProductToOrder Result:", addedOP);
+    // const addedOP= await addProductToOrder({orderId: 1, productId: 3, price: 10.99, quantity : 1}) 
+    // console.log("addProductToOrder Result:", addedOP);
 
-    // const addedOPTWO= await addProductToOrder({orderId: 2, productId: 2, price: 18.99, quantity : 1}) 
-    // console.log("addProductToOrder Result:", addedOPTWO);
+    const addedOPTWO= await addProductToOrder({orderId: 2, productId: 2, price: 18.99, quantity : 1}) 
+    const addedOPthree= await addProductToOrder({orderId: 2, productId: 2, price: 18.99, quantity : 1}) 
+    console.log("addProductToOrder Result:", addedOPthree);
     
-    const orderProduct= await getOrderProductsByOrder({orderId: 1}) 
+    const orderProduct= await getOrderProductsByOrder(1) 
     console.log("getOrderProductsByOrder Result:", orderProduct);
 
-    const orderProductId= await getOrderProductById(5) 
-    console.log("getOrderProductById Result:", orderProductId);
+    // const orderProductId= await getOrderProductById(5) 
+    // console.log("getOrderProductById Result:", orderProductId);
     
   } catch(error){
     throw error

@@ -82,6 +82,18 @@ export const fetchUserOrders = async (userId, token) => {
     };
   };
 
+export const deleteOrderProduct = async (orderProductId, token ) =>{
+  try{
+    const data = await callApi ({
+      url: `order_products/${orderProductId}`,
+      token: token, 
+      method: 'DELETE'
+    })
+    return data;
 
+  } catch(error){
+    console.error(error)
+  }
+}
 
  

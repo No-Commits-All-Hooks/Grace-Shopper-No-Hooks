@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { Link } from 'react-router-dom';
 import { callApi } from "../../api";
+import { Button } from "@material-ui/core";
+
 
 import "./SingleProduct.css";
 
 const SingleProduct = ({ product, id, name, price, imageurl, instock, setUserCart, userCart, setGuestCart, guestCart, userData, setUseData}) => {
 let [newProducts, setNewProducts]= useState([])
-
+const history = useHistory();
 //   console.log('USERCART single product', userCart)
 
   const addToCart = (el) => {
@@ -54,7 +56,14 @@ let [newProducts, setNewProducts]= useState([])
       <h2>{name}</h2>
     </div>
     <div className="product-price">${price}</div>
-    <div><button onClick={()=> addToCart(product)}>Add To Cart</button></div>
+    <div><Button 
+            variant="outlined"
+            size = "small"
+            color="primary"
+            onClick={()=> history.push(`/product/${id}`) }>
+              View More
+              </Button>
+              </div>
 
     </div>
   );

@@ -5,6 +5,7 @@ import "./Cart.css";
 import StripeCheckout from "react-stripe-checkout";
 import { Paper, Button, makeStyles } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { deleteOrderProduct } from "../../api/utils";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -32,32 +33,46 @@ const onToken = (amount) => async (token) => {
   }
 };
 
-const Cart = ({ userCart, setUserCart, guestCart, setGuestCart }) => {
+const Cart = ({myOrders,  userCart, setUserCart, guestCart, setGuestCart, token }) => {
   const classes = useStyles();
- 
+ const history = useHistory()
 
   console.log("userCart:", userCart);
-  const {products}= userCart;
+  console.log("guestCart:", guestCart);
 
-  // const handleDelete = async ()=>{
-  //     const {success} = await callApi ({
-  //         url: `/posts/${post._id}`,
-  //         token: token,
-  //         method:'DELETE'
-  //     });
-  //     if(success){
-  //         alert('Post Deleted!')
-  //         history.push('/dashboard')
-  //         setPosts([...posts])
+const {products}= userCart
+//   console.log("products:", products);
 
-  //     }
-  // }
+  const deleteOrderProduct = async ()=>{
+    // console.log("productId:", productId);
+
+    
+    const data= await deleteOrderProduct( token);
+
+      if(data.success){
+      alert("Product Deleted!");
+    history.push('/product')
+    setUserCart([...userCart.products, data]);
+      }
+
+
+
+      console.log('data delete', data)
+    //   if (deletedOrderProduct && deletedOrderProduct.success) {
+    //     alert("Product Deleted!");
+    //     setUserCart([...userCart, deletedOrderProduct]);
+    //     history.push("/cart");
+    //   } else {
+    //     alert("Error deleting product");
+    //     history.push("/products");
+    //   }
+  }
 
   return (
     <div className="cart-container">
         <StripeCheckout token={onToken(1000000)} stripeKey={STRIPE_KEY} name="Fullstack Academy Shop" amount={1000000} currency={CURRENCY} shippingAddress />
       {products? (
-        products.map(({ id, imageurl, name, price, quantity }) => {
+        products.map(({ id, imageurl, name, price, quantity, productId}) => {
           return (
             <div className="each-product-cart" key={id}>
               <img src={imageurl} width="150px" height="150px" />
@@ -66,10 +81,11 @@ const Cart = ({ userCart, setUserCart, guestCart, setGuestCart }) => {
               <h4>{quantity}</h4>
               <Button
                 size="small"
-                variant="contained"
-                color="gray"
+                variant="outlined"
+                color="secondary"
                 className={classes.button}
                 startIcon={<DeleteIcon />}
+                onClick = {deleteOrderProduct}
               >
                 Remove
               </Button>
