@@ -38,7 +38,7 @@ if (!instock){
 }
 
 if (!category){
-  throw Error(`Please provide Category status address address for the product. You entered: ${category}`);
+  throw Error(`Please provide Category status for the product. You entered: ${category}`);
 }
 // if you have all fields try to create it
 try{
