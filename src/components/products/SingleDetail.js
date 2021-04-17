@@ -102,7 +102,7 @@ const SingleDetail = ({
     return <div></div>;
   }
   return (
-    <>
+     <>
       <section className="return-home-button">
         <button
           onClick={() => {
@@ -132,7 +132,12 @@ const SingleDetail = ({
          
              </section>
         </div>
+
+        </div>
+        </>
+
       </>  
+
     );
 };
 
