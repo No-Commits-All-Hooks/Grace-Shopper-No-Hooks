@@ -130,7 +130,7 @@ usersRouter.get("/", requireAdmin, async (req, res, next) => {
     next({ name, message });
   }
   
-};
+});
 
 
 usersRouter.get("/:userId/orders", requireUser, async (req, res, next) => {
