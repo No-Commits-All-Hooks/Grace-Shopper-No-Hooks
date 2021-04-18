@@ -59,14 +59,14 @@ const App = () => {
     if (guestCart){
       console.log('guest cart local', guestCart)
       localStorage.setItem('guestCart', JSON.stringify(guestCart));
-      return JSON.parse(guestCart)
+      // return JSON.parse(guestCart)
       
     }
     if (userCart){
       console.log('user Cart cart local', userCart)
 
-      localStorage.setItem('userCart', JSON.stringify(userCart));
-      return JSON.parse(userCart)
+      // localStorage.setItem('userCart', JSON.stringify(userCart));
+      // return JSON.parse(userCart)
     }
   }, [])
 
@@ -113,9 +113,9 @@ const App = () => {
 
   // console.log("all products:", allProducts);
   // console.log("userData for logged in user:", userData);
-  console.log("fetchCart:", userCart);
-  console.log("USER TOKEN:", token);
-  console.log("myOrders :", myOrders);
+  // console.log("fetchCart:", userCart);
+  // console.log("USER TOKEN:", token);
+  // console.log("myOrders :", myOrders);
 
   return (
     <>

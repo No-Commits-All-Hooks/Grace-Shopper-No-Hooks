@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-
-import "./AllProducts.css";
 import SingleProduct from "./SingleProduct";
 import { Paper, Button, makeStyles } from "@material-ui/core";
 
@@ -18,9 +16,7 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
 
   return (
     <main className="all-products-container">
-      <div>
 
-      </div>
       <div className="product-list">
         {products ? (
           products.map((product) => {
