@@ -29,51 +29,40 @@ import {
   addToOrder,
   fetchCart,
   fetchUserOrders,
-  createOrder
+  createOrder,
 } from "../api/utils";
 import axios from "axios";
 
 const App = () => {
   const [allProducts, setProducts] = useState([]);
-
-  // keep track of whats inside the cart of a logged in user
   const [userCart, setUserCart] = useState([]);
-
-  // keep track of whats inside the cart of GUEST user
   const [guestCart, setGuestCart] = useState([]);
 
   //For admin use to get all orders
   const [orders, setOrders] = useState([]);
-  //For individual users to get their orders
   const [myOrders, setMyOrders] = useState([]);
-
-  //Need to set token to verify user
   const [token, setToken] = useState("");
-  //Need to set userData to get user related data
   const [userData, setUserData] = useState({});
 
-  useEffect(async () =>{
-    const guestCart = localStorage.getItem('guestCart')
-    const userCart = localStorage.getItem('userCart')
-
-    if (guestCart){
-      console.log('guest cart local', guestCart)
-      localStorage.setItem('guestCart', JSON.stringify(guestCart));
-      // return JSON.parse(guestCart)
-      
+  useEffect(async () => {
+    let guestCart = localStorage.getItem("guestCart");
+    if (guestCart) {
+      localStorage.setItem(
+        "guestCart",
+        JSON.stringify(guestCart.length > 0 ? guestCart : [])
+      );
+      // setGuestCart(guestCart)
+      console.log("guest cart local", guestCart);
     }
-    if (userCart){
-      console.log('user Cart cart local', userCart)
 
-      // localStorage.setItem('userCart', JSON.stringify(userCart));
-      // return JSON.parse(userCart)
-    }
-  }, [])
-
+    // if (userCart){
+    //   localStorage.setItem('userCart', JSON.stringify(userCart));
+    //   return JSON.parse(userCart)
+    // }
+  }, []);
 
   useEffect(async () => {
     const allProducts = await fetchAllProducts();
-
     if (allProducts) {
       setProducts(allProducts);
     }
@@ -85,12 +74,9 @@ const App = () => {
     }
 
     // if (guestCart){
-
     //   setGuestCart(localStorage.setItem('guestCart', guestCart));
     //  }
-
     //  if (userCart){
-
     //   setUserCart(localStorage.setItem('userCart', userCart));
     //  }
 
@@ -104,11 +90,9 @@ const App = () => {
       setUserData(data);
       setMyOrders(myOrders);
     }
-    
+
     const userCart = await fetchCart(token);
     setUserCart(userCart);
-
-
   }, [token]);
 
   // console.log("all products:", allProducts);
@@ -116,6 +100,7 @@ const App = () => {
   // console.log("fetchCart:", userCart);
   // console.log("USER TOKEN:", token);
   // console.log("myOrders :", myOrders);
+  console.log("GUEST CART :", guestCart);
 
   return (
     <>
@@ -124,6 +109,7 @@ const App = () => {
         setToken={setToken}
         setUserData={setUserData}
         setUserCart={setUserCart}
+        allProducts={allProducts}
       />
       <div id="app-body">
         <Switch>
@@ -163,21 +149,21 @@ const App = () => {
               setUserCart={setUserCart}
               guestCart={guestCart}
               setGuestCart={setGuestCart}
-              token ={token}
+              token={token}
               userData={userData}
-              setUserData ={setUserData}
-              myOrders= {myOrders}
+              setUserData={setUserData}
+              myOrders={myOrders}
             />
           </Route>
           <Route path="/cart">
-            <Cart 
-            myOrders= {myOrders}
-            userCart={userCart} 
-            setUserCart={setUserCart}
-            guestCart= {guestCart}
-            setGuestCart= {setGuestCart}
-            token = {token}
-             />
+            <Cart
+              myOrders={myOrders}
+              userCart={userCart}
+              setUserCart={setUserCart}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
+              token={token}
+            />
           </Route>
           <Route path="/myaccount">
             <UserAccount userData={userData} />

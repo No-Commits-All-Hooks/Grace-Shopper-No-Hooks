@@ -33,6 +33,7 @@ const SingleDetail = ({
 
   const { products } = allProducts;
 
+
   const history = useHistory();
   let { productId } = useParams();
   productId = parseInt(productId)
@@ -42,24 +43,22 @@ const SingleDetail = ({
     : null;
   // console.log('PRODUCTS', product)
   // console.log('TOKEN SINGLE DETAIL', token)
-  console.log("USER CART SINGLE DETAIL", userCart);
   console.log('USER DATA SINGLE DETAIL', userData)
+  // console.log('Guest Cart SINGLE DETAIL', guestCart)
+   console.log('USER Cart SINGLE DETAIL', userCart)
+
 
 
   const { price } = product ? product : <h1>LOADING</h1>;
 
   // find order w/ created status to later update
-  const findOrder= myOrders? myOrders.find((order) => order.status = 'created') : null
 
-const successAlert = ()=>{
-  return (<div className={classes.root}>
-   <Alert severity="success">This is a success alert — check it out!</Alert>
-  </div>)
-}
+// console.log('orderProducts SINGLE DETAIL', orderProducts)
+
 
   const addProduct = async () => {
-
-    if (!token){
+//if no user logged in
+    if (!userData.username){
       const newProductAdded= {
         name: product.name,
         imageurl: product.imageurl,
@@ -70,32 +69,17 @@ const successAlert = ()=>{
         quantity: quantity,
       }
       guestCart.push(newProductAdded);
-      setGuestCart(guestCart)
-      console.log("GuestCart after being set", guestCart)  
+      // setGuestCart(localStorage.setItem('guestCart', guestCart))
       localStorage.setItem('guestCart', JSON.stringify(guestCart));
-      console.log('guest cart local', guestCart)
+      setGuestCart(guestCart)
 
+      console.log('guest cart local', guestCart)
+     
     }
-    else if (token){
+    else if (userData){
       const userId = userData.id 
       
-        if (userData &&userCart) {
-          const body = {
-            productId: productId,
-            price: price,
-            quantity: quantity,
-          };
-
-          const newOrderProduct = await addProductOrder(userCart.id, body, token);
-          // setUserCart([...userProducts, newOrderProduct])
-          if (newOrderProduct){
-          setUserCart([...userCart.products, newOrderProduct]);
-          setMyOrderProducts([...findOrder.products, newOrderProduct]);
-          console.log("updated order ", newOrderProduct);
-          return <Alert severity="success">This is a success alert — check it out!</Alert>
-          }
-
-        } else {
+        if (userCart.length <=0 ) {
           // const bodyCart = {
           //   status: "created",
           //   userId: 1,
@@ -112,14 +96,36 @@ const successAlert = ()=>{
             const newOrderProduct = await addProductOrder(newUserCart.id, bodyProduct, token);
             console.log("newOrderProduct Order SINGLE DETAIL", newOrderProduct);
 
-            // newUserCart.push(newOrderProduct);
-            // setUserCart(newUserCart);
-            console.log("Created Order SINGLE DETAIL", newUserCart);
+            userCart.push(newOrderProduct);
+            setUserCart(userCart);
+            console.log("Created Order SINGLE DETAIL", userCart);
+            alert('Product Added to Cart')
+
         }
+          const body = {
+            productId: productId,
+            price: price,
+            quantity: quantity,
+          };
+          const findOrder= myOrders? myOrders.find((order) => order.status = 'created') : []
+          const orderProducts= findOrder? findOrder.products : [];
+          const newOrderProduct = await addProductOrder(userCart.id, body, token);
+          // setUserCart([...userProducts, newOrderProduct])
 
-        localStorage.setItem('userCart', JSON.stringify(userCart));
+          console.log("USER CART SINGLE DETAIL", userCart);
 
-    }
+          orderProducts.push(newOrderProduct)
+          setUserCart(userCart);
+          setMyOrderProducts([...orderProducts, newOrderProduct]);
+          console.log("updated order ", newOrderProduct);
+            alert('Product Added to Cart')
+        
+        } 
+          
+
+        // localStorage.setItem('userCart', JSON.stringify(userCart));
+
+
     };
 
   if (!product) {
@@ -150,7 +156,7 @@ const successAlert = ()=>{
             variant="outlined"
             color="primary"
             size="small"
-            onClick={ addProduct, successAlert}
+            onClick={addProduct}
           >
             Add To Cart
           </Button>
