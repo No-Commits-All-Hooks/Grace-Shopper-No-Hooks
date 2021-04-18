@@ -555,11 +555,13 @@ async function testDB(){
     // console.log("getOrderProductById Result:", orderProductId);
     // This worked
     // console.log("get an oldProduct")
-    const oldUser = await getUserById(5)
-    console.log("get oldUser '5' Result:", oldUser)
-    console.log("start to upgrade an oldUser - 5")
-    const adminUser = await updateUser({id:5, isAdmin:true, })
-    console.log("Update an oldUser-5 to admin:", adminUser)
+    const oldUser = await getUserByUsername('admin')
+    console.log("get oldUser by username 'admin' :", oldUser)
+
+    console.log("start to upgrade an oldUser to admin", oldUser.id)
+
+    const adminUser = await updateUser({id: oldUser.id, isAdmin:true, })
+    console.log("Update an oldUser to admin:", adminUser)
     
     
   } catch(error){
