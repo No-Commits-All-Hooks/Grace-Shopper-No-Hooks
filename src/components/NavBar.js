@@ -9,6 +9,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 
 
@@ -64,7 +65,14 @@ const NavBar = ({ userData,setToken, setUserData, setUserCart}) => {
           >
             Fullstack Academy Shop
           </Typography>
-          <Button
+          <IconButton 
+         onClick={() => handleMenuChange("/cart")}
+
+          color="inherit"
+          aria-label="add to shopping cart">
+          <AddShoppingCartIcon />
+          </IconButton>
+            <Button
             aria-controls="fade-menu"
             aria-haspopup="true"
             onClick={() => handleMenuChange("/products")}
@@ -115,14 +123,12 @@ const NavBar = ({ userData,setToken, setUserData, setUserCart}) => {
               >
                 Sign Up
               </MenuItem>
-              <MenuItem 
-              onClick={() => handleMenuChange("/cart")}
-              >
-                Shopping Cart
-              </MenuItem>
+              {userData.username? (
               <MenuItem onClick={() => logOutHere()}>
               Log Out
               </MenuItem>
+              ):  ""
+            } 
             </Menu>
           </div>
         </Toolbar>

@@ -77,7 +77,7 @@ const {products}= userCart
             <div className="each-product-cart" key={id}>
               <img src={imageurl} width="150px" height="150px" />
               <h3>{name}</h3>
-              <h4>{price}</h4>
+              <h4>${price}</h4>
               <h4>{quantity}</h4>
               <Button
                 size="small"
@@ -98,5 +98,7 @@ const {products}= userCart
     </div>
   );
 };
+
+
 
 export default Cart;

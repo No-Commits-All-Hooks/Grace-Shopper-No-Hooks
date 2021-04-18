@@ -107,7 +107,6 @@ export const fetchAllProducts = async () => {
 
   }
 
-  };
 
 
   export const createOrder = async (token) =>{

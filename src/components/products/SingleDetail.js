@@ -4,6 +4,17 @@ import { Link } from "react-router-dom";
 import "./SingleDetail.css";
 import { Paper, Button, makeStyles } from "@material-ui/core";
 import { addProductOrder, createOrder, updateData, fetchCart } from "../../api/utils";
+import { Alert, AlertTitle } from '@material-ui/lab';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
 
 const SingleDetail = ({
   allProducts,
@@ -18,22 +29,33 @@ const SingleDetail = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [myOrderProducts, setMyOrderProducts] = useState({});
+  const classes = useStyles();
 
   const { products } = allProducts;
 
   const history = useHistory();
-  const { productId } = useParams();
+  let { productId } = useParams();
+  productId = parseInt(productId)
+
   const product = products
     ? products.find((product) => Number(productId) === Number(product.id))
     : null;
   // console.log('PRODUCTS', product)
   // console.log('TOKEN SINGLE DETAIL', token)
   console.log("USER CART SINGLE DETAIL", userCart);
+  console.log('USER DATA SINGLE DETAIL', userData)
+
 
   const { price } = product ? product : <h1>LOADING</h1>;
 
   // find order w/ created status to later update
   const findOrder= myOrders? myOrders.find((order) => order.status = 'created') : null
+
+const successAlert = ()=>{
+  return (<div className={classes.root}>
+   <Alert severity="success">This is a success alert — check it out!</Alert>
+  </div>)
+}
 
   const addProduct = async () => {
 
@@ -51,13 +73,13 @@ const SingleDetail = ({
       setGuestCart(guestCart)
       console.log("GuestCart after being set", guestCart)  
       localStorage.setItem('guestCart', JSON.stringify(guestCart));
-              console.log('guest cart local', guestCart)
+      console.log('guest cart local', guestCart)
 
     }
     else if (token){
       const userId = userData.id 
-
-        if (userCart) {
+      
+        if (userData &&userCart) {
           const body = {
             productId: productId,
             price: price,
@@ -66,10 +88,12 @@ const SingleDetail = ({
 
           const newOrderProduct = await addProductOrder(userCart.id, body, token);
           // setUserCart([...userProducts, newOrderProduct])
+          if (newOrderProduct){
           setUserCart([...userCart.products, newOrderProduct]);
           setMyOrderProducts([...findOrder.products, newOrderProduct]);
-          console.log("updated order ", findOrder);
-
+          console.log("updated order ", newOrderProduct);
+          return <Alert severity="success">This is a success alert — check it out!</Alert>
+          }
 
         } else {
           // const bodyCart = {
@@ -104,39 +128,45 @@ const SingleDetail = ({
   return (
      <>
       <section className="return-home-button">
-        <button
+        <Button
+        variant= "outlined"
           onClick={() => {
             history.push(`/products`);
           }}
         >
           Return to all products
-        </button>
+        </Button>
       </section>
      
 
         <div className='single-product-card'>
-            <img src={product.imageurl} className="product-image" alt={product.name}/>
+            <img src={product.imageurl} className="product-image-detail" alt={product.name} />
             <section className="product-details">
-             <h1> {product.name} </h1>
-             <div>Price : ${product.price}</div>
+             <h1 className="product-name"> {product.name} </h1>
+             <div><b>${product.price}</b></div>
              <div> Description: { product.description }</div>
+             <div className="product-details-buttons">
              <Button
             variant="outlined"
             color="primary"
             size="small"
-            onClick={addProduct}
+            onClick={ addProduct, successAlert}
           >
             Add To Cart
           </Button>
-             <button onClick ={() => history.push(`/products/${productId}/review/create`)}>Add A Review</button>
-         
+          <br></br>
+             <Button 
+            variant="outlined"
+            color="primary"
+            size="small"
+             onClick ={() => history.push(`/products/${productId}/review/create`)}>
+               Add A Review
+               </Button>
+               </div>
              </section>
         </div>
 
-        </div>
-        </>
-
-      </>  
+      </> 
 
     );
 };
