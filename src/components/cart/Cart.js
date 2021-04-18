@@ -46,7 +46,6 @@ const {products}= userCart
   const deleteOrderProduct = async ()=>{
     // console.log("productId:", productId);
 
-    
     const data= await deleteOrderProduct( token);
 
       if(data.success){
@@ -54,8 +53,6 @@ const {products}= userCart
     history.push('/product')
     setUserCart([...userCart.products, data]);
       }
-
-
 
       console.log('data delete', data)
     //   if (deletedOrderProduct && deletedOrderProduct.success) {
@@ -92,6 +89,31 @@ const {products}= userCart
             </div>
           );
         })
+      ) : (
+        <h2>Shopping Cart is Empty</h2>
+      )}
+      {guestCart? (
+        guestCart.map(({id, imageurl, name, price, quantity}) =>{
+          return (
+            <div className="each-product-cart" key={id}>
+              <img src={imageurl} width="150px" height="150px" />
+              <h3>{name}</h3>
+              <h4>${price}</h4>
+              <h4>{quantity}</h4>
+              <Button
+                size="small"
+                variant="outlined"
+                color="secondary"
+                className={classes.button}
+                startIcon={<DeleteIcon />}
+                onClick = {deleteOrderProduct}
+              >
+                Remove
+              </Button>
+            </div>
+          )
+        })
+
       ) : (
         <h2>Shopping Cart is Empty</h2>
       )}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import { fade,makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -10,7 +10,10 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import { Paper} from "@material-ui/core";
+import SingleProduct from "./products/SingleProduct";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,16 +26,56 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
 }));
 
-const NavBar = ({ userData,setToken, setUserData, setUserCart}) => {
+
+const NavBar = ({ userData,setToken, setUserData, setUserCart, allProducts}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const openAnchor = Boolean(anchorEl);
   const history = useHistory();
+  const [searchTerm, updateSearchTerm] = useState ('')
+
+
 
   const logOutHere = () => {
-    // event.preventDefault();
     localStorage.clear();
     setUserData({});
     setToken("");
@@ -65,6 +108,22 @@ const NavBar = ({ userData,setToken, setUserData, setUserCart}) => {
           >
             Fullstack Academy Shop
           </Typography>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              value= {searchTerm}
+              onChange= {(event)=> {
+                  updateSearchTerm(event.target.value);
+              }} 
+            />
+          </div>
           <IconButton 
          onClick={() => handleMenuChange("/cart")}
 
@@ -133,6 +192,7 @@ const NavBar = ({ userData,setToken, setUserData, setUserCart}) => {
           </div>
         </Toolbar>
       </AppBar>
+      
     </div>
   );
 };
