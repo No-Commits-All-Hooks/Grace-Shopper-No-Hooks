@@ -387,7 +387,7 @@ async function createInitialUsers() {
       { firstName: "Sal", lastName: "Medina", email: "salthepal@yahoo.com",username: "salthepal", password: "sal1234" },
       { firstName: "Martin", lastName: "Cruz", email: "martin.cruz@gmail.com",username: "martini", password: "martin2021", isAdmin:true },
       { firstName: "Cody", lastName: "Banks", email: "cody@gmail.com",username: "cody", password: "cody2021"},
-      { firstName: "Heidi", lastName: "Klum", email: "heidi@gmail.com",username: "heidi", password: "cody2021"},
+      { firstName: "Admin", lastName: "Master", email: "heidi@gmail.com",username: "admin", password: "admin2021"},
     ];
     const users = await Promise.all(usersToCreate.map(createUser));
     console.log("Users created:");
@@ -555,11 +555,11 @@ async function testDB(){
     // console.log("getOrderProductById Result:", orderProductId);
     // This worked
     // console.log("get an oldProduct")
-    // const oldProduct = await getProductById(6)
-    // console.log("get oldProduct Result:", oldProduct)
-    // console.log("start to update an oldProduct")
-    // const updatedProduct = await updateProduct({id:6, name:"New Salary Manager", price:5000, instock:'false'})
-    // console.log("Update an oldProduct Result:", updatedProduct)
+    const oldUser = await getUserById(5)
+    console.log("get oldUser '5' Result:", oldUser)
+    console.log("start to upgrade an oldUser - 5")
+    const adminUser = await updateUser({id:5, isAdmin:true, })
+    console.log("Update an oldUser-5 to admin:", adminUser)
     
     
   } catch(error){
