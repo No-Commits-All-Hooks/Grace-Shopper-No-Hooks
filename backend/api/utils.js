@@ -19,7 +19,13 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
-module.exports = {
-  requireUser,
-  requireAdmin,
-};
+
+const isAuthorized = (userId, user) => user.isAdmin || user.userId === userId;
+
+
+  module.exports = {
+    requireUser,
+    requireAdmin,
+    isAuthorized
+  }
+

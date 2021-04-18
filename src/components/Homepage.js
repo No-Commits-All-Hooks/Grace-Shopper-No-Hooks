@@ -21,9 +21,17 @@ export default function Hompage(props) {
       imgSrc: "https://miro.medium.com/max/1000/1*i0rG0owbE0lDeD0dsIaw4Q.jpeg",
     },
     {
-        name: "Random Name #2",
-        imgSrc: "",
+        name: "FCS Flask",
+        imgSrc: "https://i.postimg.cc/3JkkdYtr/blue-25ozaluminum-water-bottles.jpg",
     },
+    {
+      name: "FCS Sweater",
+      imgSrc: "https://i.postimg.cc/gkt0WQd9/black-hoodie.jpg",
+  },
+  {
+    name:"FCS Shovel",
+    imgSrc: "https://i.postimg.cc/28RwxcgD/Gold-Plated-Shovel.jpg",
+  }
   ];
 
   return (

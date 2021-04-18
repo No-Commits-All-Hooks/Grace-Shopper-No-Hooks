@@ -4,6 +4,8 @@ require('dotenv').config();
 
 export const BASE_URL = process.env.API_URL || 'https://morning-fortress-53362.herokuapp.com/api/';
 
+// process.env.API_URL || 'https://morning-fortress-53362.herokuapp.com/api/';
+
 // 'http://localhost:5000/api/' use this if you want to go local
 
 
