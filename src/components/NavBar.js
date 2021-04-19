@@ -182,6 +182,15 @@ const NavBar = ({ userData,setToken, setUserData, setUserCart, allProducts}) => 
               >
                 Sign Up
               </MenuItem>
+              {userData.isAdmin? (
+              <MenuItem 
+              onClick={() => handleMenuChange("/admin")}>
+              Administrators Console
+              </MenuItem>
+              ):  ""
+            }    
+
+
               {userData.username? (
               <MenuItem onClick={() => logOutHere()}>
               Log Out

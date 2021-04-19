@@ -18,6 +18,7 @@ import {
   UserAccount,
   Homepage,
   Cart,
+  AdminPage
 } from "./index";
 
 import "../styles.css";
@@ -167,6 +168,14 @@ const App = () => {
           </Route>
           <Route path="/myaccount">
             <UserAccount userData={userData} />
+          </Route>
+          <Route path="/admin">
+            <AdminPage 
+            userData={userData}
+            allProducts={allProducts} 
+            token = {token}
+            
+            />
           </Route>
         </Switch>
       </div>
