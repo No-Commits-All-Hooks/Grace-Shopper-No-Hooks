@@ -5,9 +5,23 @@ import { useHistory, useParams } from "react-router-dom";
 const AdminPage = ({userData, token }) => {
 
  return (
+   <>  
+  {userData.isAdmin?
+    <>
+    
+    Admin page
 
-    <>Admin page</>
- );   
+    
+    
+    </> :
+    <>
+    Must be admin to view this page
+    </>
+}
+ 
+ </>
+ 
+    );   
 
 };
 
