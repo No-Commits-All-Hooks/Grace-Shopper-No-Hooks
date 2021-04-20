@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import StripeCheckout from "react-stripe-checkout";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  useHistory,
-  Link,
 } from "react-router-dom";
 
 import {
@@ -31,12 +28,11 @@ import {
   fetchUserOrders,
   createOrder,
 } from "../api/utils";
-import axios from "axios";
 
 const App = () => {
   const [allProducts, setProducts] = useState([]);
   const [userCart, setUserCart] = useState([]);
-  const [guestCart, setGuestCart] = useState([]);
+  let [guestCart, setGuestCart] = useState([]);
 
   //For admin use to get all orders
   const [orders, setOrders] = useState([]);
@@ -45,20 +41,15 @@ const App = () => {
   const [userData, setUserData] = useState({});
 
   useEffect(async () => {
-    let guestCart = localStorage.getItem("guestCart");
-    if (guestCart) {
-      localStorage.setItem(
-        "guestCart",
-        JSON.stringify(guestCart.length > 0 ? guestCart : [])
-      );
-      // setGuestCart(guestCart)
-      console.log("guest cart local", guestCart);
+     guestCart = localStorage.getItem("guestCart");
+    if(!guestCart || JSON.parse(localStorage.getItem("guestCart")).length === 0){
+      localStorage.setItem('guestCart', (guestCart));
     }
 
-    // if (userCart){
-    //   localStorage.setItem('userCart', JSON.stringify(userCart));
-    //   return JSON.parse(userCart)
-    // }
+    console.log("guest cart local", JSON.parse(guestCart) );
+
+   return JSON.parse(guestCart) 
+
   }, []);
 
   useEffect(async () => {
@@ -73,34 +64,34 @@ const App = () => {
       return;
     }
 
-    // if (guestCart){
-    //   setGuestCart(localStorage.setItem('guestCart', guestCart));
-    //  }
-    //  if (userCart){
-    //   setUserCart(localStorage.setItem('userCart', userCart));
-    //  }
+    // let guestCart = localStorage.getItem("guestCart");
+    // if (guestCart) {
+    //   localStorage.setItem("guestCart",JSON.stringify(guestCart.length > 0 ? guestCart :[]));
+    //   //  setGuestCart(guestCart)
+    //   console.log("guest cart local", guestCart);
+    // }
+
 
     //if you have a token(when they log in they will get one) then set it to useState
     const data = await fetchUserData(token);
 
-    // console.log('DATA IN APP', data)
     if (data && data.username) {
       const userId = data.id;
       const myOrders = await fetchUserOrders(userId, token);
       setUserData(data);
       setMyOrders(myOrders);
     }
+    let {products: userCart}= await fetchCart(token);
 
-    const userCart = await fetchCart(token);
     setUserCart(userCart);
   }, [token]);
 
   // console.log("all products:", allProducts);
   // console.log("userData for logged in user:", userData);
-  // console.log("fetchCart:", userCart);
+  console.log("USER CART IN APP:", userCart);
   // console.log("USER TOKEN:", token);
   // console.log("myOrders :", myOrders);
-  console.log("GUEST CART :", guestCart);
+  console.log("GUEST CART IN APP:", guestCart);
 
   return (
     <>

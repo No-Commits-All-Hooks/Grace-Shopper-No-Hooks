@@ -8,50 +8,14 @@ import { Button } from "@material-ui/core";
 import "./SingleProduct.css";
 
 const SingleProduct = ({
-  product,
   id,
   name,
   price,
   imageurl,
   instock,
-  setUserCart,
-  userCart,
-  setGuestCart,
-  guestCart,
-  userData,
-  setUseData,
 }) => {
-  let [newProducts, setNewProducts] = useState([]);
-  const history = useHistory();
-  //   console.log('USERCART single product', userCart)
 
-  const addToCart = (el) => {
-    if (!userData.username) {
-      guestCart.push(el);
-      setGuestCart(guestCart);
-      console.log("GuestCart after being set", guestCart);
-    }
-    // if logged in add items to logged in users cart
-    else {
-      // if (!userCart.products <0 ){
-      //   newProducts = await createOrder
-
-      // }
-      let { products } = userCart;
-      newProducts = products.push(el);
-
-      console.log("products single product", products);
-
-      //  console.log('newProducts single product', newProducts)
-      const orderId = userCart.id;
-      console.log("orderId single product", orderId);
-
-      setNewProducts([...products, newProducts]);
-
-      // setUserCart([...userCart])
-    }
-  };
-
+ 
   if (!instock) {
     return null;
   }

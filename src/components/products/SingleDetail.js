@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 import "./SingleDetail.css";
 import { Paper, Button, makeStyles } from "@material-ui/core";
 import { addProductOrder, createOrder, updateData, fetchCart } from "../../api/utils";
-import { Alert, AlertTitle } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,16 +22,12 @@ const SingleDetail = ({
   setGuestCart,
   token,
   userData,
-  setUserData,
   myOrders,
 }) => {
   const [quantity, setQuantity] = useState(1);
-  const [myOrderProducts, setMyOrderProducts] = useState({});
   const classes = useStyles();
 
   const { products } = allProducts;
-
-
   const history = useHistory();
   let { productId } = useParams();
   productId = parseInt(productId)
@@ -41,52 +35,64 @@ const SingleDetail = ({
   const product = products
     ? products.find((product) => Number(productId) === Number(product.id))
     : null;
-  // console.log('PRODUCTS', product)
+  console.log('productId', productId)
   // console.log('TOKEN SINGLE DETAIL', token)
-  console.log('USER DATA SINGLE DETAIL', userData)
+  console.log('USER data SINGLE DETAIL', userData)
   // console.log('Guest Cart SINGLE DETAIL', guestCart)
-   console.log('USER Cart SINGLE DETAIL', userCart)
+   console.log('userCart single detail file', userCart)
 
-
-
-  const { price } = product ? product : <h1>LOADING</h1>;
 
   // find order w/ created status to later update
 
 // console.log('orderProducts SINGLE DETAIL', orderProducts)
 
 
-  const addProduct = async () => {
+  const addProduct = async (product) => {
 //if no user logged in
     if (!userData.username){
-      const newProductAdded= {
-        name: product.name,
-        imageurl: product.imageurl,
-        description: product.description,
-        productId: product.id,
-        orderProductId: productId,
-        price: product.price,
-        quantity: quantity,
-      }
-      guestCart.push(newProductAdded);
-      // setGuestCart(localStorage.setItem('guestCart', guestCart))
-      localStorage.setItem('guestCart', JSON.stringify(guestCart));
+let newProductToAdd= guestCart.find(function (product){
+    return product.id=== productId
+  });
+  console.log('new product to add exists', newProductToAdd)
+   if (newProductToAdd){
+     newProductToAdd.productId= productId;
+      newProductToAdd.price*=2;
+      newProductToAdd.quantity++;
+    }
+    else {
+  newProductToAdd={
+    ...product,
+    productId: productId,
+    quantity: Number(quantity),
+  }
+  console.log('new product to added ', newProductToAdd)
+
+   }
+      
+      // const newProductAdded= {
+      //   name: product.name,
+      //   imageurl: product.imageurl,
+      //   description: product.description,
+      //   productId: productId, 
+      //   price: product.price,
+      //   quantity: Number(quantity),
+      // }
+      guestCart.push(newProductToAdd)
       setGuestCart(guestCart)
 
       console.log('guest cart local', guestCart)
      
     }
-    else if (userData){
+    else if (userData && userData.username){
       const userId = userData.id 
       
         if (userCart.length <=0 ) {
-          // const bodyCart = {
-          //   status: "created",
-          //   userId: 1,
-          // };
           const bodyProduct = {
+            name: product.name,
+            imageurl: product.imageurl,
+            description: product.description,
             productId: productId,
-            price: price,
+            price: product.price,
             quantity: quantity,
           };
             let newUserCart = await createOrder(token);
@@ -94,38 +100,41 @@ const SingleDetail = ({
             console.log("newUserCart Order SINGLE DETAIL", newUserCart);
 
             const newOrderProduct = await addProductOrder(newUserCart.id, bodyProduct, token);
-            console.log("newOrderProduct Order SINGLE DETAIL", newOrderProduct);
+            console.log("new Order Product Order SINGLE DETAIL", newOrderProduct);
 
             userCart.push(newOrderProduct);
             setUserCart(userCart);
             console.log("Created Order SINGLE DETAIL", userCart);
             alert('Product Added to Cart')
 
-        }
+        }else {
           const body = {
+            name: product.name,
+            imageurl: product.imageurl,
+            description: product.description,
             productId: productId,
-            price: price,
+            price: product.price,
             quantity: quantity,
           };
-          const findOrder= myOrders? myOrders.find((order) => order.status = 'created') : []
-          const orderProducts= findOrder? findOrder.products : [];
-          const newOrderProduct = await addProductOrder(userCart.id, body, token);
-          // setUserCart([...userProducts, newOrderProduct])
+          const findOrder= myOrders.find((order) => order.status = 'created') 
+          console.log('findOrder', findOrder)
 
-          console.log("USER CART SINGLE DETAIL", userCart);
+          // const userProducts= userCart.products? userCart.products : [];
+          // const orderProducts= findOrder? findOrder.products : [];
+          console.log('user cart id', userCart.id)
+          const newOrderProduct = await addProductOrder(findOrder.userId, body, token);
 
-          orderProducts.push(newOrderProduct)
-          setUserCart(userCart);
-          setMyOrderProducts([...orderProducts, newOrderProduct]);
-          console.log("updated order ", newOrderProduct);
+          console.log("new product added to cart:", newOrderProduct);
+
+          userCart.push(newOrderProduct)
+          setUserCart([...userCart, newOrderProduct])
+          // setUserCart(userCart)
+          console.log("updated user cart:  ", userCart);
+
             alert('Product Added to Cart')
         
         } 
-          
-
-        // localStorage.setItem('userCart', JSON.stringify(userCart));
-
-
+          }
     };
 
   if (!product) {
@@ -156,7 +165,7 @@ const SingleDetail = ({
             variant="outlined"
             color="primary"
             size="small"
-            onClick={addProduct}
+            onClick={()=>addProduct(product)}
           >
             Add To Cart
           </Button>

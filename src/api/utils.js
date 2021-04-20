@@ -99,6 +99,7 @@ export const fetchAllProducts = async () => {
           url: `orders/cart`,  
           token       
         });
+        console.log('Fetch cart data in utils', data)
 
         return data;
     } catch(error) {
@@ -152,17 +153,5 @@ export const fetchUserOrders = async (userId, token) => {
     };
   };
 
-export const deleteOrderProduct = async (orderProductId, token ) =>{
-  try{
-    const data = await callApi ({
-      url: `order_products/${orderProductId}`,
-      token: token, 
-      method: 'DELETE'
-    })
-    return data;
-
-  } catch(error){
-    console.error(error)
-  }
-}
+//  
 

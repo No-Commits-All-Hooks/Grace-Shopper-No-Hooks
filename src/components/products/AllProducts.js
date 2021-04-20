@@ -11,30 +11,21 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
     const history = useHistory();
     const {products}= allProducts;
 
-  console.log('USERCART single product', userCart)
-
-
   return (
     <main className="all-products-container">
 
       <div className="product-list">
         {products ? (
-          products.map((product) => {
+          products.map((product, index) => {
             return(
               <Paper>
               <SingleProduct
-              key = {product.id}
+              key = {index}
               id = {product.id }
               name= {product.name}
               price= {product.price}
               instock= {product.instock}
               imageurl= {product.imageurl}
-              setUserCart= {setUserCart}
-              userCart = {userCart}
-              setGuestCart = {setGuestCart}
-              guestCart = {guestCart}
-              product = {product}
-              userData = {userData}
               />
             </Paper>
             
