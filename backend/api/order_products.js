@@ -44,24 +44,10 @@ orderProductsRouter.patch("/:orderProductId",requireUser,async (req, res, next) 
 );
 
 //  Remove a product from a order, use hard delete
-orderProductsRouter.delete("/:orderProductId", async (req, res, next) => {
+orderProductsRouter.delete("/:orderProductId", requireUser,async (req, res, next) => {
   const { orderProductId } = req.params;
 
   try {
-    const orderProduct = await getOrderProductById(orderProductId);
-    if (!orderProduct) {
-      next({
-        name: "NotFound",
-        message: `No order_product found with ID of ${orderProductId}`,
-      });
-    }
-    const order = await getOrderById(orderProduct.orderId);
-    if (order.userId !== req.user.id) {
-      next({
-        name: "Unauthorized",
-        message: "You cannot edit this order!",
-      });
-    }
     const deletedOrderProduct = await destroyOrderProduct(orderProductId);
     res.send({ success: true, ...deletedOrderProduct });
   } catch ({ name, message }) {
