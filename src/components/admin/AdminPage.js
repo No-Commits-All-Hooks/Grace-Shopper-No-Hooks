@@ -1,8 +1,16 @@
 import React from "react";
 import { callApi } from "../../api";
-import { useHistory, useParams } from "react-router-dom";
+import { BrowserRouter as Router, useHistory, useParams, Route, Switch, Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import AllUsers from "../users/AllUsers";
+import fetchAllUsers from "../../api/utils";
 
 const AdminPage = ({userData, token }) => {
+    const history = useHistory();
+
+
+    
+
 
  return (
    <>  
@@ -11,7 +19,18 @@ const AdminPage = ({userData, token }) => {
     
     Admin page
 
-    
+    <Button 
+            variant="outlined"
+            color="primary"
+            size="small"
+             onClick ={() => history.push(`/allusers`)}>
+               View All Users
+               </Button>
+
+
+
+
+
     
     </> :
     <>

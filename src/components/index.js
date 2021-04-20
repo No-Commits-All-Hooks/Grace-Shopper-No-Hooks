@@ -2,6 +2,7 @@
 //IF YOU CREATE A COMPONENT MAKE SURE TO EXPORT HERE
 
 export { default as NavBar } from "./NavBar";
+export { default as AllUsers } from "./users/AllUsers";
 export { default as AdminPage } from "./admin/AdminPage";
 export {default as Login} from "./login/Login";
 export { default as App } from './App';

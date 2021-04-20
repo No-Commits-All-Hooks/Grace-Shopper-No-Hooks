@@ -166,3 +166,11 @@ export const deleteOrderProduct = async (orderProductId, token ) =>{
   }
 }
 
+export const fetchAllUsers = async (token) => {
+  const allUsers = await callApi({
+    url: "users",
+    token
+  });
+  return allUsers;
+};
+

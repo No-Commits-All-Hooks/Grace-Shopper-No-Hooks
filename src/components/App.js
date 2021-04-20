@@ -18,7 +18,8 @@ import {
   UserAccount,
   Homepage,
   Cart,
-  AdminPage
+  AdminPage,
+  AllUsers
 } from "./index";
 
 import "../styles.css";
@@ -31,16 +32,21 @@ import {
   fetchCart,
   fetchUserOrders,
   createOrder,
+  fetchAllUsers
 } from "../api/utils";
+
 import axios from "axios";
 
 const App = () => {
   const [allProducts, setProducts] = useState([]);
   const [userCart, setUserCart] = useState([]);
   const [guestCart, setGuestCart] = useState([]);
-
-  //For admin use to get all orders
+  
+  //For admin use to get all orders and all users
   const [orders, setOrders] = useState([]);
+  const [allUsers, setAllUsers ] = useState([]);
+  
+  //individual users
   const [myOrders, setMyOrders] = useState([]);
   const [token, setToken] = useState("");
   const [userData, setUserData] = useState({});
@@ -91,6 +97,15 @@ const App = () => {
       setUserData(data);
       setMyOrders(myOrders);
     }
+
+    if (data && data.isAdmin) {
+      console.log("admin data in the data && data.isAdmin if", data.isAdmin)
+      const allUsers = await fetchAllUsers(token);
+      console.log("all users line 103", allUsers);
+      setAllUsers(allUsers);
+     
+    }
+
 
     const userCart = await fetchCart(token);
     setUserCart(userCart);
@@ -177,6 +192,12 @@ const App = () => {
             
             />
           </Route>
+          <Route exact path="/allusers">
+            <AllUsers 
+            
+            />
+          </Route>
+
         </Switch>
       </div>
     </>
