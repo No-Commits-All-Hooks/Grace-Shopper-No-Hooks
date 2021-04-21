@@ -8,7 +8,7 @@ import { Paper, Button, makeStyles } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { callApi } from "../../api";
 import { render } from "react-dom";
-// import { deleteOrderProduct } from "../../api/utils";
+import { updateProductOrder } from "../../api/utils";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -41,19 +41,13 @@ const Cart = ({myOrders,  userCart, setUserCart, guestCart, setGuestCart, token 
 const classes = useStyles();
 const history = useHistory()
 
-  console.log("userCart cart file:", userCart);
   console.log("guestCart:", guestCart);
   console.log('myOrders in cart', myOrders)
 
-// const findCreatedOrder= myOrders? myOrders.find((order) => order.status = 'created') : null;
-// const {products}= findCreatedOrder? findCreatedOrder : null
-// console.log('findOrder products in cart', products)
-
 const cartTotal = ()=>{
-
   if (userCart&& userCart.length>0){
-  const userCartTotal= userCart.map(({price})=>{
-      return Number(price)
+  const userCartTotal= userCart.map(({price, quantity})=>{
+      return Number(price) * Number(quantity)
     })
     const newTotal= userCartTotal.reduce((results, value) => {
 
@@ -61,8 +55,8 @@ const cartTotal = ()=>{
         });
     return newTotal
   } else if (guestCart && guestCart.length>0){
-     const guestCartTotal= guestCart.map(({price})=>{
-      return (Number(price))
+     const guestCartTotal= guestCart.map(({price,quantity })=>{
+      return (Number(price) *Number(quantity))
        
     })
     const newTotal= guestCartTotal.reduce((results, value) => {
@@ -73,82 +67,113 @@ const cartTotal = ()=>{
   }
 }
 
+const updateQuantity= async (product, newQuantity)=>{
 
-  const removeOrderProduct = async (productId)=>{
+  console.log('product, event', newQuantity)
+      if (token){
+      const body={
+        price: product.price,
+        quantity: Number(newQuantity),
+      }
+      const data= await updateProductOrder(product.id, body, token)
+      console.log(data);
+    } else {
+      const updatedGuestCart= [...guestCart]
+      const orderProduct = updatedGuestCart.find((p) => {return p.id === product.id});
+      orderProduct.quantity= Number(newQuantity)
 
-    // const findCreatedOrder= myOrders? myOrders.find((order) => order.status = 'created') : null;
-    // const {products}= findCreatedOrder? findCreatedOrder : null
-    // console.log('findOrder products in cart', products)
+      console.log('orderProduct inside quant', orderProduct)
 
+      setGuestCart(updatedGuestCart)
+      console.log('updated quantitity product', guestCart);
+    }
+}
+
+
+  const removeOrderProduct = async (event)=>{
+    console.log('event ', event )
+
+    if (token){
     const data = await callApi ({
-      url: `order_products/${productId}`,
+      url: `order_products/${event.id}`,
       token: token, 
       method: 'DELETE'
     });
-    const findUpdatedProducts= userCart.filter((product)=>{
-      return product.id !== productId
-    })
     alert("Product Deleted!");
-   history.push("/cart");
-   setUserCart(userCart);
-    setGuestCart([...guestCart])
-    history.push("/");
+ console.log('data delete', data)
 
+    const updatedUserCart= [...userCart]
+    setUserCart(updatedUserCart)
+     console.log('data delete', updatedUserCart)
 
-    console.log('data delete', data)
+   } else {
+    const findUpdatedProducts= guestCart.filter((product)=>{
+        return product.id !== event.id})
+        alert("Product Deleted!");
+        setGuestCart(findUpdatedProducts)
+
+   }
 
   }
 
   return (
     <div className="cart-container">
-
       {userCart && userCart.length> 0? (
         userCart.map((product, index) => {
           return (
             <div className="each-product-cart" key={index}>
               <img src={product.imageurl} width="150px" height="150px" />
+              <section className="cart-details">
               <h3>{product.name}</h3>
               <h4>${product.price}</h4>
-              <h4>Quantity: {product.quantity}</h4>
+              <label>Quantity:
+              <input 
+               name="quantity"
+              type="number"
+              value={product.quantity}
+              onChange={(event)=>updateQuantity(product, Number(event.target.value))}></input>
+              </label>
               <Button
                 size="small"
                 variant="outlined"
                 color="secondary"
                 className={classes.button}
                 startIcon={<DeleteIcon />}
-                onClick = {()=> removeOrderProduct(product.productId)}
+                onClick = {()=> removeOrderProduct(product)}
               >
                 Remove
               </Button>
+              </section>
             </div>
-          );
-        })
-      ) : (
-        ""
-      )}
-      {guestCart.length> 0? (
-        guestCart.map(({id, imageurl, name, price, quantity,productId}) =>{
+          )})) : ("")}
+      {guestCart.length> 0 ?(
+        guestCart.map((product, index) =>{
           return (
-            <div className="each-product-cart" key={id}>
-              <img src={imageurl} width="150px" height="150px" />
-              <h3>{name}</h3>
-              <h4>${price}</h4>
-              <h4>Quantity:{quantity}</h4>
+            <div className="each-product-cart" key={index}>
+              <img src={product.imageurl} width="150px" height="150px" />
+              <section className="cart-details">
+              <h3>{product.name}</h3>
+              <h4>${product.price}</h4>
+              <label className="quantity-section">Quantity:
+              <input 
+               name="quantity"
+              type="number"
+              value={product.quantity}
+              onChange={(event)=>updateQuantity(product, Number(event.target.value))}></input></label>
               <Button
                 size="small"
                 variant="outlined"
                 color="secondary"
                 className={classes.button}
                 startIcon={<DeleteIcon />}
-                onClick = {()=> removeOrderProduct(productId)}
+                onClick = {()=> removeOrderProduct(product)}
               >
                 Remove
               </Button>
+              </section>
             </div>
-          )
-        })
+          )})) : ""}
 
-      ) : ""}
       { userCart.length>0 || guestCart.length>0 ?  
       (
       <div className="cart-checkout">

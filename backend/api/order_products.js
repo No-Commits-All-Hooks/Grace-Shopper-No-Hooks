@@ -44,12 +44,12 @@ orderProductsRouter.patch("/:orderProductId",requireUser,async (req, res, next) 
 );
 
 //  Remove a product from a order, use hard delete
-orderProductsRouter.delete("/:orderProductId",async (req, res, next) => {
+orderProductsRouter.delete("/:orderProductId", requireUser,async (req, res, next) => {
   const { orderProductId } = req.params;
 
   try {
-    const deletedOrderProduct = await destroyOrderProduct(orderProductId);
-    res.send({ success: true, ...deletedOrderProduct });
+    const data = await destroyOrderProduct(orderProductId);
+    res.send({ success: true, data });
   } catch ({ name, message }) {
     next({ name, message });
   }

@@ -42,7 +42,7 @@ async function addProductToOrder({ orderId, productId, price, quantity }) {
 
         const {rows: [orderProduct]} = await client.query(`
             UPDATE order_products
-            SET price= price + $3, quantity = quantity + $4
+            SET price= $3, quantity = quantity + $4
             WHERE "orderId"=$1 AND "productId"= $2
             RETURNING *;
         `, [orderId, productId, price, quantity]);

@@ -153,5 +153,13 @@ export const fetchUserOrders = async (userId, token) => {
     };
   };
 
-//  
+export const updateProductOrder= async (orderId, body, token ) =>{
+    const data = await callApi({
+      url: `order_products/${orderId}`,
+      method: "PATCH",
+      body: body,
+      token: token,
+  
+  });
+}
 

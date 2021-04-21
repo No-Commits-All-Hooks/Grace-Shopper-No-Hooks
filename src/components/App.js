@@ -40,37 +40,32 @@ const App = () => {
   const [token, setToken] = useState("");
   const [userData, setUserData] = useState({});
 
+  // useEffect(async () => {
+  //   let guestCart = localStorage.getItem("guestCart");
+  //   if(!guestCart || JSON.parse(localStorage.getItem("guestCart")).length === 0){
+  //     localStorage.setItem('guestCart', (guestCart));
+  //   }
+
+  //   console.log("guest cart local", JSON.parse(guestCart) );
+
+  //  return JSON.parse(guestCart) 
+
+  // }, []);
+
+  const updateUserCart= async (token)=>{
+    
+        let {products: userCart}= await fetchCart(token);
+        if (userCart){
+          setUserCart(userCart)
+        }
+  }
+
   useEffect(async () => {
-     guestCart = localStorage.getItem("guestCart");
-    if(!guestCart || JSON.parse(localStorage.getItem("guestCart")).length === 0){
-      localStorage.setItem('guestCart', (guestCart));
-    }
-
-    console.log("guest cart local", JSON.parse(guestCart) );
-
-   return JSON.parse(guestCart) 
-
-  }, []);
-
-  useEffect(async () => {
-    const allProducts = await fetchAllProducts();
-    if (allProducts) {
-      setProducts(allProducts);
-    }
-
     //check to see if there is a token and try to set it on localStorage
     if (!token) {
       setToken(localStorage.getItem("token"));
       return;
     }
-
-    // let guestCart = localStorage.getItem("guestCart");
-    // if (guestCart) {
-    //   localStorage.setItem("guestCart",JSON.stringify(guestCart.length > 0 ? guestCart :[]));
-    //   //  setGuestCart(guestCart)
-    //   console.log("guest cart local", guestCart);
-    // }
-
 
     //if you have a token(when they log in they will get one) then set it to useState
     const data = await fetchUserData(token);
@@ -80,11 +75,24 @@ const App = () => {
       const myOrders = await fetchUserOrders(userId, token);
       setUserData(data);
       setMyOrders(myOrders);
-    }
-    let {products: userCart}= await fetchCart(token);
-
-    setUserCart(userCart);
+      updateUserCart(token);
+    };
   }, [token]);
+
+  useEffect(async ()=>{
+    const allProducts = await fetchAllProducts();
+    if (allProducts) {
+      setProducts(allProducts);
+    }
+
+    // JSON.parse(localStorage.getItem("guestCart")).length === 0
+    let guestCart = localStorage.getItem("guestCart");
+    if(!guestCart ){
+      localStorage.setItem('guestCart', (guestCart));
+    }
+    console.log("guest cart local", JSON.parse(guestCart) );
+   return JSON.parse(guestCart) 
+  },[])
 
   // console.log("all products:", allProducts);
   // console.log("userData for logged in user:", userData);
@@ -144,6 +152,7 @@ const App = () => {
               userData={userData}
               setUserData={setUserData}
               myOrders={myOrders}
+              setMyOrders={setMyOrders}
             />
           </Route>
           <Route path="/cart">
