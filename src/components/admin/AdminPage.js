@@ -16,9 +16,9 @@ const AdminPage = ({userData, token }) => {
    <>  
   {userData.isAdmin?
     <>
-    
+    <div>
     Admin page
-
+    <section>
     <Button 
             variant="outlined"
             color="primary"
@@ -26,12 +26,19 @@ const AdminPage = ({userData, token }) => {
              onClick ={() => history.push(`/allusers`)}>
                View All Users
                </Button>
+               <Button 
+            variant="outlined"
+            color="primary"
+            size="small"
+             onClick ={() => history.push(`/manageproducts`)}>
+               Manage Products
+               </Button>          
+
+    </section>
 
 
 
-
-
-    
+    </div>
     </> :
     <>
     Must be admin to view this page

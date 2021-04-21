@@ -19,7 +19,8 @@ import {
   Homepage,
   Cart,
   AdminPage,
-  AllUsers
+  AllUsers,
+  ManageProducts
 } from "./index";
 
 import "../styles.css";
@@ -32,7 +33,8 @@ import {
   fetchCart,
   fetchUserOrders,
   createOrder,
-  fetchAllUsers
+  fetchAllUsers, 
+  fetchAllOrders
 } from "../api/utils";
 
 import axios from "axios";
@@ -43,7 +45,7 @@ const App = () => {
   const [guestCart, setGuestCart] = useState([]);
   
   //For admin use to get all orders and all users
-  const [orders, setOrders] = useState([]);
+  const [allOrders, setAllOrders] = useState([]);
   const [allUsers, setAllUsers ] = useState([]);
   
   //individual users
@@ -99,10 +101,11 @@ const App = () => {
     }
 
     if (data && data.isAdmin) {
-      console.log("admin data in the data && data.isAdmin if", data.isAdmin)
+     
       const allUsers = await fetchAllUsers(token);
-      console.log("all users line 103", allUsers);
+      const allOrders = await fetchAllOrders(token); 
       setAllUsers(allUsers);
+      setAllOrders(allOrders);
      
     }
 
@@ -194,7 +197,14 @@ const App = () => {
           </Route>
           <Route exact path="/allusers">
             <AllUsers 
-            
+            allUsers = {allUsers}
+            setAllUsers = {setAllUsers}
+            token = {token}
+            />
+          </Route>
+          <Route exact path="/manageproducts">
+            <ManageProducts 
+            allProducts = {allProducts}
             />
           </Route>
 

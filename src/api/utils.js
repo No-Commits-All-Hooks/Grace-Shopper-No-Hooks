@@ -174,3 +174,26 @@ export const fetchAllUsers = async (token) => {
   return allUsers;
 };
 
+export const fetchAllOrders = async (token) => {
+  const allOrders = await callApi({
+    url: "orders",
+    token
+  });
+  return allOrders;
+};
+
+
+export const createProduct = async (body, token) => {
+  try {
+    const newProduct = await callApi({
+      url: "product",
+      method: "POST",
+      body: body,
+      token: token,
+    });
+
+    return newProduct;
+  } catch (error) {
+    console.error(error);
+  }
+};
