@@ -8,6 +8,8 @@ import "./SingleProduct.css";
 const ManageProducts = ({ allProducts, userData }) => {
 const {products} = allProducts; 
 const history = useHistory(); 
+const [ editorOpen, setEditorOpen ] = useState(false);
+const [ ProdCreatorOpen, setProdCreatorOpen ] = useState(false);  
 
 return (
   <main className="all-products-container">
