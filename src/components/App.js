@@ -109,16 +109,10 @@ const App = () => {
      
     }
 
-
     const userCart = await fetchCart(token);
     setUserCart(userCart);
   }, [token]);
 
-  // console.log("all products:", allProducts);
-  // console.log("userData for logged in user:", userData);
-  // console.log("fetchCart:", userCart);
-  // console.log("USER TOKEN:", token);
-  // console.log("myOrders :", myOrders);
   console.log("GUEST CART :", guestCart);
 
   return (
