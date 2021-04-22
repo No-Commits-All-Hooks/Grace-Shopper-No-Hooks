@@ -13,26 +13,23 @@ const { requireUser } = require("./utils");
 //  Update the quantity or price on the order product
 
 orderProductsRouter.patch("/:orderProductId",requireUser,async (req, res, next) => {
-    const { orderProductId } = req.params;
+    let { orderProductId } = req.params;
     const { price, quantity } = req.body;
+    orderProductId = parseInt(orderProductId)
 
+console.log('requ parms product id ', req.params)
     try {
       const orderProduct = await getOrderProductById(orderProductId);
-      if (!orderProduct) {
-        next({
-          name: "NotFound",
-          message: `No order_product found with ID of ${orderProductId}`,
-        });
-      }
-      const order = await getOrderById(orderProduct.orderId);
-      if (order.userId !== req.user.id) {
-        next({
-          name: "Unauthorized",
-          message: "You cannot edit this order!",
-        });
-      }
+
+      console.log('orderProduct', orderProduct)
+      // if (!orderProduct) {
+      //   next({
+      //     name: "NotFound",
+      //     message: `No order_product found with ID of ${orderProductId}`,
+      //   });
+      // }
       const updatedOrderProduct = await updateOrderProduct({
-        id,
+        orderProductId,
         price,
         quantity,
       });
@@ -44,26 +41,13 @@ orderProductsRouter.patch("/:orderProductId",requireUser,async (req, res, next) 
 );
 
 //  Remove a product from a order, use hard delete
-orderProductsRouter.delete("/:orderProductId", async (req, res, next) => {
+orderProductsRouter.delete("/:orderProductId", requireUser,async (req, res, next) => {
   const { orderProductId } = req.params;
 
   try {
-    const orderProduct = await getOrderProductById(orderProductId);
-    if (!orderProduct) {
-      next({
-        name: "NotFound",
-        message: `No order_product found with ID of ${orderProductId}`,
-      });
-    }
-    const order = await getOrderById(orderProduct.orderId);
-    if (order.userId !== req.user.id) {
-      next({
-        name: "Unauthorized",
-        message: "You cannot edit this order!",
-      });
-    }
-    const deletedOrderProduct = await destroyOrderProduct(orderProductId);
-    res.send({ success: true, ...deletedOrderProduct });
+
+    const data = await destroyOrderProduct(orderProductId);
+    res.send(data);
   } catch ({ name, message }) {
     next({ name, message });
   }

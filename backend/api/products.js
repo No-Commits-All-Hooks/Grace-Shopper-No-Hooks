@@ -17,7 +17,12 @@ const { requireUser, isAuthorized, requireAdmin } = require('./utils');
 
 productsRouter.get("/", async (req, res, next) => {
   try {
-    const products = await getAllProducts();
+    let products = await getAllProducts();
+    products = await Promise.all(products.map(async product => {
+      const reviews = await getReviewsByProductId(product.id);
+      product.reviews = reviews;
+      return product
+    }));
 
     res.send({
       products,

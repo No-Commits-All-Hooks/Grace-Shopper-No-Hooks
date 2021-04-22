@@ -11,6 +11,7 @@ const {
   getOrderById,
   addProductToOrder,
   getUserById,
+  getProductById,
 } = require("../db");
 const { requireUser, requireAdmin } = require("./utils");
 
@@ -44,7 +45,7 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
   
 });
 
-//Create a new order. Should initially be status = created.
+// e a new order. Should initially be status = created.
 ordersRouter.post("/", requireUser, async (req, res, next) => {
   const{ id}  = req.user;
   let { status } = req.body;
@@ -94,19 +95,6 @@ ordersRouter.get("/users/:userId/orders",requireUser,async (req, res, next) => {
 ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
   try {
     const { orderId } = req.params;
-    const findOrder = await getOrderById(orderId);
-    if (!findOrder) {
-      next({
-        name: "OrderNotFound",
-        message: `No order exists with id ${orderId}`,
-      });
-    } else {
-      if (req.user.id !== findOrder.userId) {
-        next({
-          name: "Unauthorized",
-          message: "You cannot edit this order!",
-        });
-      }
       const { status, userId } = req.body;
       const updatedOrder = await updateOrder({ id: orderId, status, userId });
 
@@ -118,7 +106,7 @@ ordersRouter.patch("/:orderId", requireUser, async (req, res, next) => {
           message: "You cannot edit this order!",
         });
       }
-    }
+    
   } catch ({ name, message }) {
     next({ name, message });
   }
@@ -160,7 +148,7 @@ ordersRouter.post("/:orderId/products",requireUser,async (req, res, next) => {
   productId = parseInt(productId) 
 
   try {
-
+    const productDetails= await getProductById(productId)
     const addedOrderProduct = await addProductToOrder({
       orderId,
       productId,
@@ -168,7 +156,14 @@ ordersRouter.post("/:orderId/products",requireUser,async (req, res, next) => {
       quantity, }
     );
     if (addedOrderProduct) {
-      res.send(addedOrderProduct);
+      const productOrderDetails= {
+        ...productDetails,
+        orderId: addedOrderProduct.orderId,
+        price: addedOrderProduct.price,
+        productId: productId,
+        quantity: addedOrderProduct.quantity,
+      }
+    res.send(productOrderDetails);
 
       console.log('addedOrderProduct', addedOrderProduct)
     } else {

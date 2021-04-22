@@ -13,17 +13,16 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
    
 
 
-
   return (
     <main className="all-products-container">
 
       <div className="product-list">
         {products ? (
-          products.map((product) => {
+          products.map((product, index) => {
             return(
               <Paper>
               <SingleProduct
-              key = {product.id}
+              key = {index}
               id = {product.id }
               name= {product.name}
               price= {product.price}
@@ -37,6 +36,7 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
               userData = {userData}
               allProducts = {allProducts}
               setProducts = {setProducts}
+
               />
             </Paper>
             

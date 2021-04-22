@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 import "./SingleDetail.css";
 import { Paper, Button, makeStyles } from "@material-ui/core";
-import { addProductOrder, createOrder, updateData, fetchCart } from "../../api/utils";
+
+import { addProductOrder, createOrder, updateData, deleteReview, fetchCart } from "../../api/utils";
 import { Alert, AlertTitle } from '@material-ui/lab';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    '& > * + *': {
+    width: "100%",
+    "& > * + *": {
       marginTop: theme.spacing(2),
     },
   },
 }));
-
 
 const SingleDetail = ({
   allProducts,
@@ -24,118 +24,135 @@ const SingleDetail = ({
   setGuestCart,
   token,
   userData,
-  setUserData,
   myOrders,
+  setMyOrders,
+  refreshAllProducts
+
 }) => {
   const [quantity, setQuantity] = useState(1);
-  const [myOrderProducts, setMyOrderProducts] = useState({});
+  const [myOrderProduct, setMyOrderProducts] = useState([]);
+
   const classes = useStyles();
-
   const { products } = allProducts;
-
-
   const history = useHistory();
   let { productId } = useParams();
-  productId = parseInt(productId)
+  productId = parseInt(productId);
 
   const product = products
     ? products.find((product) => Number(productId) === Number(product.id))
     : null;
-  // console.log('PRODUCTS', product)
+
+  console.log("productId", productId);
+  console.log("USER data SINGLE DETAIL", userData);
+
+  console.log('PRODUCT', product)
   // console.log('TOKEN SINGLE DETAIL', token)
   console.log('USER DATA SINGLE DETAIL', userData)
+
   // console.log('Guest Cart SINGLE DETAIL', guestCart)
-   console.log('USER Cart SINGLE DETAIL', userCart)
+  console.log("userCart single detail file", userCart);
 
-
-
-  const { price } = product ? product : <h1>LOADING</h1>;
 
   // find order w/ created status to later update
 
-// console.log('orderProducts SINGLE DETAIL', orderProducts)
+  // console.log('orderProducts SINGLE DETAIL', orderProducts)
 
+const addProduct = async (product) => {
 
-  const addProduct = async () => {
-//if no user logged in
-    if (!userData.username){
-      const newProductAdded= {
-        name: product.name,
-        imageurl: product.imageurl,
-        description: product.description,
-        productId: product.id,
-        orderProductId: productId,
-        price: product.price,
-        quantity: quantity,
+    //if no user logged in
+    if (!userData.username) {
+      let newProductToAdd = guestCart.find(function (product) {
+        return product.id === productId;
+      });
+      console.log("new product to add exists", newProductToAdd);
+      if (newProductToAdd) {
+        newProductToAdd.quantity++;
+      } else if (!newProductToAdd) {
+        newProductToAdd = {
+          ...product,
+          quantity: Number(quantity),
+        };
+        console.log("new product to added ", newProductToAdd);
       }
-      guestCart.push(newProductAdded);
-      // setGuestCart(localStorage.setItem('guestCart', guestCart))
-      localStorage.setItem('guestCart', JSON.stringify(guestCart));
-      setGuestCart(guestCart)
+      alert("Product Added to Cart");
+      let guestCopy = [...guestCart];
+      guestCopy.push(newProductToAdd);
+      setGuestCart(guestCopy);
 
-      console.log('guest cart local', guestCart)
-     
-    }
-    else if (userData){
-      const userId = userData.id 
-      
-        if (userCart.length <=0 ) {
-          // const bodyCart = {
-          //   status: "created",
-          //   userId: 1,
-          // };
-          const bodyProduct = {
-            productId: productId,
-            price: price,
-            quantity: quantity,
-          };
-            let newUserCart = await createOrder(token);
+      console.log("guest cart local", guestCart);
+    } 
+      else if (userData && userData.username) {
 
-            console.log("newUserCart Order SINGLE DETAIL", newUserCart);
+      const findOrder = myOrders? myOrders.find((order) => (order.status = "created")) : null;
+      console.log("ORDER FOUND:", findOrder);
 
-            const newOrderProduct = await addProductOrder(newUserCart.id, bodyProduct, token);
-            console.log("newOrderProduct Order SINGLE DETAIL", newOrderProduct);
+      //create order for user
+      if (!findOrder) {
 
-            userCart.push(newOrderProduct);
-            setUserCart(userCart);
-            console.log("Created Order SINGLE DETAIL", userCart);
-            alert('Product Added to Cart')
+        let newUserCart = await createOrder(token);
+        console.log("New Cart created SINGLE DETAIL", newUserCart);
 
-        }
-          const body = {
-            productId: productId,
-            price: price,
-            quantity: quantity,
-          };
-          const findOrder= myOrders? myOrders.find((order) => order.status = 'created') : []
-          const orderProducts= findOrder? findOrder.products : [];
-          const newOrderProduct = await addProductOrder(userCart.id, body, token);
-          // setUserCart([...userProducts, newOrderProduct])
-
-          console.log("USER CART SINGLE DETAIL", userCart);
-
-          orderProducts.push(newOrderProduct)
-          setUserCart(userCart);
-          setMyOrderProducts([...orderProducts, newOrderProduct]);
-          console.log("updated order ", newOrderProduct);
-            alert('Product Added to Cart')
+        const bodyProduct = {
+          productId: productId,
+          price: product.price,
+          quantity: quantity,
+        };
         
-        } 
-          
+        const newOrderProduct = await addProductOrder(newUserCart.id, bodyProduct, token);
 
-        // localStorage.setItem('userCart', JSON.stringify(userCart));
+        console.log("new Order Product added to new cart SINGLE DETAIL", newOrderProduct);
+        const updatedUserCart= [...userCart]
+        updatedUserCart.push(newOrderProduct);
+        setMyOrders(newUserCart)
+        setUserCart(updatedUserCart);
+        // console.log("ORDER FOUND(should be the newly created order):", myOrders);
+
+        // console.log("user cart from new create order SINGLE DETAIL", userCart);
+        alert("Product Added to Cart");
+      } else {
+        //if logged in and created order exists
+
+        const body = {
+          productId: productId,
+          price: product.price,
+          quantity: quantity,
+        };
+
+        //get orderProducts from created order
+        const orderProducts = findOrder ? findOrder.products : "";
+
+        console.log("find order being passed in addProduct:", findOrder);
+
+        const newOrderProduct = await addProductOrder(findOrder.id,body,token);
+
+        console.log("updated product order testing should not be undefined:", newOrderProduct);
+
+        // let userCopy = [...userCart];
+        userCart.push(newOrderProduct);
+        setUserCart(userCart);
+
+        findOrder.products.push(newOrderProduct)
+
+        setMyOrderProducts(orderProducts)
+        setMyOrders(findOrder)
+
+        console.log("updated copy user cart:  ", userCart);
+        console.log("order should be updated:  ", findOrder);
 
 
-    };
+        alert("Product Added to Cart");
+      }
+    }
+  };
 
   if (!product) {
     return <div></div>;
   }
   return (
-     <>
+    <>
       <section className="return-home-button">
         <Button
-        variant= "outlined"
+          variant="outlined"
           onClick={() => {
             history.push(`/products`);
           }}
@@ -143,7 +160,6 @@ const SingleDetail = ({
           Return to all products
         </Button>
       </section>
-     
 
         <div className='single-product-card'>
             <img src={product.imageurl} className="product-image-detail" alt={product.name} />
@@ -170,11 +186,41 @@ const SingleDetail = ({
                </Button>
                </div>
              </section>
+             <section>
+               {product.reviews.map(review => (
+                 <div>
+                   <h3>{review.title}</h3>
+                   <br/>
+                   <br/>
+                   <p>{review.content}</p>
+                   <br/>
+                   <h4>Rating:</h4>
+                   <p>{review.stars} Stars</p>
+                   <br/>
+                   <Button
+                     variant="outlined"
+                     color="primary"
+                     size="small"
+                     onClick = {() => history.push(`/products/${product.id}/review/${review.id}/edit`)}
+                   >Edit</Button>
+                   <Button
+                     variant="outlined"
+                     color="primary"
+                     size="small"
+                     onClick = {async () => {
+                       deleteReview(review.id, token)
+                       await refreshAllProducts()
+                      }}
+                   >Delete</Button>
+                 </div>
+               ))}
+             </section>
         </div>
 
       </> 
 
     );
+
 };
 
 export default SingleDetail;

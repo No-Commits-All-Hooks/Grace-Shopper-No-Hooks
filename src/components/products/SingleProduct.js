@@ -9,7 +9,6 @@ import { fetchAllProducts } from "../../api/utils";
 import "./SingleProduct.css";
 
 const SingleProduct = ({
-  product,
   id,
   name,
   price,
@@ -45,6 +44,8 @@ const SingleProduct = ({
  }, [editorOpen]);
 
 
+
+ 
   if (!instock) {
     return null;
   }
