@@ -1,7 +1,6 @@
 import React from "react";
 import StripeCheckout from "react-stripe-checkout";
 import { useHistory, useParams } from "react-router-dom";
-import "./Checkout.css";
 
 import axios from "axios";
 import { Paper, Button, makeStyles } from "@material-ui/core";
