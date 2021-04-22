@@ -18,6 +18,7 @@ import {
   UserAccount,
   Homepage,
   Cart,
+  Review
 } from "./index";
 
 import "../styles.css";
@@ -61,7 +62,7 @@ const App = () => {
     // }
   }, []);
 
-  useEffect(async () => {
+  const refreshAllProducts = async () => {
     const allProducts = await fetchAllProducts();
     if (allProducts) {
       setProducts(allProducts);
@@ -93,7 +94,9 @@ const App = () => {
 
     const userCart = await fetchCart(token);
     setUserCart(userCart);
-  }, [token]);
+  }
+
+  useEffect(refreshAllProducts, [token]);
 
   // console.log("all products:", allProducts);
   // console.log("userData for logged in user:", userData);
@@ -153,8 +156,26 @@ const App = () => {
               userData={userData}
               setUserData={setUserData}
               myOrders={myOrders}
+              refreshAllProducts={refreshAllProducts}
             />
           </Route>
+          <Route exact path="/products/:productId/review/create"render={({match}) => (
+            <Review
+              isUpdating={false}
+              productId={match.params.productId}
+              token={token}
+              refreshAllProducts={refreshAllProducts}
+            />
+          )}/>
+          <Route exact path="/products/:productId/review/:reviewId/edit"render={({match}) => (
+            <Review
+              isUpdating={true}
+              reviewId={match.params.reviewId}
+              token={token}
+              refreshAllProducts={refreshAllProducts}
+              productId={match.params.productId}
+            />
+          )}/>
           <Route path="/cart">
             <Cart
               myOrders={myOrders}

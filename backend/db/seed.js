@@ -562,6 +562,11 @@ async function testDB(){
 
     const adminUser = await updateUser({id: oldUser.id, isAdmin:true, })
     console.log("Update an oldUser to admin:", adminUser)
+
+    const getReview = await getReviewById(1)
+    console.log("getReview: ", getReview);
+    const changeReview = await updateReview({id: 1, title: 'Perfect Mug', content: 'Goes great with my morning coffee.', stars: 5})
+    console.log("changeReview: ", changeReview);
     
     
   } catch(error){

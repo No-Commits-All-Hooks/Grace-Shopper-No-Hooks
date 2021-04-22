@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./SingleDetail.css";
 import { Paper, Button, makeStyles } from "@material-ui/core";
-import { addProductOrder, createOrder, updateData, fetchCart } from "../../api/utils";
+import { addProductOrder, createOrder, updateData, deleteReview, fetchCart } from "../../api/utils";
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +26,7 @@ const SingleDetail = ({
   userData,
   setUserData,
   myOrders,
+  refreshAllProducts
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [myOrderProducts, setMyOrderProducts] = useState({});
@@ -41,12 +42,11 @@ const SingleDetail = ({
   const product = products
     ? products.find((product) => Number(productId) === Number(product.id))
     : null;
-  // console.log('PRODUCTS', product)
+  console.log('PRODUCT', product)
   // console.log('TOKEN SINGLE DETAIL', token)
   console.log('USER DATA SINGLE DETAIL', userData)
   // console.log('Guest Cart SINGLE DETAIL', guestCart)
    console.log('USER Cart SINGLE DETAIL', userCart)
-
 
 
   const { price } = product ? product : <h1>LOADING</h1>;
@@ -169,6 +169,35 @@ const SingleDetail = ({
                Add A Review
                </Button>
                </div>
+             </section>
+             <section>
+               {product.reviews.map(review => (
+                 <div>
+                   <h3>{review.title}</h3>
+                   <br/>
+                   <br/>
+                   <p>{review.content}</p>
+                   <br/>
+                   <h4>Rating:</h4>
+                   <p>{review.stars} Stars</p>
+                   <br/>
+                   <Button
+                     variant="outlined"
+                     color="primary"
+                     size="small"
+                     onClick = {() => history.push(`/products/${product.id}/review/${review.id}/edit`)}
+                   >Edit</Button>
+                   <Button
+                     variant="outlined"
+                     color="primary"
+                     size="small"
+                     onClick = {async () => {
+                       deleteReview(review.id, token)
+                       await refreshAllProducts()
+                      }}
+                   >Delete</Button>
+                 </div>
+               ))}
              </section>
         </div>
 
