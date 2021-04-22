@@ -98,8 +98,7 @@ const App = () => {
       setAllOrders(allOrders);
      
     };
-  const userCart = await fetchCart(token);
-    setUserCart(userCart);
+  
   }
 
   useEffect(refreshAllProducts, [token]);
@@ -107,9 +106,6 @@ const App = () => {
   
   useEffect(async ()=>{
   
- 
-
-
     // JSON.parse(localStorage.getItem("guestCart")).length === 0
     let guestCart = localStorage.getItem("guestCart");
     if(!guestCart ){
@@ -120,19 +116,14 @@ const App = () => {
   },[])
 
     
-
-
-    
-
-
-  console.log("GUEST CART :", guestCart);
+  // console.log("GUEST CART :", guestCart);
 
   // console.log("all products:", allProducts);
   // console.log("userData for logged in user:", userData);
-  console.log("USER CART IN APP:", userCart);
+  // console.log("USER CART IN APP:", userCart);
   // console.log("USER TOKEN:", token);
   // console.log("myOrders :", myOrders);
-  console.log("GUEST CART IN APP:", guestCart);
+  // console.log("GUEST CART IN APP:", guestCart);
 
 
   return (

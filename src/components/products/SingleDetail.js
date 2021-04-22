@@ -187,6 +187,7 @@ const addProduct = async (product) => {
                </div>
              </section>
              <section>
+               
                {product.reviews.map(review => (
                  <div>
                    <h3>{review.title}</h3>
