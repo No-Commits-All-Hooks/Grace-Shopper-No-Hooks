@@ -48,7 +48,7 @@ const App = () => {
   const [allUsers, setAllUsers ] = useState([]);
   
   //individual users
-=======
+
   let [guestCart, setGuestCart] = useState([]);
 
   //For admin use to get all orders
@@ -89,16 +89,8 @@ const App = () => {
       setMyOrders(myOrders);
       updateUserCart(token);
     };
-  const userCart = await fetchCart(token);
-    setUserCart(userCart);
-  }
 
-  useEffect(refreshAllProducts, [token]);
-
-  
-  useEffect(async ()=>{
-  
-    if (data && data.isAdmin) {
+        if (data && data.isAdmin) {
      
       const allUsers = await fetchAllUsers(token);
       const allOrders = await fetchAllOrders(token); 
@@ -107,6 +99,14 @@ const App = () => {
      
     }
 
+  }
+
+  useEffect(refreshAllProducts, [token]);
+
+  
+  useEffect(async ()=>{
+  
+  
 
     // JSON.parse(localStorage.getItem("guestCart")).length === 0
     let guestCart = localStorage.getItem("guestCart");

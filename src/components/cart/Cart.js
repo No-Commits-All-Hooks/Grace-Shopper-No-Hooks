@@ -20,6 +20,30 @@ const history = useHistory()
   console.log("userCart:", userCart);
 
 
+const cartTotal = ()=>{
+  if (userCart&& userCart.length>0){
+  const userCartTotal= userCart.map(({price, quantity})=>{
+      return Number(price) * Number(quantity)
+    })
+    const newTotal= userCartTotal.reduce((results, value) => {
+        const corrertFormat= Number(results) + Number(value)
+         return corrertFormat.toFixed(2)
+        });
+    return newTotal
+  } else if (guestCart && guestCart.length>0){
+     const guestCartTotal= guestCart.map(({price,quantity })=>{
+      return (Number(price) *Number(quantity))
+       
+    })
+    const newTotal= guestCartTotal.reduce((results, value) => {
+      const corrertFormat= Number(results) + Number(value)
+      return corrertFormat.toFixed(2)
+        });
+    console.log('inside cart function total', newTotal)
+    return newTotal 
+  }
+}
+
   return (
     <div className="cart-container">
       <CartCard
@@ -33,6 +57,7 @@ const history = useHistory()
       { userCart.length>0 || guestCart.length>0 ?  
       (
       <div className="cart-checkout">
+            <h2>Final Total: ${cartTotal()}</h2>
        <Button
                 size="small"
                 variant="contained"

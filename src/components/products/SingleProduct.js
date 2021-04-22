@@ -21,8 +21,8 @@ const SingleProduct = ({
   userData,
   setUserData,
   setProducts,
-  allProducts
-  
+  allProducts,
+  product
  
 }) => {
   let [newProducts, setNewProducts] = useState([]);
