@@ -30,6 +30,8 @@ const SingleDetail = ({
   setMyOrders,
 }) => {
   const [quantity, setQuantity] = useState(1);
+  const [myOrderProduct, setMyOrderProducts] = useState([]);
+
   const classes = useStyles();
   const { products } = allProducts;
   const history = useHistory();
@@ -49,7 +51,7 @@ const SingleDetail = ({
   // console.log('orderProducts SINGLE DETAIL', orderProducts)
 
 const addProduct = async (product) => {
-  
+
     //if no user logged in
     if (!userData.username) {
       let newProductToAdd = guestCart.find(function (product) {
@@ -74,70 +76,62 @@ const addProduct = async (product) => {
     } 
       else if (userData && userData.username) {
 
-      const findOrder = myOrders.find((order) => (order.status = "created"));
+      const findOrder = myOrders? myOrders.find((order) => (order.status = "created")) : null;
       console.log("ORDER FOUND:", findOrder);
 
       //create order for user
       if (!findOrder) {
+
+        let newUserCart = await createOrder(token);
+        console.log("New Cart created SINGLE DETAIL", newUserCart);
+
         const bodyProduct = {
-          ...product,
           productId: productId,
           price: product.price,
           quantity: quantity,
         };
-        let newUserCart = await createOrder(token);
+        
+        const newOrderProduct = await addProductOrder(newUserCart.id, bodyProduct, token);
 
-        console.log("newUserCart Order SINGLE DETAIL", newUserCart);
+        console.log("new Order Product added to new cart SINGLE DETAIL", newOrderProduct);
+        const updatedUserCart= [...userCart]
+        updatedUserCart.push(newOrderProduct);
+        setMyOrders(newUserCart)
+        setUserCart(updatedUserCart);
+        // console.log("ORDER FOUND(should be the newly created order):", myOrders);
 
-        const newOrderProduct = await addProductOrder(
-          newUserCart.id,
-          bodyProduct,
-          token
-        );
-        console.log("new Order Product Order SINGLE DETAIL", newOrderProduct);
-
-        userCart.push(newOrderProduct);
-        setUserCart(userCart);
-        console.log("Created Order SINGLE DETAIL", userCart);
+        // console.log("user cart from new create order SINGLE DETAIL", userCart);
         alert("Product Added to Cart");
       } else {
-
+        //if logged in and created order exists
 
         const body = {
           productId: productId,
           price: product.price,
           quantity: quantity,
         };
+
+        //get orderProducts from created order
         const orderProducts = findOrder ? findOrder.products : "";
-        console.log("order Products from my orders cart:", orderProducts);
 
-        const newOrderProduct = await addProductOrder(
-          findOrder.orderId,
-          body,
-          token
-        );
-        console.log("new product added to cart:", newOrderProduct);
+        console.log("find order being passed in addProduct:", findOrder);
 
-        const updatedProductOrder = {
-          ...product,
-          id: newOrderProduct.id,
-          orderId: findOrder.id,
-          price: newOrderProduct.price,
-          productId: newOrderProduct.productId,
-          quantity: newOrderProduct.quantity,
-        };
-        console.log("updated ProductOrder added to cart:", updatedProductOrder);
+        const newOrderProduct = await addProductOrder(findOrder.id,body,token);
 
+        console.log("updated product order testing should not be undefined:", newOrderProduct);
 
-        let userCopy = [...userCart];
-        userCopy.push(updatedProductOrder);
-        setUserCart(userCopy);
+        // let userCopy = [...userCart];
+        userCart.push(newOrderProduct);
+        setUserCart(userCart);
+
+        findOrder.products.push(newOrderProduct)
+
+        setMyOrderProducts(orderProducts)
+        setMyOrders(findOrder)
+
         console.log("updated copy user cart:  ", userCart);
-        console.log(
-          "updated order products from finderOrder:  ",
-          orderProducts
-        );
-        console.log("updated find order", findOrder);
+        console.log("order should be updated:  ", findOrder);
+
 
         alert("Product Added to Cart");
       }

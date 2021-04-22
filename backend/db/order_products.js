@@ -26,7 +26,7 @@ async function getOrderProductById(id) {
 
 async function addProductToOrder({ orderId, productId, price, quantity }) {
   try {
-    const orders= await getOrderProductsByOrder(orderId);
+    const orders= await getOrderProductByOrder(orderId);
     const findOrderProduct = orders.find((order) => order.productId === productId)
     // console.log('ORDER_PRODUCT CHECKING FOR ORDER',findOrderProduct )
 
@@ -101,23 +101,23 @@ async function destroyOrderProduct(id) {
   }
 }
 
-async function getOrderProductsByOrder(orderId) {
+async function getOrderProductByOrder(orderId) {
   if (!orderId) {
     throw Error(`No order with id of ${orderId}`);
   };
   
   try {
-      const {rows: orderProducts} = await client.query(`
+      const {rows: orderProduct} = await client.query(`
           SELECT *
           FROM order_products
           WHERE "orderId"=$1;
       `, [orderId]);
 
-      if (!orderProducts) {
+      if (!orderProduct) {
         throw Error(`No are no products with this order`);
       };
 
-      return orderProducts;
+      return orderProduct;
   } catch (error) {
     throw error;
   };
@@ -128,5 +128,5 @@ module.exports = {
   addProductToOrder,
   updateOrderProduct,
   destroyOrderProduct,
-  getOrderProductsByOrder
+  getOrderProductByOrder
 };

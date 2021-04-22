@@ -10,4 +10,5 @@ export { default as AllProducts } from './products/AllProducts';
 export { default as SingleDetail} from './products/SingleDetail';
 export { default as UserAccount } from './login/UserAccount';
 export { default as Cart } from './cart/Cart';
+export { default as Checkout } from './cart/Checkout';
 

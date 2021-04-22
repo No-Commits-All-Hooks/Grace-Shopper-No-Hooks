@@ -20,7 +20,6 @@
 .each-product-cart img{
     display: flex;
     justify-content: space-around;
-    background-color: aqua;
     margin-left: 30px;
     width: 240px;
     height : 250px;

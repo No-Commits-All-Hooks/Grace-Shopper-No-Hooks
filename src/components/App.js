@@ -15,6 +15,7 @@ import {
   UserAccount,
   Homepage,
   Cart,
+  Checkout
 } from "./index";
 
 import "../styles.css";
@@ -39,18 +40,6 @@ const App = () => {
   const [myOrders, setMyOrders] = useState([]);
   const [token, setToken] = useState("");
   const [userData, setUserData] = useState({});
-
-  // useEffect(async () => {
-  //   let guestCart = localStorage.getItem("guestCart");
-  //   if(!guestCart || JSON.parse(localStorage.getItem("guestCart")).length === 0){
-  //     localStorage.setItem('guestCart', (guestCart));
-  //   }
-
-  //   console.log("guest cart local", JSON.parse(guestCart) );
-
-  //  return JSON.parse(guestCart) 
-
-  // }, []);
 
   const updateUserCart= async (token)=>{
     
@@ -155,7 +144,7 @@ const App = () => {
               setMyOrders={setMyOrders}
             />
           </Route>
-          <Route path="/cart">
+          <Route exact path="/cart">
             <Cart
               myOrders={myOrders}
               userCart={userCart}
@@ -164,6 +153,16 @@ const App = () => {
               setGuestCart={setGuestCart}
               token={token}
             />
+          </Route>
+        <Route exact path="/cart/checkout">
+        <Checkout
+              myOrders={myOrders}
+              userCart={userCart}
+              setUserCart={setUserCart}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
+              token={token}
+        />
           </Route>
           <Route path="/myaccount">
             <UserAccount userData={userData} />

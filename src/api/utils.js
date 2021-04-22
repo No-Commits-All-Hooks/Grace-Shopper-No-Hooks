@@ -153,13 +153,14 @@ export const fetchUserOrders = async (userId, token) => {
     };
   };
 
-export const updateProductOrder= async (orderId, body, token ) =>{
+export const updateProductOrder= async (orderProductsId, body, token ) =>{
     const data = await callApi({
-      url: `order_products/${orderId}`,
+      url: `order_products/${orderProductsId}`,
       method: "PATCH",
       body: body,
       token: token,
-  
   });
+  console.log("data return from utils update", data)
+  return data
 }
 
