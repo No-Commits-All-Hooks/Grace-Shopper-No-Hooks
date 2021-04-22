@@ -45,6 +45,7 @@ orderProductsRouter.delete("/:orderProductId", requireUser,async (req, res, next
   const { orderProductId } = req.params;
 
   try {
+
     const data = await destroyOrderProduct(orderProductId);
     res.send(data);
   } catch ({ name, message }) {

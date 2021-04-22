@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import "./SingleDetail.css";
 import { Paper, Button, makeStyles } from "@material-ui/core";
-import {
-  addProductOrder,
-  createOrder,
-  updateData,
-  fetchCart,
-} from "../../api/utils";
+
+import { addProductOrder, createOrder, updateData, deleteReview, fetchCart } from "../../api/utils";
+import { Alert, AlertTitle } from '@material-ui/lab';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +26,8 @@ const SingleDetail = ({
   userData,
   myOrders,
   setMyOrders,
+  refreshAllProducts
+
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [myOrderProduct, setMyOrderProducts] = useState([]);
@@ -41,10 +41,17 @@ const SingleDetail = ({
   const product = products
     ? products.find((product) => Number(productId) === Number(product.id))
     : null;
+
   console.log("productId", productId);
   console.log("USER data SINGLE DETAIL", userData);
+
+  console.log('PRODUCT', product)
+  // console.log('TOKEN SINGLE DETAIL', token)
+  console.log('USER DATA SINGLE DETAIL', userData)
+
   // console.log('Guest Cart SINGLE DETAIL', guestCart)
   console.log("userCart single detail file", userCart);
+
 
   // find order w/ created status to later update
 
@@ -154,43 +161,66 @@ const addProduct = async (product) => {
         </Button>
       </section>
 
-      <div className="single-product-card">
-        <img
-          src={product.imageurl}
-          className="product-image-detail"
-          alt={product.name}
-        />
-        <section className="product-details">
-          <h1 className="product-name"> {product.name} </h1>
-          <div>
-            <b>${product.price}</b>
-          </div>
-          <div> Description: {product.description}</div>
-          <div className="product-details-buttons">
-            <Button
-              variant="outlined"
-              color="primary"
-              size="small"
-              onClick={() => addProduct(product)}
-            >
-              Add To Cart
-            </Button>
-            <br></br>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="small"
-              onClick={() =>
-                history.push(`/products/${productId}/review/create`)
-              }
-            >
-              Add A Review
-            </Button>
-          </div>
-        </section>
-      </div>
-    </>
-  );
+        <div className='single-product-card'>
+            <img src={product.imageurl} className="product-image-detail" alt={product.name} />
+            <section className="product-details">
+             <h1 className="product-name"> {product.name} </h1>
+             <div><b>${product.price}</b></div>
+             <div> Description: { product.description }</div>
+             <div className="product-details-buttons">
+             <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={addProduct}
+          >
+            Add To Cart
+          </Button>
+          <br></br>
+             <Button 
+            variant="outlined"
+            color="primary"
+            size="small"
+             onClick ={() => history.push(`/products/${productId}/review/create`)}>
+               Add A Review
+               </Button>
+               </div>
+             </section>
+             <section>
+               {product.reviews.map(review => (
+                 <div>
+                   <h3>{review.title}</h3>
+                   <br/>
+                   <br/>
+                   <p>{review.content}</p>
+                   <br/>
+                   <h4>Rating:</h4>
+                   <p>{review.stars} Stars</p>
+                   <br/>
+                   <Button
+                     variant="outlined"
+                     color="primary"
+                     size="small"
+                     onClick = {() => history.push(`/products/${product.id}/review/${review.id}/edit`)}
+                   >Edit</Button>
+                   <Button
+                     variant="outlined"
+                     color="primary"
+                     size="small"
+                     onClick = {async () => {
+                       deleteReview(review.id, token)
+                       await refreshAllProducts()
+                      }}
+                   >Delete</Button>
+                 </div>
+               ))}
+             </section>
+        </div>
+
+      </> 
+
+    );
+
 };
 
 export default SingleDetail;

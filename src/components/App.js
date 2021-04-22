@@ -15,7 +15,8 @@ import {
   UserAccount,
   Homepage,
   Cart,
-  Checkout
+  Checkout,
+  Review
 } from "./index";
 
 import "../styles.css";
@@ -49,7 +50,14 @@ const App = () => {
         }
   }
 
-  useEffect(async () => {
+
+  const refreshAllProducts = async () => {
+    const allProducts = await fetchAllProducts();
+    if (allProducts) {
+      setProducts(allProducts);
+    }
+
+
     //check to see if there is a token and try to set it on localStorage
     if (!token) {
       setToken(localStorage.getItem("token"));
@@ -66,13 +74,15 @@ const App = () => {
       setMyOrders(myOrders);
       updateUserCart(token);
     };
-  }, [token]);
+  const userCart = await fetchCart(token);
+    setUserCart(userCart);
+  }
 
+  useEffect(refreshAllProducts, [token]);
+
+  
   useEffect(async ()=>{
-    const allProducts = await fetchAllProducts();
-    if (allProducts) {
-      setProducts(allProducts);
-    }
+  
 
     // JSON.parse(localStorage.getItem("guestCart")).length === 0
     let guestCart = localStorage.getItem("guestCart");
@@ -82,6 +92,10 @@ const App = () => {
     console.log("guest cart local", JSON.parse(guestCart) );
    return JSON.parse(guestCart) 
   },[])
+
+    
+
+
 
   // console.log("all products:", allProducts);
   // console.log("userData for logged in user:", userData);
@@ -141,10 +155,30 @@ const App = () => {
               userData={userData}
               setUserData={setUserData}
               myOrders={myOrders}
+
               setMyOrders={setMyOrders}
             />
           </Route>
+        
+          <Route exact path="/products/:productId/review/create"render={({match}) => (
+            <Review
+              isUpdating={false}
+              productId={match.params.productId}
+              token={token}
+              refreshAllProducts={refreshAllProducts}
+            />
+          )}/>
+          <Route exact path="/products/:productId/review/:reviewId/edit"render={({match}) => (
+            <Review
+              isUpdating={true}
+              reviewId={match.params.reviewId}
+              token={token}
+              refreshAllProducts={refreshAllProducts}
+              productId={match.params.productId}
+            />
+          )}/>
           <Route exact path="/cart">
+
             <Cart
               myOrders={myOrders}
               userCart={userCart}
@@ -152,6 +186,7 @@ const App = () => {
               guestCart={guestCart}
               setGuestCart={setGuestCart}
               token={token}
+              refreshAllProducts={refreshAllProducts}
             />
           </Route>
         <Route exact path="/cart/checkout">
