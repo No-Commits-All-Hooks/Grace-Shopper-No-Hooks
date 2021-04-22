@@ -158,7 +158,7 @@ async function createInitialProducts() {
       {
         name: 'Backpack - Foldable - White',
         description: 'Backpack with protective padding and laptop sleeve.',
-        price: 28.50,
+        price: 28.58,
         imageURL: 'https://i.postimg.cc/bNtMRVg0/black-foldable-backpacks.jpg',
         inStock: true,
         category: 'Bags',
@@ -239,7 +239,7 @@ async function createInitialProducts() {
       {
         name: 'Salary booster - AKA: "Money Shovel',
         description: 'Make sure to add to your cart. Upon graduation you are most likely to need this shovel to carry your programmers money to the bank. (NOTICE: Salary NOT guaranteed upon graduation, but discussed quite a bit during course).',
-        price: 100.00,
+        price: 100.99,
         imageURL: 'https://i.postimg.cc/28RwxcgD/Gold-Plated-Shovel.jpg',
         inStock: true,
         category: 'Accesories',
@@ -247,7 +247,7 @@ async function createInitialProducts() {
       {
         name: 'Salary Mover - AKA: "Take it to the Bank',
         description: 'Make sure to add to your cart if you got Salary Booster. Upon graduation you are most likely to need this take your new money. (NOTICE: Salary NOT guaranteed upon graduation, but discussed quite a bit during course).',
-        price: 400.00,
+        price: 400.99,
         imageURL: 'https://i.postimg.cc/3x3W9YtT/Wheel-Barrow.jpg',
         inStock: true,
         category: 'Accesories',
@@ -255,7 +255,7 @@ async function createInitialProducts() {
       {
         name: 'Three in one Charger Kit - Blue',
         description: "Don't be caught with a low battery. And let your friends know they can count on you to provide a charge with this 3in1 charge kit.",
-        price: 19.50,
+        price: 19.58,
         imageURL: 'https://i.postimg.cc/zG9PHCKt/blue-metallic-3-in-1-charging.jpg',
         inStock: true,
         category: 'Accesories',
@@ -263,7 +263,7 @@ async function createInitialProducts() {
       {
         name: 'Three in one Charger Kit - Silver',
         description: "Don't be caught with a low battery. And let your friends know they can count on you to provide a charge with this 3in1 charge kit.",
-        price: 19.50,
+        price: 19.58,
         imageURL: 'https://i.postimg.cc/L5ykpSmY/silver-metallic-3-in-1-charging.jpg',
         inStock: true,
         category: 'Accesories',
@@ -271,7 +271,7 @@ async function createInitialProducts() {
       {
         name: 'Three in one Charger Kit - Black',
         description: "Don't be caught with a low battery. And let your friends know they can count on you to provide a charge with this 3in1 charge kit.",
-        price: 19.50,
+        price: 19.58,
         imageURL: 'https://i.postimg.cc/kMYrXt1Z/black-metallic-3-in-1-charging.jpg',
         inStock: true,
         category: 'Accesories',
@@ -279,7 +279,7 @@ async function createInitialProducts() {
       {
         name: 'Mason Jar - 16oz - Red',
         description: "Don't be parched, drink from this handy mason jar with handle. Will it tip over, maybe. Just make sure to keep away from your desktop.",
-        price: 11.50,
+        price: 11.58,
         imageURL: 'https://i.postimg.cc/7YymMHW9/red-16oz-libbey-mason.jpg',
         inStock: true,
         category: 'Drinkware',
@@ -287,7 +287,7 @@ async function createInitialProducts() {
       {
         name: 'Mason Jar - 16oz - Black',
         description: "Don't be parched, drink from this handy mason jar with handle. Will it tip over, maybe. Just make sure to keep away from your desktop.",
-        price: 11.50,
+        price: 11.58,
         imageURL: 'https://i.postimg.cc/5yvhjskm/black-16oz-libbey-mason.jpg',
         inStock: true,
         category: 'Drinkware',
@@ -295,7 +295,7 @@ async function createInitialProducts() {
       {
         name: 'Mason Jar - 16oz - Blue',
         description: "Don't be parched, drink from this handy mason jar with handle. Will it tip over, maybe. Just make sure to keep away from your desktop.",
-        price: 11.50,
+        price: 11.55,
         imageURL: 'https://i.postimg.cc/Hn2fQrdJ/blue-16oz-libbey-mason.jpg',
         inStock: true,
         category: 'Drinkware',
@@ -304,7 +304,7 @@ async function createInitialProducts() {
       {
         name: 'Collapsible Can Cooler - White',
         description: "Whether it's an energy drink, seltzer, juice, or spiked beverage, make sure to keep it cool with this coozie.",
-        price: 8.50,
+        price: 8.55,
         imageURL: 'https://i.postimg.cc/x8q5q8xy/white-neoprene-collapsible-can-coolers.jpg',
         inStock: true,
         category: 'Drinkware',
@@ -312,7 +312,7 @@ async function createInitialProducts() {
       {
         name: 'Collapsible Can Cooler - Black',
         description: "Whether it's an energy drink, seltzer, juice, or spiked beverage, make sure to keep it cool with this coozie.",
-        price: 8.50,
+        price: 8.55,
         imageURL: 'https://i.postimg.cc/0ymzPvf6/black-neoprene-collapsible-can-coolers.jpg',
         inStock: true,
         category: 'Drinkware',
@@ -320,7 +320,7 @@ async function createInitialProducts() {
       {
         name: 'Golf Umbrella - 48in - Black and White',
         description: "No need to play golf to use this umbrella. Plenty of coverage for two when you need to get somewhere in the rain.",
-        price: 28.50,
+        price: 28.58,
         imageURL: 'https://i.postimg.cc/nhW14frk/48in-arc-umbrellas-white-black.jpg',
         inStock: true,
         category: 'Accesories',
@@ -328,7 +328,7 @@ async function createInitialProducts() {
       {
         name: 'Golf Umbrella - 48in - Blue and Black',
         description: "No need to play golf to use this umbrella. Plenty of coverage for two when you need to get somewhere in the rain.",
-        price: 28.50,
+        price: 28.58,
         imageURL: 'https://i.postimg.cc/15JBzqZb/48in-arc-umbrellas-blue-black.jpg',
         inStock: true,
         category: 'Accesories',
@@ -336,7 +336,7 @@ async function createInitialProducts() {
       {
         name: 'Golf Umbrella - 48in - Red and White',
         description: "No need to play golf to use this umbrella. Plenty of coverage for two when you need to get somewhere in the rain.",
-        price: 28.50,
+        price: 28.58,
         imageURL: 'https://i.postimg.cc/7ZhVJZHh/48in-arc-umbrellas-red-black.jpg',
         inStock: true,
         category: 'Accesories',
@@ -344,7 +344,7 @@ async function createInitialProducts() {
       {
         name: 'Backpack - Foldable - White',
         description: "Yes, foldable. Cause sometimes you need a backpack for when you get there. But, this is not just for travel. Everyday use is also part of this bag's design.",
-        price: 29.50,
+        price: 29.55,
         imageURL: 'https://i.postimg.cc/W4tBLpjr/white-foldable-backpacks.jpg',
         inStock: true,
         category: 'Bags',
@@ -352,7 +352,7 @@ async function createInitialProducts() {
       {
         name: 'Backpack - Foldable - Blue',
         description: "Yes, foldable. Cause sometimes you need a backpack for when you get there. But, this is not just for travel. Everyday use is also part of this bag's design.",
-        price: 29.50,
+        price: 29.55,
         imageURL: 'https://i.postimg.cc/TPtfXNZL/blue-foldable-backpacks.jpg',
         inStock: true,
         category: 'Bags',
@@ -360,7 +360,7 @@ async function createInitialProducts() {
       {
         name: 'Shot glass - 2oz',
         description: "Standard shot is 1.5oz. We know you've worked hard, so we give you 33% more capacity with our shot glass.",
-        price: 9.50,
+        price: 9.56,
         imageURL: 'https://i.postimg.cc/v87XpK2Y/2-oz-shot-glass.jpg',
         inStock: true,
         category: 'Drinkware',
