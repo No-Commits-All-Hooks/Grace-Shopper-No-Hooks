@@ -447,6 +447,7 @@ try {
 }];
 const orders = await Promise.all( ordersCreated.map((order) => createOrder(order.status, order.userId)))
 
+
 console.log("Orders Created: ", orders);
 console.log("Finished creating orders.");
 }catch(error){

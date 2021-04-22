@@ -4,7 +4,8 @@ import { useHistory, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { callApi } from "../../api";
 import { Button } from "@material-ui/core";
-
+import EditProduct from "../products/EditProduct";
+import { fetchAllProducts } from "../../api/utils";
 import "./SingleProduct.css";
 
 const SingleProduct = ({
@@ -13,7 +14,36 @@ const SingleProduct = ({
   price,
   imageurl,
   instock,
+  setUserCart,
+  userCart,
+  setGuestCart,
+  guestCart,
+  userData,
+  setUserData,
+  setProducts,
+  allProducts
+  
+ 
 }) => {
+  let [newProducts, setNewProducts] = useState([]);
+  let {products} = allProducts;
+
+  
+  // this is how we open the editor
+  const [ editorOpen, setEditorOpen ] = useState(false);
+  const history = useHistory();
+  //   console.log('USERCART single product', userCart)
+
+  useEffect(async () => {
+    products = await fetchAllProducts();
+   if (products) {
+     setProducts(products);
+   }
+
+
+ }, [editorOpen]);
+
+
 
  
   if (!instock) {
@@ -33,6 +63,39 @@ const SingleProduct = ({
       </Link>
       </div>
       <div className="product-price">${price}</div>
+
+      {editorOpen
+            ? <EditProduct
+                product = {product}
+                setEditorOpen = {setEditorOpen} 
+                editorOpen = {editorOpen}
+                allProducts = {allProducts}
+                setProducts = {setProducts}
+                />
+            : ''
+            }
+
+      {userData.isAdmin?
+      <section>
+      <Button 
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={() => {
+              setEditorOpen(true);
+              }}>
+               Edit Product
+               </Button>
+               <Button 
+            variant="outlined"
+            color="primary"
+            size="small"
+             onClick ={() => history.push(`/products/${productId}/review/create`)}>
+               Delete Product
+               </Button>
+       
+
+      </section> : "" }
       </div>
     </div>
   );

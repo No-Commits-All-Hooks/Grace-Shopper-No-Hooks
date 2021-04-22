@@ -7,9 +7,11 @@ import { Paper, Button, makeStyles } from "@material-ui/core";
 
 
 
-const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCart, userData }) => {
+const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCart, userData, setProducts }) => {
     const history = useHistory();
     const {products}= allProducts;
+   
+
 
   return (
     <main className="all-products-container">
@@ -26,6 +28,15 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
               price= {product.price}
               instock= {product.instock}
               imageurl= {product.imageurl}
+              setUserCart= {setUserCart}
+              userCart = {userCart}
+              setGuestCart = {setGuestCart}
+              guestCart = {guestCart}
+              product = {product}
+              userData = {userData}
+              allProducts = {allProducts}
+              setProducts = {setProducts}
+
               />
             </Paper>
             

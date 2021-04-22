@@ -1,0 +1,66 @@
+.product-creator {
+    position: fixed;
+    top: 20vh;
+    bottom: 25vh;
+    right: 10vw;
+    left: 10vw;
+    background-color: white;
+    box-shadow: 1px 1px 5px gray;
+    z-index: 200;
+    overflow-y: scroll;
+
+}
+
+.product-creator h1 {
+    font-size: 2.4rem;
+    margin: 0 24px 24px 24px;
+}
+
+.close-button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.product-form {
+    padding: 0px 24px 0px 24px;
+}
+
+.fieldset {
+    display: flex;
+    flex-direction: column;
+}
+
+.fieldset input {
+    height: 40px;
+    font-size: 1.4rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    padding: 8px;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    box-shadow: inset 0 0 5px gray;
+}
+
+.fieldset textarea {
+    font-size: 1.4rem;
+    padding: 8px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    resize: none;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    box-shadow: inset 0 0 5px gray;
+}
+
+.error-message {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    font-weight: 500;
+    color: red;
+}
+
+
+

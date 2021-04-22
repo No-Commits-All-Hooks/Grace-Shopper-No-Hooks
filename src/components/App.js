@@ -15,6 +15,9 @@ import {
   UserAccount,
   Homepage,
   Cart,
+  AdminPage,
+  AllUsers,
+  ManageProducts,
   Checkout,
   Review
 } from "./index";
@@ -29,11 +32,23 @@ import {
   fetchCart,
   fetchUserOrders,
   createOrder,
+  fetchAllUsers, 
+  fetchAllOrders
 } from "../api/utils";
+
+import axios from "axios";
+
 
 const App = () => {
   const [allProducts, setProducts] = useState([]);
   const [userCart, setUserCart] = useState([]);
+ 
+  //For admin use to get all orders and all users
+  const [allOrders, setAllOrders] = useState([]);
+  const [allUsers, setAllUsers ] = useState([]);
+  
+  //individual users
+=======
   let [guestCart, setGuestCart] = useState([]);
 
   //For admin use to get all orders
@@ -83,6 +98,15 @@ const App = () => {
   
   useEffect(async ()=>{
   
+    if (data && data.isAdmin) {
+     
+      const allUsers = await fetchAllUsers(token);
+      const allOrders = await fetchAllOrders(token); 
+      setAllUsers(allUsers);
+      setAllOrders(allOrders);
+     
+    }
+
 
     // JSON.parse(localStorage.getItem("guestCart")).length === 0
     let guestCart = localStorage.getItem("guestCart");
@@ -96,6 +120,10 @@ const App = () => {
     
 
 
+    
+
+
+  console.log("GUEST CART :", guestCart);
 
   // console.log("all products:", allProducts);
   // console.log("userData for logged in user:", userData);
@@ -103,6 +131,7 @@ const App = () => {
   // console.log("USER TOKEN:", token);
   // console.log("myOrders :", myOrders);
   console.log("GUEST CART IN APP:", guestCart);
+
 
   return (
     <>
@@ -142,6 +171,7 @@ const App = () => {
               guestCart={guestCart}
               setGuestCart={setGuestCart}
               userData={userData}
+              setProducts = {setProducts}
             />
           </Route>
           <Route exact path="/products/:productId">
@@ -202,6 +232,30 @@ const App = () => {
           <Route path="/myaccount">
             <UserAccount userData={userData} />
           </Route>
+          <Route path="/admin">
+            <AdminPage 
+            userData={userData}
+            allProducts={allProducts} 
+            token = {token}
+            
+            />
+          </Route>
+          <Route exact path="/allusers">
+            <AllUsers 
+            allUsers = {allUsers}
+            setAllUsers = {setAllUsers}
+            token = {token}
+            />
+          </Route>
+          <Route exact path="/manageproducts">
+            <ManageProducts 
+            setProducts = {setProducts}
+            allProducts = {allProducts}
+            token = {token}
+            userData = {userData}
+            />
+          </Route>
+
         </Switch>
       </div>
     </>
