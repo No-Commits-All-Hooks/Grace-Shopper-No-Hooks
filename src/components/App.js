@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import StripeCheckout from "react-stripe-checkout";
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  useHistory,
-  Link,
 } from "react-router-dom";
 
 import {
@@ -18,6 +15,7 @@ import {
   UserAccount,
   Homepage,
   Cart,
+  Checkout,
   Review
 } from "./index";
 
@@ -32,12 +30,11 @@ import {
   fetchUserOrders,
   createOrder,
 } from "../api/utils";
-import axios from "axios";
 
 const App = () => {
   const [allProducts, setProducts] = useState([]);
   const [userCart, setUserCart] = useState([]);
-  const [guestCart, setGuestCart] = useState([]);
+  let [guestCart, setGuestCart] = useState([]);
 
   //For admin use to get all orders
   const [orders, setOrders] = useState([]);
@@ -45,22 +42,14 @@ const App = () => {
   const [token, setToken] = useState("");
   const [userData, setUserData] = useState({});
 
-  useEffect(async () => {
-    let guestCart = localStorage.getItem("guestCart");
-    if (guestCart) {
-      localStorage.setItem(
-        "guestCart",
-        JSON.stringify(guestCart.length > 0 ? guestCart : [])
-      );
-      // setGuestCart(guestCart)
-      console.log("guest cart local", guestCart);
-    }
+  const updateUserCart= async (token)=>{
+    
+        let {products: userCart}= await fetchCart(token);
+        if (userCart){
+          setUserCart(userCart)
+        }
+  }
 
-    // if (userCart){
-    //   localStorage.setItem('userCart', JSON.stringify(userCart));
-    //   return JSON.parse(userCart)
-    // }
-  }, []);
 
   const refreshAllProducts = async () => {
     const allProducts = await fetchAllProducts();
@@ -68,42 +57,52 @@ const App = () => {
       setProducts(allProducts);
     }
 
+
     //check to see if there is a token and try to set it on localStorage
     if (!token) {
       setToken(localStorage.getItem("token"));
       return;
     }
 
-    // if (guestCart){
-    //   setGuestCart(localStorage.setItem('guestCart', guestCart));
-    //  }
-    //  if (userCart){
-    //   setUserCart(localStorage.setItem('userCart', userCart));
-    //  }
-
     //if you have a token(when they log in they will get one) then set it to useState
     const data = await fetchUserData(token);
 
-    // console.log('DATA IN APP', data)
     if (data && data.username) {
       const userId = data.id;
       const myOrders = await fetchUserOrders(userId, token);
       setUserData(data);
       setMyOrders(myOrders);
-    }
-
-    const userCart = await fetchCart(token);
+      updateUserCart(token);
+    };
+  const userCart = await fetchCart(token);
     setUserCart(userCart);
   }
 
   useEffect(refreshAllProducts, [token]);
 
+  
+  useEffect(async ()=>{
+  
+
+    // JSON.parse(localStorage.getItem("guestCart")).length === 0
+    let guestCart = localStorage.getItem("guestCart");
+    if(!guestCart ){
+      localStorage.setItem('guestCart', (guestCart));
+    }
+    console.log("guest cart local", JSON.parse(guestCart) );
+   return JSON.parse(guestCart) 
+  },[])
+
+    
+
+
+
   // console.log("all products:", allProducts);
   // console.log("userData for logged in user:", userData);
-  // console.log("fetchCart:", userCart);
+  console.log("USER CART IN APP:", userCart);
   // console.log("USER TOKEN:", token);
   // console.log("myOrders :", myOrders);
-  console.log("GUEST CART :", guestCart);
+  console.log("GUEST CART IN APP:", guestCart);
 
   return (
     <>
@@ -156,9 +155,11 @@ const App = () => {
               userData={userData}
               setUserData={setUserData}
               myOrders={myOrders}
-              refreshAllProducts={refreshAllProducts}
+
+              setMyOrders={setMyOrders}
             />
           </Route>
+        
           <Route exact path="/products/:productId/review/create"render={({match}) => (
             <Review
               isUpdating={false}
@@ -176,7 +177,8 @@ const App = () => {
               productId={match.params.productId}
             />
           )}/>
-          <Route path="/cart">
+          <Route exact path="/cart">
+
             <Cart
               myOrders={myOrders}
               userCart={userCart}
@@ -184,7 +186,18 @@ const App = () => {
               guestCart={guestCart}
               setGuestCart={setGuestCart}
               token={token}
+              refreshAllProducts={refreshAllProducts}
             />
+          </Route>
+        <Route exact path="/cart/checkout">
+        <Checkout
+              myOrders={myOrders}
+              userCart={userCart}
+              setUserCart={setUserCart}
+              guestCart={guestCart}
+              setGuestCart={setGuestCart}
+              token={token}
+        />
           </Route>
           <Route path="/myaccount">
             <UserAccount userData={userData} />
