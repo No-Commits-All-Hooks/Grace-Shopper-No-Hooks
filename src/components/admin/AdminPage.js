@@ -9,9 +9,6 @@ const AdminPage = ({userData, token }) => {
     const history = useHistory();
 
 
-    
-
-
  return (
    <>  
   {userData.isAdmin?

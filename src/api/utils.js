@@ -197,3 +197,17 @@ export const createProduct = async (body, token) => {
     console.error(error);
   }
 };
+
+export const productEditor = async (productId, body) => {
+  try {
+    const data = await callApi({
+      url: `products/${productId}`,
+      method: 'PATCH',
+      body: body,
+    });
+    return data;
+
+  } catch(error) {
+    console.error(error);
+  };
+};

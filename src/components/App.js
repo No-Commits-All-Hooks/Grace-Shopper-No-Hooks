@@ -159,6 +159,7 @@ const App = () => {
               guestCart={guestCart}
               setGuestCart={setGuestCart}
               userData={userData}
+              setProducts = {setProducts}
             />
           </Route>
           <Route exact path="/products/:productId">
@@ -204,7 +205,10 @@ const App = () => {
           </Route>
           <Route exact path="/manageproducts">
             <ManageProducts 
+            setProducts = {setProducts}
             allProducts = {allProducts}
+            token = {token}
+            userData = {userData}
             />
           </Route>
 

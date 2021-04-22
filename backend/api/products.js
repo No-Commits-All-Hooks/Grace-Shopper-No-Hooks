@@ -8,7 +8,8 @@ const {
   getReviewsByProductId,
   deleteReview,
   updateReview,
-  createReview
+  createReview,
+  updateProduct
 } = require('../db');
 
 const { requireUser, isAuthorized, requireAdmin } = require('./utils');
@@ -138,8 +139,8 @@ productsRouter.delete('/review/:reviewId/delete', requireUser, async (req, res, 
   }
 })
 
-//this for admin to update user, so check to see of person is an admin first
-productsRouter.patch("/:productId", requireAdmin, async (req, res, next) => {
+//this for admin to update product, so check to see of person is an admin first
+productsRouter.patch("/:productId", async (req, res, next) => {
   const { productId } = req.params; //pull this from params
   //these are the fields you can update in the products table
   const { name, description, price, imageurl, instock, category } = req.body; //pull this from the body

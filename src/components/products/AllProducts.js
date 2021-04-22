@@ -7,11 +7,11 @@ import { Paper, Button, makeStyles } from "@material-ui/core";
 
 
 
-const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCart, userData }) => {
+const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCart, userData, setProducts }) => {
     const history = useHistory();
     const {products}= allProducts;
+   
 
-  console.log('USERCART single product', userCart)
 
 
   return (
@@ -35,6 +35,8 @@ const AllProducts = ({ allProducts, userCart, setUserCart, guestCart, setGuestCa
               guestCart = {guestCart}
               product = {product}
               userData = {userData}
+              allProducts = {allProducts}
+              setProducts = {setProducts}
               />
             </Paper>
             

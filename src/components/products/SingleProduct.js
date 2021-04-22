@@ -4,7 +4,8 @@ import { useHistory, useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { callApi } from "../../api";
 import { Button } from "@material-ui/core";
-
+import EditProduct from "../products/EditProduct";
+import { fetchAllProducts } from "../../api/utils";
 import "./SingleProduct.css";
 
 const SingleProduct = ({
@@ -19,38 +20,30 @@ const SingleProduct = ({
   setGuestCart,
   guestCart,
   userData,
-  setUseData,
+  setUserData,
+  setProducts,
+  allProducts
+  
+ 
 }) => {
   let [newProducts, setNewProducts] = useState([]);
+  let {products} = allProducts;
+
+  
+  // this is how we open the editor
+  const [ editorOpen, setEditorOpen ] = useState(false);
   const history = useHistory();
   //   console.log('USERCART single product', userCart)
 
-  const addToCart = (el) => {
-    if (!userData.username) {
-      guestCart.push(el);
-      setGuestCart(guestCart);
-      console.log("GuestCart after being set", guestCart);
-    }
-    // if logged in add items to logged in users cart
-    else {
-      // if (!userCart.products <0 ){
-      //   newProducts = await createOrder
+  useEffect(async () => {
+    products = await fetchAllProducts();
+   if (products) {
+     setProducts(products);
+   }
 
-      // }
-      let { products } = userCart;
-      newProducts = products.push(el);
 
-      console.log("products single product", products);
+ }, [editorOpen]);
 
-      //  console.log('newProducts single product', newProducts)
-      const orderId = userCart.id;
-      console.log("orderId single product", orderId);
-
-      setNewProducts([...products, newProducts]);
-
-      // setUserCart([...userCart])
-    }
-  };
 
   if (!instock) {
     return null;
@@ -69,6 +62,39 @@ const SingleProduct = ({
       </Link>
       </div>
       <div className="product-price">${price}</div>
+
+      {editorOpen
+            ? <EditProduct
+                product = {product}
+                setEditorOpen = {setEditorOpen} 
+                editorOpen = {editorOpen}
+                allProducts = {allProducts}
+                setProducts = {setProducts}
+                />
+            : ''
+            }
+
+      {userData.isAdmin?
+      <section>
+      <Button 
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={() => {
+              setEditorOpen(true);
+              }}>
+               Edit Product
+               </Button>
+               <Button 
+            variant="outlined"
+            color="primary"
+            size="small"
+             onClick ={() => history.push(`/products/${productId}/review/create`)}>
+               Delete Product
+               </Button>
+       
+
+      </section> : "" }
       </div>
     </div>
   );

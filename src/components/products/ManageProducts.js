@@ -3,13 +3,30 @@ import { useHistory } from "react-router";
 import SingleProduct from "./SingleProduct";
 import { Paper, Button, makeStyles } from "@material-ui/core";
 import "./SingleProduct.css";
+import {fetchAllProducts} from "../../api/utils"
+import { LeakAddTwoTone } from "@material-ui/icons";
 
 
-const ManageProducts = ({ allProducts, userData }) => {
-const {products} = allProducts; 
+const ManageProducts = ({ allProducts, userData, setProducts }) => {
+
 const history = useHistory(); 
 const [ editorOpen, setEditorOpen ] = useState(false);
-const [ ProdCreatorOpen, setProdCreatorOpen ] = useState(false);  
+const [ prodCreatorOpen, setProdCreatorOpen ] = useState(false);  
+
+
+
+  let {products} = allProducts;
+
+  useEffect(async () => {
+     products = await fetchAllProducts();
+    if (products) {
+      setProducts(products);
+    }
+
+
+  }, [prodCreatorOpen]);
+
+
 
 return (
   <main className="all-products-container">
@@ -27,7 +44,9 @@ return (
             variant="outlined"
             color="primary"
             size="small"
-             onClick ={() => history.push(`/manageproducts`)}>
+            onClick={() => {
+              setProdCreatorOpen(true);
+              }}>
                Add Products
                </Button>    
      </section>          
@@ -43,15 +62,31 @@ return (
             price= {product.price}
             instock= {product.instock}
             imageurl= {product.imageurl}
-           
+            userData = {userData}
+            editorOpen = {editorOpen}
+            setEditorOpen = {setEditorOpen}
+            allProducts = {allProducts}
+            setProducts = {setProducts}
+            product = {product}
             />
           </Paper>
           
           )
         })
       ) : (
-        <h5>Completely Sold Out!</h5>
+        <h5>Are you an admin?</h5>
       )}
+     {prodCreatorOpen
+            ? <div>
+
+              Show me a form to add a product
+                </div> 
+            : ''
+            }
+
+            
+
+
     </div>
   </main>
 );
