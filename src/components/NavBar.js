@@ -106,7 +106,7 @@ const NavBar = ({ userData,setToken, setUserData, setUserCart, allProducts}) => 
           onClick={() => handleMenuChange("/")}
           style={{ cursor: 'pointer' }}
           >
-            Fullstack Academy Shop
+            Fullstack Fan Shop
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
