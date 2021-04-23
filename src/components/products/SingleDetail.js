@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { useHistory, useParams } from "react-router-dom";
 import "./SingleDetail.css";
 import { Paper, Button, makeStyles } from "@material-ui/core";
@@ -7,6 +7,7 @@ import {
   createOrder,
   updateData,
   fetchCart,
+  fetchUserOrders,
 } from "../../api/utils";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +30,9 @@ const SingleDetail = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [myOrderProduct, setMyOrderProducts] = useState([]);
+
+  const [ refreshOrders, setRefreshOrders ] = useState(false);
+
   const classes = useStyles();
   const { products } = allProducts;
   const history = useHistory();
@@ -37,13 +41,28 @@ const SingleDetail = ({
   const product = products
     ? products.find((product) => Number(productId) === Number(product.id))
     : null;
-  console.log("productId", productId);
-  console.log("USER data SINGLE DETAIL", userData);
-  // console.log('Guest Cart SINGLE DETAIL', guestCart)
+
+
+  // console.log("USER data SINGLE DETAIL", userData);
   console.log("userCart single detail file", userCart);
+
+
+
+  useEffect(async () => {
+    if (userData && userData.username) {
+    myOrders = await fetchUserOrders(userData.id, token);
+    setMyOrders(myOrders)
+  }
+ }, [refreshOrders]);
+
+
+const addProduct = async (product) => {
+  setRefreshOrders(true)
+  
+
   // find order w/ created status to later update
   // console.log('orderProducts SINGLE DETAIL', orderProducts)
-const addProduct = async (product) => {
+
     //if no user logged in
     if (!userData.username) {
       let newProductToAdd = guestCart.find(function (product) {
@@ -66,8 +85,9 @@ const addProduct = async (product) => {
       console.log("guest cart local", guestCart);
     } 
       else if (userData && userData.username) {
-      const findOrder = myOrders? myOrders.find((order) => (order.status = "created")) : null;
-      console.log("ORDER FOUND:", findOrder);
+
+        const findOrder = myOrders? myOrders.find((order) => (order.status = "created")) : "";
+
       //create order for user
       if (!findOrder) {
         let newUserCart = await createOrder(token);
@@ -94,14 +114,26 @@ const addProduct = async (product) => {
           quantity: quantity,
         };
         //get orderProducts from created order
+        console.log("ORDER FOUND:", findOrder);
+    
         const orderProducts = findOrder ? findOrder.products : "";
+
+    
+      console.log("ARRAY OF ORDER PRODUCTS INSIDE FOUND ORDER:", orderProducts);
+
+
         console.log("find order being passed in addProduct:", findOrder);
+
         const newOrderProduct = await addProductOrder(findOrder.id,body,token);
         console.log("updated product order testing should not be undefined:", newOrderProduct);
         // let userCopy = [...userCart];
         userCart.push(newOrderProduct);
         setUserCart(userCart);
-        findOrder.products.push(newOrderProduct)
+
+
+        orderProducts.push(newOrderProduct)
+
+
         setMyOrderProducts(orderProducts)
         setMyOrders(findOrder)
         console.log("updated copy user cart:  ", userCart);
