@@ -3,23 +3,18 @@ import { useHistory, useParams } from "react-router-dom";
 import "./Cart.css";
 import { Button, makeStyles } from "@material-ui/core";
 import CartCard from "./CartCard";
-
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
     width: 100,
   },
 }));
-
 const Cart = ({myOrders,  userCart, setUserCart, guestCart, setGuestCart, token }) => {
 const classes = useStyles();
 const history = useHistory()
-
   console.log("guestCart:", guestCart);
   console.log('myOrders in cart', myOrders)
   console.log("userCart:", userCart);
-
-
 const cartTotal = ()=>{
   if (userCart&& userCart.length>0){
   const userCartTotal= userCart.map(({price, quantity})=>{
@@ -33,7 +28,6 @@ const cartTotal = ()=>{
   } else if (guestCart && guestCart.length>0){
      const guestCartTotal= guestCart.map(({price,quantity })=>{
       return (Number(price) *Number(quantity))
-       
     })
     const newTotal= guestCartTotal.reduce((results, value) => {
       const corrertFormat= Number(results) + Number(value)
@@ -43,7 +37,6 @@ const cartTotal = ()=>{
     return newTotal 
   }
 }
-
   return (
     <div className="cart-container">
       <CartCard
@@ -70,10 +63,8 @@ const cartTotal = ()=>{
                 Complete Order 
               </Button>
             </div>
-        
       ): <h1>Cart Empty</h1>}
     </div>
   );
 };
-
 export default Cart;

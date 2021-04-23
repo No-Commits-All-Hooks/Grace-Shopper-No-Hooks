@@ -9,7 +9,6 @@ import {
   fetchCart,
   fetchUserOrders,
 } from "../../api/utils";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -18,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
 const SingleDetail = ({
   allProducts,
   userCart,
@@ -32,15 +30,14 @@ const SingleDetail = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [myOrderProduct, setMyOrderProducts] = useState([]);
-  const [ refreshOrders, setRefreshOrders ] = useState(false);
 
+  const [ refreshOrders, setRefreshOrders ] = useState(false);
 
   const classes = useStyles();
   const { products } = allProducts;
   const history = useHistory();
   let { productId } = useParams();
   productId = parseInt(productId);
-
   const product = products
     ? products.find((product) => Number(productId) === Number(product.id))
     : null;
@@ -48,6 +45,7 @@ const SingleDetail = ({
 
   // console.log("USER data SINGLE DETAIL", userData);
   console.log("userCart single detail file", userCart);
+
 
 
   useEffect(async () => {
@@ -61,6 +59,10 @@ const SingleDetail = ({
 const addProduct = async (product) => {
   setRefreshOrders(true)
   
+
+  // find order w/ created status to later update
+  // console.log('orderProducts SINGLE DETAIL', orderProducts)
+
     //if no user logged in
     if (!userData.username) {
       let newProductToAdd = guestCart.find(function (product) {
@@ -80,73 +82,66 @@ const addProduct = async (product) => {
       let guestCopy = [...guestCart];
       guestCopy.push(newProductToAdd);
       setGuestCart(guestCopy);
-
       console.log("guest cart local", guestCart);
     } 
       else if (userData && userData.username) {
 
         const findOrder = myOrders? myOrders.find((order) => (order.status = "created")) : "";
+
       //create order for user
       if (!findOrder) {
-
         let newUserCart = await createOrder(token);
         console.log("New Cart created SINGLE DETAIL", newUserCart);
-
         const bodyProduct = {
           productId: productId,
           price: product.price,
           quantity: quantity,
         };
-        
         const newOrderProduct = await addProductOrder(newUserCart.id, bodyProduct, token);
-
         console.log("new Order Product added to new cart SINGLE DETAIL", newOrderProduct);
         const updatedUserCart= [...userCart]
         updatedUserCart.push(newOrderProduct);
         setMyOrders(newUserCart)
         setUserCart(updatedUserCart);
         // console.log("ORDER FOUND(should be the newly created order):", myOrders);
-
         // console.log("user cart from new create order SINGLE DETAIL", userCart);
         alert("Product Added to Cart");
       } else {
         //if logged in and created order exists
-
         const body = {
           productId: productId,
           price: product.price,
           quantity: quantity,
         };
-
         //get orderProducts from created order
         console.log("ORDER FOUND:", findOrder);
     
         const orderProducts = findOrder ? findOrder.products : "";
+
     
       console.log("ARRAY OF ORDER PRODUCTS INSIDE FOUND ORDER:", orderProducts);
 
+
+        console.log("find order being passed in addProduct:", findOrder);
+
         const newOrderProduct = await addProductOrder(findOrder.id,body,token);
-
         console.log("updated product order testing should not be undefined:", newOrderProduct);
-
         // let userCopy = [...userCart];
         userCart.push(newOrderProduct);
         setUserCart(userCart);
 
+
         orderProducts.push(newOrderProduct)
+
 
         setMyOrderProducts(orderProducts)
         setMyOrders(findOrder)
-
         console.log("updated copy user cart:  ", userCart);
         console.log("order should be updated:  ", findOrder);
-
-
         alert("Product Added to Cart");
       }
     }
   };
-
   if (!product) {
     return <div></div>;
   }
@@ -162,7 +157,6 @@ const addProduct = async (product) => {
           Return to all products
         </Button>
       </section>
-
       <div className="single-product-card">
         <img
           src={product.imageurl}
@@ -230,6 +224,4 @@ const addProduct = async (product) => {
       </> 
     );
 };
-
-
 export default SingleDetail;

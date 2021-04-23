@@ -7,19 +7,16 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { callApi } from "../../api";
 import Cart from "./Cart";
 import CartCard from "./CartCard";
-
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
     width: 100,
   },
 }));
-
 const STRIPE_KEY =
   "pk_test_51IftLtA9MPKzljzeSceH92fVneV3gu5NgdPP9ZEspdbi0qhxtRIypP37KO2e2ozpXwoswdPKRpfaTKYqk2vidPhR00u0MPhNrs";
 const PAYMENT_URL = "http://localhost:5000/api/pay";
 const CURRENCY = "USD";
-
 const onToken = (amount) => async (token) => {
   console.log("Token is: ", token);
   try {
@@ -33,17 +30,12 @@ const onToken = (amount) => async (token) => {
     console.error(error);
   }
 };
-
-
 const Checkout = ({myOrders,  userCart, setUserCart, guestCart, setGuestCart, token }) => {
 const classes = useStyles();
 const history = useHistory()
-
   console.log("guestCart:", guestCart);
   console.log('myOrders in cart', myOrders)
   console.log("userCart:", userCart);
-
-
 const cartTotal = ()=>{
   if (userCart&& userCart.length>0){
   const userCartTotal= userCart.map(({price, quantity})=>{
@@ -57,7 +49,6 @@ const cartTotal = ()=>{
   } else if (guestCart && guestCart.length>0){
      const guestCartTotal= guestCart.map(({price,quantity })=>{
       return (Number(price) *Number(quantity))
-       
     })
     const newTotal= guestCartTotal.reduce((results, value) => {
       const corrertFormat= Number(results) + Number(value)
@@ -67,14 +58,12 @@ const cartTotal = ()=>{
     return newTotal 
   }
 }
-
 const cancelOrder= async()=>{
     if (token) {
         userCart= []
         setUserCart(userCart)
         alert('Order Cancelled!')
         history.push('/')
-
     } else {
         localStorage.setItem("guestCart", JSON.stringify([]));
         setGuestCart([])
@@ -82,7 +71,6 @@ const cancelOrder= async()=>{
         history.push('/')
     }
 }
-
   return (
     <div className="checkout-container">
         <h1>Checkout</h1>
@@ -110,12 +98,8 @@ const cancelOrder= async()=>{
                 Cancel Order 
               </Button>
             </div>
-        
       ): ""}
     </div>
   );
 };
-
-
-
 export default Checkout;
