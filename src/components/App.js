@@ -100,12 +100,10 @@ const App = () => {
     }
 
   }
-
   useEffect(refreshAllProducts, [token]);
 
-  
+
   useEffect(async ()=>{
-  
   
 
     // JSON.parse(localStorage.getItem("guestCart")).length === 0
@@ -118,13 +116,6 @@ const App = () => {
   },[])
 
     
-
-
-    
-
-
-  console.log("GUEST CART :", guestCart);
-
   // console.log("all products:", allProducts);
   // console.log("userData for logged in user:", userData);
   console.log("USER CART IN APP:", userCart);

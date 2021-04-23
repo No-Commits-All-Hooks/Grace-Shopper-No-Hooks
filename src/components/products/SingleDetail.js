@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { useHistory, useParams } from "react-router-dom";
 import "./SingleDetail.css";
 import { Paper, Button, makeStyles } from "@material-ui/core";
@@ -7,6 +7,7 @@ import {
   createOrder,
   updateData,
   fetchCart,
+  fetchUserOrders,
 } from "../../api/utils";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,8 @@ const SingleDetail = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [myOrderProduct, setMyOrderProducts] = useState([]);
+  const [ refreshOrders, setRefreshOrders ] = useState(false);
+
 
   const classes = useStyles();
   const { products } = allProducts;
@@ -41,17 +44,23 @@ const SingleDetail = ({
   const product = products
     ? products.find((product) => Number(productId) === Number(product.id))
     : null;
-  console.log("productId", productId);
-  console.log("USER data SINGLE DETAIL", userData);
-  // console.log('Guest Cart SINGLE DETAIL', guestCart)
+
+
+  // console.log("USER data SINGLE DETAIL", userData);
   console.log("userCart single detail file", userCart);
 
-  // find order w/ created status to later update
 
-  // console.log('orderProducts SINGLE DETAIL', orderProducts)
+  useEffect(async () => {
+    if (userData && userData.username) {
+    myOrders = await fetchUserOrders(userData.id, token);
+    setMyOrders(myOrders)
+  }
+ }, [refreshOrders]);
+
 
 const addProduct = async (product) => {
-
+  setRefreshOrders(true)
+  
     //if no user logged in
     if (!userData.username) {
       let newProductToAdd = guestCart.find(function (product) {
@@ -76,9 +85,7 @@ const addProduct = async (product) => {
     } 
       else if (userData && userData.username) {
 
-      const findOrder = myOrders? myOrders.find((order) => (order.status = "created")) : null;
-      console.log("ORDER FOUND:", findOrder);
-
+        const findOrder = myOrders? myOrders.find((order) => (order.status = "created")) : "";
       //create order for user
       if (!findOrder) {
 
@@ -112,9 +119,11 @@ const addProduct = async (product) => {
         };
 
         //get orderProducts from created order
+        console.log("ORDER FOUND:", findOrder);
+    
         const orderProducts = findOrder ? findOrder.products : "";
-
-        console.log("find order being passed in addProduct:", findOrder);
+    
+      console.log("ARRAY OF ORDER PRODUCTS INSIDE FOUND ORDER:", orderProducts);
 
         const newOrderProduct = await addProductOrder(findOrder.id,body,token);
 
@@ -124,7 +133,7 @@ const addProduct = async (product) => {
         userCart.push(newOrderProduct);
         setUserCart(userCart);
 
-        findOrder.products.push(newOrderProduct)
+        orderProducts.push(newOrderProduct)
 
         setMyOrderProducts(orderProducts)
         setMyOrders(findOrder)
