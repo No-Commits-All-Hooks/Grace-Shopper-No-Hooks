@@ -1,69 +1,39 @@
 # Grace-Shopper-No-Hooks
-Capstone FullStack Web Developer Project
 
-Running this code in development
-npm run start-dev will make great things happen!
+Built a Fullstack Academy e-commerce store integrated with stripe. On this site customers can order Fullstack Academy souvenirs and gear. 
 
-If you want to run the server and/or webpack separately, you can also npm run start-server and npm run build-client.
+## Running this code in development
 
-Contribution guide
+1. Clone this repo
+2. Run `npm install` from inside the cloned directory
+3. `npm run client:dev` will make great things happen!
+
+If you want to run the server and/or webpack separately, you can also `npm run server:dev` and `npm run client:dev`.
+
+## Contribution guide
 
 The contribution process is...
 
-Make an issue (or multiple issues)
+1. Make an issue (or multiple issues)
+2. Make a PR that references that issue
+3. Get it code reviewed by someone on the team, address any comments
+4. Merge into master (with merge commit)
 
-Make a PR that references that issue
+### Code style guide
 
-Get it code reviewed by someone on the team, address any comments
+- Trailing commas where possible
+- Use `const` or `let` over `var`
+- Use `require` and `module.exports` in `.js` files
+- Use `import` and `export` in `.jsx` files, unless `require` makes for cleaner code
+- Put import statements at top
+- Put the default export at bottom
+- Define container components and presentational components in separate files
+- Use the ["ducks" pattern](https://github.com/erikras/ducks-modular-redux) for redux
+- Define react components as pure functions (instead of classes) whenever possible
+- No unused variables
+- Always use `===` instead of `==`
 
-Merge into master (with merge commit)
 
-Code style guide
+### Commit message guide
 
-Pay attention to the linter!
-
-Don't use semicolons
-
-Two spaces -- for indentation
-
-Trailing commas where possible
-
-Use const or let over var
-
-Use require and module.exports in .js files
-
-Use import and export in .jsx files, unless require makes for cleaner code
-
-Put import statements at top
-
-Put the default export at bottom
-
-Consider splitting up any file larger than 50 lines
-
-Define container components and presentational components in separate files
-
-Use the "ducks" pattern for redux
-
-Name files using lowercase-and-dashes instead of camelCase or PascalCase, except for when the default export is a class, then use PascalCase
-
-Define react components as pure functions (instead of classes) whenever possible
-
-Single quotes for strings – except to avoid escaping
-
-No unused variables
-
-Space after keywords if (condition) { ... }
-
-Space after function name function name (arg) { ... }
-
-Always use === instead of ==
-
-Linter Guide
-
-npm install -g eslint
-
-In the root of your project, eslint --init
-
-You will then be prompted to choose how you want to configure ESLint - follow the style guide above
-
-Commit message guide
+[See here](https://seesparkbox.com/foundry/semantic_commit_messages)
