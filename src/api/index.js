@@ -1,11 +1,10 @@
 
 require('dotenv').config();
 //when you want to go live
-export const BASE_URL = process.env.API_URL || 'https://fullstack-fans.herokuapp.com/api/'; //when you want to go live
-
-// export const BASE_URL = 'http://localhost:5000/api/';   //use this if you want to go local
+export const BASE_URL = process.env.API_URL || 'http://localhost:5000/api/'; //when you want to go live
 
 
+// 'http://localhost:5000/api/' use this if you want to go local
 
 export const callApi = async ({ url, method, token, body }) => {
   console.log('callApi: ', { url, method, token, body });

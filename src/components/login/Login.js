@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { callApi } from "../../api";
-import "./Login.css";
+import "./AccountPage.css";
 import Register from "./Register";
 import NewLogin from "./NewLogin";
 
@@ -24,7 +22,8 @@ const Login = ({ action, setToken, setUserData }) => {
           setToken= {setToken}
           setUserData = {setUserData}
           />
-}
+      }
+      
 </div>
   );
 };

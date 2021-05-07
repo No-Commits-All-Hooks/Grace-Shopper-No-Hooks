@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { Button, TextField } from "@material-ui/core";
+
 import { callApi } from "../../api";
-import "./Login.css";
+import "./AccountPage.css";
 
 const NewLogin = ({ action, setToken, setUserData }) => {
  
@@ -9,15 +11,10 @@ const NewLogin = ({ action, setToken, setUserData }) => {
   const [password, setPassword] = useState("");
   const isLogin = action === "login";
   const title = isLogin ? "Login" : "Register";
-  const oppositeTitle = isLogin ? "Register" : "Login";
   const oppositeAction = isLogin ? "register" : "login";
   const history = useHistory();
   const [respMessage, setRespMessage] = useState("");
   
-  
-  const handleClick = () => {
-    history.push("/myaccount");
-    };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,10 +24,9 @@ const NewLogin = ({ action, setToken, setUserData }) => {
         method: 'POST',
     });
     const token = data?.token;
-    
     if(!token){
       
-    setRespMessage(data.message);
+    alert(data.message);
     
     console.log("data message", data.message)
     }
@@ -40,7 +36,14 @@ const NewLogin = ({ action, setToken, setUserData }) => {
         setPassword('');
         setToken(token);
         setUserData(data);
+        console.log('new login data', data)
+
+        if(data.user.isAdmin){
+            history.push('/admin');
+
+        } else {
         history.push('/myaccount');
+        }
     }
 
     // if you get an error reponse grab the message
@@ -48,37 +51,43 @@ const NewLogin = ({ action, setToken, setUserData }) => {
   };
   return (
     <div className="loginPage">
-        <div id="loginInputs">
+      <div className="login-inputs">
         <h1>{title}</h1>
          {/* display this error message if they don't succesfully login or register */}
 
         {respMessage ? <div id="errorMessage"> { respMessage }</div> : ''}
         <form onSubmit={handleSubmit}>
-        <div className="loginfieldset">
-            <label htmlFor="name">Username:</label>
-            <input
-                type="text"
-                placeholder="username"
-                required
-                onChange={(event) => setUsername(event.target.value)}
-            ></input></div>
-            <div className="loginfieldset"><label>Password:</label>
-            <input
-                type="password"
-                placeholder="password"
-                onChange={(event) => setPassword(event.target.value)}
-            ></input>
-            </div>
+        <div className="login-details">
+        <TextField required 
+          label="Username" 
+          className="login-fieldset"
+          variant="outlined"
+          onChange={(event) => setUsername(event.target.value)}
+          />
+          <TextField required 
+          label="Password" 
+          className="login-fieldset"
+          type="password"
+          variant="outlined"
+          onChange={(event) => setPassword(event.target.value)}
+          />
+            </div> 
             <section className="login-actions">
-            <button 
-            className="primary"
-            type="submit">{title}</button>
-            
-        <button 
-        onClick={handleClick}>Go back</button>
+            <Button 
+            className="button-submit" 
+            color="primary"
+            type="submit"
+            variant="contained"
+            >
+              {title}
+            </Button>
         </section>
         </form>
-                   
+        <div className="opposite-action-message">
+            <h5>* Required</h5>
+            Don't Have an Account?
+            <Link to={`/${oppositeAction}`}> Create One Here!</Link>
+          </div>     
     </div>
 </div>
 );};
