@@ -38,7 +38,7 @@ const cartTotal = ()=>{
   }
 }
   return (
-    <div className="cart-container">
+      <>
       <CartCard
             myOrders= {myOrders}
             userCart={userCart}
@@ -64,7 +64,7 @@ const cartTotal = ()=>{
               </Button>
             </div>
       ): <h1>Cart Empty</h1>}
-    </div>
+    </>
   );
 };
 export default Cart;

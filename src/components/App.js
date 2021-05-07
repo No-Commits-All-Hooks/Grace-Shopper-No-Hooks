@@ -105,6 +105,8 @@ const App = () => {
         setUserData={setUserData}
         setUserCart={setUserCart}
         allProducts={allProducts}
+        userCart={userCart}
+        guestCart= {guestCart}
       />
       <div id="app-body">
         <Switch>

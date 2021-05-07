@@ -1,5 +1,5 @@
 .loginPage {
-    position: relative;
+    /* position: relative;
     top: 10vh;
     left: 5vw;
     bottom: 10vh;
@@ -9,44 +9,59 @@
     flex-direction: column;
     width: 50vw;
     max-width: 500px;
-    padding: 32px 0 64px 0;
+    padding: 32px 0 64px 0; */
+    display:flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 40%;
+    margin: auto;
+    box-shadow: 1px 1px 10px black;
+
 }
 
 
 .loginPage h1 {
     font-size: 2.4rem;
+    text-align: center;
     margin: 24px 24px 24px 24px;
 }
 
-.loginfieldset {
+.login-details {
     display: flex;
     flex-direction: column;
     margin: 0 24px 24px 24px;
+    padding: 10px;
+    width: 450px;
+    gap: 20px;
+    align-items: center;
 
 }
 
-.loginfieldset label {
-    font-size: 1.2rem;
-    margin: 0 5px 5px 5px;
-
-}
-
-.loginfieldset input {
-    height: 40px;
+.login-fieldset {
     font-size: 1.4rem;
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
-    padding: 8px;
-    border-radius: 8px;
-    outline: none;
-    border: none;
-    box-shadow: inset 0 0 5px gray;
+    width: 350px;
 }
 
 
 .login-actions {
     display: flex;
     padding: 10px 24px 24px 24px;
+}
+
+.opposite-action-message{
+    text-align: center;
+    
+}
+
+h5{
+    margin: 8px;
+}
+
+.login-actions{
+    margin-left: 210px;
+    height: 90px;
 }
 
 @media screen and (max-width: 768px) {

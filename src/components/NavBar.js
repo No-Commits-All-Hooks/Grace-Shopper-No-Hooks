@@ -6,7 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import Button from "@material-ui/core/Button";
+import {Button, Badge} from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
@@ -66,13 +66,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const NavBar = ({ userData,setToken, setUserData, setUserCart, allProducts}) => {
+const NavBar = ({ userData,setToken, setUserData, setUserCart, allProducts, userCart, guestCart}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const openAnchor = Boolean(anchorEl);
   const history = useHistory();
   const [searchTerm, updateSearchTerm] = useState ('')
 
+  const cartChange= () =>{
+    if(userCart && userCart.length>0){
+       return userCart.reduce((sum, { quantity }) =>sum + quantity,  0)
+    } else if(guestCart && guestCart.length>0){
+      return guestCart.reduce((sum, { quantity }) => sum + quantity, 0)
+    }else {
+    return 0}
+  }
+
+  console.log('nav bar userData:', userData)
 
 
   const logOutHere = () => {
@@ -126,10 +136,14 @@ const NavBar = ({ userData,setToken, setUserData, setUserCart, allProducts}) => 
           </div>
           <IconButton 
          onClick={() => handleMenuChange("/cart")}
-
           color="inherit"
           aria-label="add to shopping cart">
+          <Badge 
+          badgeContent= {cartChange()}
+          color="primary"
+          >
           <AddShoppingCartIcon />
+          </Badge>
           </IconButton>
             <Button
             aria-controls="fade-menu"
@@ -164,33 +178,27 @@ const NavBar = ({ userData,setToken, setUserData, setUserCart, allProducts}) => 
               open={openAnchor}
               onClose={() => setAnchorEl(null)}
             >
-                {userData.username? (
+                {userData.username && !userData.isAdmin? (
               <MenuItem 
               onClick={() => handleMenuChange("/myaccount")}
               >
                 My Account
               </MenuItem>
-                ): (
+                ): 
                 <MenuItem 
                 onClick={() => handleMenuChange("/login")}
                 >
-                  My Account
+                  Sign Up
                 </MenuItem>
-              )}
-              <MenuItem 
-              onClick={() => handleMenuChange("/register")}
-              >
-                Sign Up
-              </MenuItem>
+                }
               {userData.isAdmin? (
               <MenuItem 
               onClick={() => handleMenuChange("/admin")}>
               Administrators Console
               </MenuItem>
-              ):  ""
-            }    
-
-
+              ):  
+                  ""
+            } 
               {userData.username? (
               <MenuItem onClick={() => logOutHere()}>
               Log Out
